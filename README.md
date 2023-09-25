@@ -30,5 +30,4 @@ To get started using Notis, follow these steps:
 
 - [Create a Nostr Key pair](https://github.com/davisssamuel/notis/wiki#getting-started)
 - Login to [Notis](http://163.11.236.128) with your private key
-- Start Chatting
-- Invite your friends to join Notis!
+- Start chatting and invite your friends to join Notis!
