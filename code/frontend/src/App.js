@@ -1,4 +1,4 @@
-import logo from './logo.png';
+import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          HELLO from REACT on NOTIS VM!!!
+          Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
           className="App-link"
