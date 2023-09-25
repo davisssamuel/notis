@@ -20,9 +20,9 @@ Share photos, videos, and audio messages seamlessly. Keep your conversations eng
 
 Send and receive payments securely through Notis. Split bills, pay your share of the rent, or settle debts with friends without leaving the app.
 
-### 🖌️ Customization
+<!-- ### 🖌️ Customization
 
-Personalize your Notis experience. Choose from various themes and customization options to make the app truly yours.
+Personalize your Notis experience. Choose from various themes and customization options to make the app truly yours. -->
 
 # Getting Started
 
