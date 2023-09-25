@@ -1,5 +1,3 @@
-# Notis
-
 ## About
 
 Notis is a cutting-edge private messenger that harnesses the power of the Nostr protocol to provide you with secure and efficient communication. Whether you're chatting with friends, colleagues, or family, Notis ensures your conversations stay private and protected. Visit the [wiki docs](https://github.com/davisssamuel/notis/wiki) for more detailed information.
@@ -25,7 +23,7 @@ Personalize your Notis experience. Choose from various themes and customization 
 
 To get started using Notis, follow these steps:
 
-- [Create a Nostr Key pair](https://github.com/davisssamuel/notis/wiki/Creating-a-Key-Pair)
+- [Create a Nostr Key pair](https://github.com/davisssamuel/notis/wiki#getting-started)
 - Login to [Notis](http://163.11.236.128) with your private key
 - Start Chatting
 - Invite your friends to join Notis!
