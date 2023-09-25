@@ -25,7 +25,7 @@ Personalize your Notis experience. Choose from various themes and customization 
 
 To get started using Notis, follow these steps:
 
-- [Create a Nostr Key pair]()
+- [Create a Nostr Key pair](https://github.com/davisssamuel/notis/wiki/Creating-a-Key-Pair)
 - Login to [Notis](http://163.11.236.128) with your private key
 - Start Chatting
 - Invite your friends to join Notis!
