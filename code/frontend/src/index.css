@@ -13,6 +13,11 @@
     src: url(./fonts/CorpulentCapsj.ttf);
 }
 
+@font-face {
+    font-family: dot-matrix;
+    src: url(./fonts/Dot\ Matrix.ttf);
+}
+
 body {
     margin: 0;
     -webkit-font-smoothing: antialiased;

@@ -1,0 +1,68 @@
+body {
+    background-color: rgb(229, 229, 229);
+}
+
+.nav-bar {
+    width: 100%;
+    height: 90px;
+    background: white;
+    display:grid;
+    grid-template-columns: 90px auto;
+}
+
+.nav-logo {
+    width: 70px;
+    height: 70px;
+    padding: 10px;
+}
+
+.nav-name {
+    font-family: ways;
+    font-size: 30pt;
+    height: 90px;
+    font-weight: bold;
+    margin:0;
+    display: flex;
+    align-items: center;
+}
+
+.login-form {
+    padding-top: 30vh;
+    height: 100px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.key-input {
+    width: 75%;
+    font-family: source-code-pro;
+    height:50px;
+    border-radius: 10px;
+    font-size: 12pt;
+}
+
+.login-button {
+    font-family: source-code-pro;
+    font-weight: bold;
+    font-size: 2rem;
+    border-radius: 10px;
+    color: white;
+    background-color: black;
+    width: 50%;
+    height: 50px;
+}
+
+.key-generate {
+    width: 100%;
+    padding-top: 10px;
+    margin: auto;
+    text-align: center;
+}
+
+.key-generate a {
+    text-decoration: none;
+    color: gray;
+    font-family: source-code-pro;
+}
