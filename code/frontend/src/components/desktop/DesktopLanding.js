@@ -1,13 +1,13 @@
 import logo from '../../logo.png';
-import "../../css/desktop/landing.css"
+import "../../css/desktop/DesktopLanding.css"
 
 function DesktopLanding() {
     return (
         <>
-            <div className='nav-bar'>
-                <img src={logo} className='nav-logo'></img>
-                <p className='nav-name'>notis</p>
-                <div className='nav-items'>
+            <div className='landing-nav-bar'>
+                <img src={logo} className='landing-nav-logo'></img>
+                <p className='landing-nav-name'>notis</p>
+                <div className='landing-nav-items'>
                     <a href='https://github.com/davisssamuel/notis'>github</a>
                     <a href='https://github.com/davisssamuel/notis/wiki'>help</a>
                 </div>
@@ -21,6 +21,8 @@ function DesktopLanding() {
                     <p>try again on a mobile device</p>
                 </div>
             </div>
+
+            
         </>
     );
 }
