@@ -24,10 +24,12 @@ ___
 
 Send and receive payments securely through Notis. Split bills, pay your share of the rent, or settle debts with friends without leaving the app.
 
-<!-- ### 🖌️ Customization
+<!-- 
+### 🖌️ Customization
 
-Personalize your Notis experience. Choose from various themes and customization options to make the app truly yours. -->
+Personalize your Notis experience. Choose from various themes and customization options to make the app truly yours.
 
+___
 # Getting Started
 
 To get started using Notis, follow these steps:
@@ -35,3 +37,4 @@ To get started using Notis, follow these steps:
 - [Create a Nostr Key pair](https://github.com/davisssamuel/notis/wiki#getting-started)
 - Login to [Notis](http://163.11.236.128) with your private key
 - Start chatting and invite your friends to join Notis!
+-->
