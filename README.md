@@ -7,19 +7,22 @@ Notis is a cutting-edge private messenger that harnesses the power of the Nostr 
 
 📱 **Contacts**
 
-*Easily manage your contacts within Notis. Add, organize, and stay connected with friends and colleagues effortlessly.*
+Easily manage your contacts within Notis. Add, organize, and stay connected with friends and colleagues effortlessly.
 
+___
 💬 **Group Chats**
 
-*Create and join group chats with your favorite people. Discuss projects, plan events, or simply catch up with friends in a single conversation.*
+Create and join group chats with your favorite people. Discuss projects, plan events, or simply catch up with friends in a single conversation.
 
+___
 📂 **Multimedia Sharing**
 
-*Share photos, videos, and audio messages seamlessly. Keep your conversations engaging with rich media support.*
+Share photos, videos, and audio messages seamlessly. Keep your conversations engaging with rich media support.
 
+___
 💸 **Secure Payments**
 
-*Send and receive payments securely through Notis. Split bills, pay your share of the rent, or settle debts with friends without leaving the app.*
+Send and receive payments securely through Notis. Split bills, pay your share of the rent, or settle debts with friends without leaving the app.
 
 <!-- ### 🖌️ Customization
 
