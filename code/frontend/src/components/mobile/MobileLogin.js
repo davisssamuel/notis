@@ -29,6 +29,7 @@ function MobileLogin() {
                     let backdrop = document.querySelector("#dialog-backdrop")
                     backdrop.classList.add("dialog-backdrop-open");
                     let img = document.querySelector("#copy-button");
+                    img.setAttribute("src",copy);
                     img.classList.remove("check");
                     img.classList.remove("x");
                     img.classList.add("copy");
@@ -43,20 +44,30 @@ function MobileLogin() {
                             <img id="copy-button" className="copy" src={copy} onClick={() => {
                                 let img = document.querySelector("#copy-button");
                                 let status = document.querySelector("#copy-status");
-                                navigator.clipboard.writeText(nsec).then(
-                                    () => {
-                                        img.setAttribute("src",check);
-                                        img.classList.remove("copy");
-                                        img.classList.add("check");
-                                        status.classList.add("check");
-                                        status.innerHTML = "successfully copied to clipboard"
-                                    },() => {
-                                        img.setAttribute("src",x);
-                                        img.classList.remove("copy");
-                                        img.classList.add("x");
-                                        status.classList.add("x");
-                                        status.innerHTML = "failed copying to clipboard";
-                                    })
+                                if ('clipboard' in navigator) {
+                                    navigator.clipboard.writeText(nsec).then(
+                                        () => {
+                                            img.setAttribute("src",check);
+                                            img.classList.remove("copy");
+                                            img.classList.add("check");
+                                            status.classList.add("check");
+                                            status.innerHTML = "successfully copied to clipboard"
+                                        },() => {
+                                            img.setAttribute("src",x);
+                                            img.classList.remove("copy");
+                                            img.classList.add("x");
+                                            status.classList.add("x");
+                                            status.innerHTML = "failed copying to clipboard";
+                                        })
+                                }
+                                else {
+                                    img.setAttribute("src",x);
+                                    img.classList.remove("copy");
+                                    img.classList.add("x");
+                                    status.classList.add("x");
+                                    status.innerHTML = "failed copying to clipboard";
+                                }
+                                
                                 }}></img>
                         </div>
                         <p id="copy-status"></p>
