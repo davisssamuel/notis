@@ -33,6 +33,7 @@ function MobileLogin() {
                         let backdrop = document.querySelector("#dialog-backdrop")
                         backdrop.classList.add("dialog-backdrop-open");
                         let img = document.querySelector("#copy-button");
+                        img.setAttribute("src", copy);
                         img.classList.remove("check");
                         img.classList.remove("x");
                         img.classList.add("copy");
