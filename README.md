@@ -3,26 +3,16 @@
 
 Notis is a cutting-edge private messenger that harnesses the power of the [Nostr protocol](https://nostr.com) to provide you with secure and efficient communication. Whether you're chatting with friends, colleagues, or family, Notis ensures your conversations stay private and protected. Visit the [wiki docs](https://github.com/davisssamuel/notis/wiki) for more detailed information.
 
-# Features
+## Features
 
-📱 **Contacts**
-
-Easily manage your contacts within Notis. Add, organize, and stay connected with friends and colleagues effortlessly.
-
-___
-💬 **Group Chats**
-
-Create and join group chats with your favorite people. Discuss projects, plan events, or simply catch up with friends in a single conversation.
-
-___
-📂 **Multimedia Sharing**
-
-Share photos, videos, and audio messages seamlessly. Keep your conversations engaging with rich media support.
-
-___
-💸 **Secure Payments**
-
-Send and receive payments securely through Notis. Split bills, pay your share of the rent, or settle debts with friends without leaving the app.
+- 👥 **Contacts**
+<!-- Easily manage your contacts within Notis. Add, organize, and stay connected with friends and colleagues effortlessly. -->
+- 💬 **Group Chats**
+<!-- Create and join group chats with your favorite people. Discuss projects, plan events, or simply catch up with friends in a single conversation. -->
+- 📂 **Multimedia Sharing**
+<!-- Share photos, videos, and audio messages seamlessly. Keep your conversations engaging with rich media support. -->
+- 💸 **Secure Payments**
+<!-- Send and receive payments securely through Notis. Split bills, pay your share of the rent, or settle debts with friends without leaving the app. -->
 
 <!-- 
 ### 🖌️ Customization
