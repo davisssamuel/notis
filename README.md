@@ -1,7 +1,7 @@
 # About 
 <!-- &rarr; ![Static Badge](https://img.shields.io/badge/Status:-Pain%20and%20Suffering-red) -->
 
-Notis is a cutting-edge private messenger that harnesses the power of the Nostr protocol to provide you with secure and efficient communication. Whether you're chatting with friends, colleagues, or family, Notis ensures your conversations stay private and protected. Visit the [wiki docs](https://github.com/davisssamuel/notis/wiki) for more detailed information.
+Notis is a cutting-edge private messenger that harnesses the power of the [Nostr protocol](https://nostr.com) to provide you with secure and efficient communication. Whether you're chatting with friends, colleagues, or family, Notis ensures your conversations stay private and protected. Visit the [wiki docs](https://github.com/davisssamuel/notis/wiki) for more detailed information.
 
 # Features
 
