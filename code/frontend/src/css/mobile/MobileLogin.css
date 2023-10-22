@@ -50,6 +50,8 @@ body {
 }
 
 .login-button {
+    text-decoration: none;
+    text-align: center;
     font-family: source-code-pro;
     font-weight: bold;
     font-size: 2rem;
@@ -260,12 +262,13 @@ dialog.dialog-closing {
 }
 
 #bottom-buttons {
-    display:grid;
-    grid-template-columns: auto 50% auto;
-    padding-top: 20px;
+    display:flex;
+    flex-direction:row;
+    padding-top: 1em;
 }
 
-#bottom-buttons button {
+#bottom-buttons .close-button {
+    all:unset;
     font-family: source-code-pro;
     font-weight: bold;
     font-size: 1rem;
@@ -274,6 +277,19 @@ dialog.dialog-closing {
     background-color: black;
     width: 5rem;
     height: 30px;
+}
+
+#bottom-buttons .login-button {
+    all:unset;
+    font-family: source-code-pro;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 10px;
+    color: white;
+    background-color: black;
+    width: 5rem;
+    height: 30px;
+    margin-left: auto;
 }
 
 #change-theme {

@@ -88,7 +88,7 @@ function MobileLogin() {
                                     </div>
                                 </div>
                                 <div id="bottom-buttons">
-                                    <button onClick={() => {
+                                    <NavLink className="close-button" to="/login" onClick={() => {
                                         let dialog = document.querySelector("#popup-body");
                                         let backdrop = document.querySelector("#dialog-backdrop")
                                         dialog.classList.add('dialog-closing');
@@ -99,9 +99,9 @@ function MobileLogin() {
                                             dialog.classList.remove('dialog-closing');
                                             backdrop.classList.remove("dialog-backdrop-closing");
                                         }, 200);
-                                    }}>Close</button>
+                                    }}>Close</NavLink>
                                     <div></div>
-                                    <button onClick={() => {window.location.href="/"}}>Login</button>
+                                    <NavLink className="login-button" to="/chats">Login</NavLink>
                                 </div>
                             </div>
                         </dialog>
