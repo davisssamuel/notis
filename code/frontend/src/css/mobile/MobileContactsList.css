@@ -1,0 +1,160 @@
+body, html {
+    background-color: rgb(227, 227, 227);
+    height: 100%;
+    margin: 0;
+    overflow: hidden
+}
+
+.contacts-page {
+    display: flex;
+    flex-direction: column;
+    min-height:100vh;
+    max-height: 100vh;
+}
+
+.contacts-page .nav-bar {
+    width: 100%;
+    height: 5em;
+    background:white;
+    display:grid;
+    grid-template-columns: 5em auto;
+}
+
+.contacts-page .nav-bar .profile-link {
+    padding:0;
+    margin:auto;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contacts-page .nav-bar .profile-image {
+    border-radius: 10000px;
+    width: 90%;
+    height: 90%;
+    box-shadow:0 0 7px gray;
+}
+
+.contacts-page .search-bar {
+    width:95%;
+    height:2.5em;
+    background-color: rgb(201, 201, 201);
+    margin:auto;
+    border-radius:10px;
+    text-align: left;
+    display:flex;
+    flex-direction: row;
+    margin: 10px auto;
+}
+
+.contacts-page .search-bar img {
+    padding: 5px;
+    width:2em;
+}
+
+.contacts-page .search-bar input {
+    all: unset;
+    padding: 5px;
+    font-size: 1em;
+    width:100%;
+}
+
+.contacts-page .contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding:5px;
+}
+
+.contact-block .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+}
+
+.contact-block .profile-link {
+    padding:0;
+    margin:auto;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 4em;
+    width: 4em;
+}
+
+.contact-block .profile-image {
+    border-radius: 10000px;
+    width: 90%;
+    height: 90%;
+    box-shadow:0 0 3px gray inset;
+}
+
+.contact-block {
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 5em auto;
+    background: rgb(246, 246, 246);
+    margin: auto;
+    width: 95%;
+    min-height: 5em;
+    max-height: 5em;
+    border-radius: 10px;
+    box-shadow:0 0 3px gray;
+}
+
+.footer {
+    all: unset;
+    width: 100%;
+    height: 3em;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    bottom: 0;
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    gap:8em;
+}
+.footer img{
+    height:100%;
+}
+
+@keyframes fadeAndMoveIn {
+    from {
+        transform: translateY(-100px) scale(0.5);
+        zoom: 0;
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+@keyframes fadeAndMoveOut {
+    from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

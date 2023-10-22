@@ -1,0 +1,214 @@
+body, html {
+    background-color: rgb(227, 227, 227);
+    height: 100%;
+    margin: 0;
+    overflow: hidden
+}
+
+.transactions-page {
+    display: flex;
+    flex-direction: column;
+    min-height:100vh;
+    max-height: 100vh;
+}
+
+.transactions-page .nav-bar {
+    width: 100%;
+    height: 5em;
+    background:white;
+    display:grid;
+    grid-template-columns: 5em auto;
+}
+
+.transactions-page .nav-bar .profile-link {
+    padding:0;
+    margin:auto;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.transactions-page .nav-bar .profile-image {
+    border-radius: 10000px;
+    width: 90%;
+    height: 90%;
+    box-shadow:0 0 7px gray;
+}
+
+.transactions-page .search-bar {
+    width:95%;
+    height:2.5em;
+    background-color: rgb(201, 201, 201);
+    margin:auto;
+    border-radius:10px;
+    text-align: left;
+    display:flex;
+    flex-direction: row;
+    margin: 10px auto;
+}
+
+.transactions-page .search-bar img {
+    padding: 5px;
+    width:2em;
+}
+
+.transactions-page .search-bar input {
+    all: unset;
+    padding: 5px;
+    font-size: 1em;
+    width:100%;
+}
+
+.transactions-page .transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding:5px;
+}
+
+.transaction-block .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.transaction-block .info .top {
+    display: flex;
+    flex-direction: row;
+    width:100%;
+}
+
+.transaction-block .info .top .name {
+    font-size: 1.1em;
+    color:black;
+    white-space: nowrap;
+}
+
+.transaction-block .info .top .time {
+    text-align: right;
+    float:right;
+    padding-right:1em;
+    justify-content: center;
+    width:100%;
+    font-family: source-code-pro;
+    font-size: 0.9em;
+    color:rgb(101, 101, 101);
+}
+
+.transaction-block {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    background: rgb(246, 246, 246);
+    margin: auto;
+    width: 90%;
+    min-height: auto;
+    max-height: 8em;
+    border-radius: 10px;
+    gap: 0.5em;
+    box-shadow:0 0 3px gray;
+    padding: 5px 10px 10px 10px;
+}
+
+.transaction-block .transaction-section{
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    font-family: source-code-pro;
+    font-size: 0.9em;
+}
+
+.transaction-block .transaction-section .payment-sent {
+    color: red;
+    font-family: ways;
+    font-size: 1.3em;
+}
+
+.transaction-block .transaction-section .payment-recieved {
+    color: green;
+    font-family: ways;
+    font-size: 1.3em;
+}
+
+.transaction-block .transaction-section .name {
+    color:black;
+}
+
+.transaction-block .transaction-section .time {
+    font-family: source-code-pro;
+    color: #808080;
+    margin-left: auto;
+    font-size: 0.9em;
+}
+
+.transaction-block .transaction-section .payment-sent.amount {
+    margin-left: auto;
+    font-size: 1em;
+    font-family: source-code-pro;
+}
+
+.transaction-block .transaction-section .payment-recieved.amount {
+    margin-left: auto;
+    font-size: 1em;
+    font-family: source-code-pro;
+}
+
+.transaction-block .payment-recieved {
+    color: green;
+}
+
+.footer {
+    all: unset;
+    width: 100%;
+    height: 3em;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    bottom: 0;
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    gap:8em;
+}
+.footer img{
+    height:100%;
+}
+
+@keyframes fadeAndMoveIn {
+    from {
+        transform: translateY(-100px) scale(0.5);
+        zoom: 0;
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+@keyframes fadeAndMoveOut {
+    from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

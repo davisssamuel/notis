@@ -1,0 +1,139 @@
+body, html {
+    background-color: rgb(227, 227, 227);
+    height: 100%;
+    margin: 0;
+    overflow: hidden
+}
+
+.settings-page {
+    display: flex;
+    flex-direction: column;
+    min-height:100vh;
+    max-height: 100vh;
+}
+
+.settings-page .image-name-display {
+    width: 100%;
+    height: 15em;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 5em auto;
+}
+
+.settings-page .image-name-display .profile-image {
+    border-radius: 10000px;
+    width: 11em;
+    height: 11em;
+    box-shadow:0 0 7px gray;
+}
+
+.settings-page .image-name-display .profile-name {
+    font-size: 1.5em;
+}
+
+.settings-page .settings-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background:white;
+    margin:10px;
+    border-radius: 10px;
+    gap:5px;
+    padding: 10px 0
+}
+
+.setting-block .name {
+    color: black;
+}
+
+.setting-block .setting-image {
+    padding:0;
+    margin:auto;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 2em;
+    width: 2em;
+    border-radius: 10000px;
+    padding:0.5em;
+}
+
+.setting-block .setting-image.dark-mode {
+    background-color: black;
+}
+
+.setting-block .setting-image.transaction-history {
+    background-color: rgb(0, 210, 0);
+}
+
+.setting-block .setting-image.public-key {
+    background-color: rgb(230, 73, 104);
+}
+
+.setting-block .setting-image.chat-settings {
+    background-color: rgb(196, 97, 224);
+}
+
+.setting-block .setting-image.live-activity {
+    background-color: rgb(232, 201, 26);
+}
+
+.setting-block .toggle-switch {
+    margin-left:auto;
+    margin-right:1em;
+}
+
+.setting-block .right-angle-bracket {
+    margin-left:auto;
+    margin-right:1em;
+    height: 2em;
+}
+
+.setting-block {
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 5em auto auto;
+    align-items: center;
+    margin: auto;
+    width: 95%;
+    min-height: 3em;
+    max-height: 5em;
+}
+
+.qr-code {
+    margin:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:10px
+}
+
+.qr-code img {
+    width:40vw;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.qr-code div {
+    font-weight: bold;
+}
+
+.footer {
+    all: unset;
+    width: 100%;
+    height: 3em;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    bottom: 0;
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    gap:8em;
+}
+.footer img{
+    height:100%;
+}

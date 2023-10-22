@@ -1,8 +1,8 @@
 #theme-container {
-    display:flex;
-    flex-direction: column;
-    height: 100vh;
-    transition: background-color 0.25s ease;
+    padding:0;
+    margin:0;
+    width: 100vw;
+    height:100vh;
 }
 
 /* 
@@ -14,12 +14,12 @@
     padding:0;
     height:100vh;
     width:100vw;
-    background-color:white;
+    background-color:rgb(221, 221, 221);
     color: black;
 }
 
 .light .nav-bar {
-    background-color: rgb(230, 230, 230);
+    background-color: rgb(255, 255, 255);
     transition: background-color 0.25s ease;
 }
 
