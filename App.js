@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { TextInput } from "react-native";
 import jsonData from "./data/chats.json";
-import { TextInput } from "react-native-web";
 
 // creates list of chats in RN
 let chats = jsonData.map((jsonData) => {

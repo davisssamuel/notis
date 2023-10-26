@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "notis-react-native",
-    "slug": "notis-react-native",
+    "name": "notis",
+    "slug": "notis",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
