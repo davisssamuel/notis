@@ -1,0 +1,14 @@
+[
+  {
+    "id":"1",
+    "name":"Josh Lees",
+    "timestamp":"20:01",
+    "lastMessage":"Luke isn't doing the mockups"
+  },
+  {
+    "id":"0",
+    "name":"Luke Lyall",
+    "timestamp":"20:02",
+    "lastMessage":"Josh won't shut up about the mockups"
+  }
+]

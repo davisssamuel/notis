@@ -1,0 +1,16 @@
+[
+  {
+    "firstName":"Joshua",
+    "lastName":"Lees",
+    "nickName":"Josh",
+    "publicKey":"",
+    "blocked": false
+  },
+  {
+    "firstName":"Luke",
+    "lastName":"Lyall",
+    "nickName":"",
+    "publicKey":"",
+    "blocked": false
+  }
+]
