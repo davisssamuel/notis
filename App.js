@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import jsonData from "./data/chats.json";
 import { TextInput } from "react-native-web";
 
-// creates list of chats in RN JSX
+// creates list of chats in RN
 let chats = jsonData.map((jsonData) => {
   return (
     <View
