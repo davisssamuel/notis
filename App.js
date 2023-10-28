@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
+import { View, Text } from "react-native-ui-lib"; // this line breaks things... 
 import { TextInput } from "react-native";
 import jsonData from "./data/chats.json";
 
@@ -11,7 +12,7 @@ let chats = jsonData.map((jsonData) => {
         // flex: 1,
         width: "100%",
         backgroundColor: "#eee",
-        
+
         // debug border
         borderColor: "red",
         borderWidth: 1,
@@ -33,6 +34,15 @@ export default function App() {
         }}
         defaultValue="Search"
       />
+
+      {/* <MaskedInput
+        ref={inputRef}
+        renderMaskedText={
+          <Text text80 grey60>
+            {value}$
+          </Text>
+        }
+      /> */}
       <ScrollView>{chats}</ScrollView>
     </View>
   );
