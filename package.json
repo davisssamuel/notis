@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
+    "@nostr-dev-kit/ndk": "^2.0.3",
     "expo": "~49.0.15",
     "expo-status-bar": "~1.6.0",
     "nostr-tools": "^1.17.0",
