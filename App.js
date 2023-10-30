@@ -1,8 +1,8 @@
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { TextInput } from "react-native";
 import jsonData from "./data/chats.json";
-import NDK from '@nostr-dev-kit/ndk';
+// import NDK from '@nostr-dev-kit/ndk';
 
 // creates list of chats in RN
 let chats = jsonData.map((jsonData) => {
@@ -11,15 +11,23 @@ let chats = jsonData.map((jsonData) => {
       style={{
         // flex: 1,
         width: "100%",
-        backgroundColor: "#eee",
-        
-        // debug border
-        borderColor: "red",
-        borderWidth: 1,
+        padding: 10,
+        marginTop: 4,
+        marginBottom: 4,
+        backgroundColor: "#FFF",
+        borderRadius: 10,
       }}
       key={jsonData.id}
     >
-      <Text> {jsonData.name} </Text>
+      <Text
+        style={{
+          fontWeight: "bold",
+        }}
+      >
+        {" "}
+        {jsonData.name}{" "}
+      </Text>
+
       <Text> {jsonData.lastMessage} </Text>
     </View>
   );
@@ -28,13 +36,22 @@ let chats = jsonData.map((jsonData) => {
 export default function App() {
   return (
     <View style={styles.container}>
-      <TextInput
-        style={{
-          backgroundColor: "#eee",
-        }}
-        defaultValue="Search"
-      />
-      <ScrollView>{chats}</ScrollView>
+      
+      {/* Chats */}
+      <ScrollView style={styles.chatsWrapper}>
+        <Text style={styles.sectionTitle}>Chats</Text>
+
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search"
+          placeholderTextColor="#000"
+        />
+
+        <View style={styles.chats}>
+          {/* this is where chats will go */}
+          {chats}
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -42,14 +59,22 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: "100%",
-    width: "100%",
-    backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
-
-    // debug border
-    borderColor: "red",
-    borderWidth: 1,
+    backgroundColor: "#E8EAED",
   },
+  chatsWrapper: {
+    paddingTop: 80,
+    paddingHorizontal: 20,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  searchBar: {
+    padding: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    backgroundColor: "#FFF",
+    borderRadius: 100,
+  },
+  chats: {},
 });
