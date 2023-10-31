@@ -49,6 +49,7 @@ export default function ChatsList() {
           style={styles.searchBar}
           placeholder="Search"
           placeholderTextColor="#FFF"
+          keyboardAppearance="dark"
         />
 
         <View style={styles.chats}>
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: "rgb(58,58,60)",
+    color: "#FFF",
     borderRadius: 10,
   },
   chats: {},
