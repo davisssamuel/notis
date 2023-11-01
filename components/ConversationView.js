@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, ScrollView, Text, TextInput, StyleSheet } from "react-native";
 
-export default function ChatView() {
+export default function ConversationView() {
   return <View style={styles.container}></View>;
 }
 
