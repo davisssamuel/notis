@@ -1,0 +1,108 @@
+import * as React from 'react';
+import { View, Text, TouchableWithoutFeedback, TextInput, StyleSheet } from "react-native";
+import { useNavigation } from '@react-navigation/native'
+import jsonData from "../data/transactions.json";
+ 
+const TransactionHistory = () => {
+  const navigation = useNavigation();
+
+  return(
+    <View style={styles.container}>
+      <View style={styles.transactionPage}>
+        <View style={styles.navBar}>
+
+        </View>
+
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search"
+          placeholderTextColor="#FFF"
+        />
+
+        <View style={styles.transactionList}>
+          {jsonData.map((jsonData, index) => (
+            <View style = {styles.transactionBlock} key={index}>
+              <View style = {styles.transactionSection}>
+                <Text style = {styles.type}>{jsonData.type}</Text>
+                <Text style = {styles.timestamp}>{jsonData.timestamp}</Text>
+              </View>
+              <View style = {styles.transactionBlock} key={index}>
+                <Text>To: {jsonData.name}</Text>
+                <Text>Amount: {jsonData.amount}</Text>
+              </View>
+              <View style = {styles.transactionBlock} key={index}>
+                <Text style = {styles.notes}>{jsonData.note}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      </View>
+      <View style={styles.footer}>
+      </View>
+    </View>
+  )
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "rgb(28,28,30)",
+  },
+  transactionPage: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  navBar: {
+    width: '100%',
+    height: 50,
+    backgroundColor: "rgb(28,28,30)",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  searchBar: {
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "rgb(58,58,60)",
+  },
+  transactionList: {
+    flex: 1,
+    padding: 10,
+  },
+  transactionBlock: {
+    backgroundColor: "rgb(246, 246, 246)",
+    margin: 10,
+    borderRadius: 10,
+    padding: 5,
+  },
+  transactionSection: {
+    flexDirection: 'row',
+  },
+  type: {
+    color: 'orange',
+    fontFamily: 'ways',
+    fontSize: 20,
+  },
+  timestamp: {
+    fontFamily: 'source-code-pro',
+    color: '#808080',
+    marginLeft: 'auto',
+    fontSize: 14,
+  },
+  notes: {
+    color: '#808080',
+    fontSize: 14,
+  },
+  footer: {
+    height: 50,
+    backgroundColor: "rgb(255, 255,255)",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    },
+});
+
+export default TransactionHistory;
