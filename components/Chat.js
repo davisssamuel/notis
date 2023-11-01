@@ -1,26 +1,39 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { minidenticonSvg } from 'https://cdn.jsdelivr.net/npm/minidenticons@4.2.0/minidenticons.min.js'
+import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 
-const Chat = () => {
-
+ export default function Chat() {
   return (
-    <View> 
-      <Text>firstName lastName</Text>
-      <Text>lastMessage</Text>
-    </View>
-  )
-}
+    <Pressable style={styles.chat}>
+      <Image
+        style={styles.chatImage}
+        src={"https://github.com/identicons/luke.png"}
+      />
+      <View style={{ justifyContent: "center" }}>
+        <Text style={styles.sender}>Luke Lyall</Text>
+        <Text style={styles.message}>Josh won't shut up about the mockups</Text>
+      </View>
+    </Pressable>
+  );
+};
 
 const styles = StyleSheet.create({
   chat: {
+    flexDirection: "row",
     width: "100%",
     padding: 10,
-    marginTop: 4,
-    marginBottom: 4,
-    backgroundColor: "#FFF",
-    borderRadius: 10,
+    marginVertical: 4,
+  },
+  chatImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 100,
+    marginRight: 10,
+  },
+  sender: {
+    fontWeight: "bold",
+    color: "#FFF",
+  },
+  message: {
+    color: "#FFF",
   },
 });
-
-export default Chat;

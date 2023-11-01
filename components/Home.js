@@ -1,44 +1,15 @@
 import * as React from "react";
-import { View, ScrollView, Text, TextInput, StyleSheet } from "react-native";
-import jsonData from "../data/chats.json";
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  Pressable,
+  Image,
+  StyleSheet,
+} from "react-native";
 
-// creates list of chats elements
-let chats = jsonData.map((jsonData) => {
-  return (
-    <View
-      style={{
-        // flex: 1,
-        width: "100%",
-        padding: 10,
-        marginVertical: 4,
-        backgroundColor: "rgb(44,44,46)",
-        borderRadius: 10,
-      }}
-      key={jsonData.id}
-    >
-      <Text
-        style={{
-          fontWeight: "bold",
-          color: "#FFF",
-        }}
-      >
-        {" "}
-        {jsonData.name}{" "}
-      </Text>
-
-      <Text
-        style={{
-          color: "#FFF",
-        }}
-      >
-        {" "}
-        {jsonData.lastMessage}{" "}
-      </Text>
-    </View>
-  );
-});
-
-export default function ChatsList() {
+export default function Home() {
   return (
     <View style={styles.container}>
       {/* Chats */}
@@ -54,7 +25,18 @@ export default function ChatsList() {
 
         <View style={styles.chats}>
           {/* this is where chats will go */}
-          {chats}
+          <Pressable style={styles.chat}>
+            <Image
+              style={styles.chatImage}
+              src={"https://github.com/identicons/luke.png"}
+            />
+            <View style={{justifyContent: "center"}}>
+              <Text style={styles.sender}>Luke Lyall</Text>
+              <Text style={styles.message}>
+                Josh won't shut up about the mockups
+              </Text>
+            </View>
+          </Pressable>
         </View>
       </ScrollView>
     </View>
@@ -65,7 +47,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgb(28,28,30)",
-    // backgroundColor: "#E8EAED",
   },
   chatsWrapper: {
     paddingTop: 80,
@@ -84,5 +65,23 @@ const styles = StyleSheet.create({
     color: "#FFF",
     borderRadius: 10,
   },
-  chats: {},
+  chat: {
+    flexDirection: "row",
+    width: "100%",
+    padding: 10,
+    marginVertical: 4,
+  },
+  chatImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 100,
+    marginRight: 10,
+  },
+  sender: {
+    fontWeight: "bold",
+    color: "#FFF",
+  },
+  message: {
+    color: "#FFF",
+  },
 });
