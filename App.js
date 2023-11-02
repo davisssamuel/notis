@@ -14,17 +14,7 @@ export default function App() {
         <Stack.Screen
           name="ChatsView"
           component={ChatsView}
-          options={{
-            title: "Chats",
-            headerLargeTitle: true,
-            headerLargeTitleShadowVisible: false,
-            headerSearchBarOptions: {
-              textColor: "#FFF",
-              // onChangeText: (text) => console.log(text),
-            },
-            headerTransparent: true,
-            headerTitleStyle: { color: "#FFF" },
-          }}
+          options={headerOptions.ChatsViewHeader}
         />
         {/* <Stack.Screen name="Profile" component={Profile} /> */}
         {/* <Stack.Screen name="Settings" component={Settings} /> */}
@@ -33,6 +23,16 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: {},
-});
+const headerOptions = {
+  ChatsViewHeader: {
+    title: "Chats",
+    headerLargeTitle: true,
+    headerLargeTitleShadowVisible: false,
+    headerSearchBarOptions: {
+      textColor: "#FFF",
+      // onChangeText: (text) => console.log(text),
+    },
+    headerTransparent: true,
+    headerTitleStyle: { color: "#FFF" },
+  },
+};
