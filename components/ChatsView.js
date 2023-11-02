@@ -7,21 +7,23 @@ import {
   Pressable,
   Image,
   StyleSheet,
+  SafeAreaView,
 } from "react-native";
+// import { SafeAreaProvider } from "react-native-safe-area-context";
 
-export default function Home() {
+export default function ChatsView() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Chats */}
       <ScrollView style={styles.chatsWrapper}>
-        <Text style={styles.sectionTitle}>Chats</Text>
+        {/* <Text style={styles.sectionTitle}>Chats</Text> */}
 
-        <TextInput
+        {/* <TextInput
           style={styles.searchBar}
           placeholder="Search"
           placeholderTextColor="#FFF"
           keyboardAppearance="dark"
-        />
+        /> */}
 
         <View style={styles.chats}>
           {/* this is where chats will go */}
@@ -30,7 +32,7 @@ export default function Home() {
               style={styles.chatImage}
               src={"https://github.com/identicons/luke.png"}
             />
-            <View style={{justifyContent: "center"}}>
+            <View style={{ justifyContent: "center" }}>
               <Text style={styles.sender}>Luke Lyall</Text>
               <Text style={styles.message}>
                 Josh won't shut up about the mockups
@@ -39,7 +41,7 @@ export default function Home() {
           </Pressable>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -47,10 +49,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgb(28,28,30)",
+    // backgroundColor: "#FFF",
   },
   chatsWrapper: {
-    paddingTop: 80,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   sectionTitle: {
     fontSize: 24,
@@ -59,7 +61,6 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     padding: 10,
-    marginTop: 10,
     marginBottom: 10,
     backgroundColor: "rgb(58,58,60)",
     color: "#FFF",
@@ -72,16 +73,18 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   chatImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 100,
-    marginRight: 10,
+    marginRight: 15,
   },
   sender: {
+    fontSize: 16,
     fontWeight: "bold",
     color: "#FFF",
   },
   message: {
+    fontSize: 14,
     color: "#FFF",
   },
 });
