@@ -1,8 +1,16 @@
-import { useNavigation } from "@react-navigation/native";
-import { View, Text, Image, Pressable, StyleSheet } from "react-native";
+import { DarkTheme, DefaultTheme, useNavigation } from "@react-navigation/native";
+import { View, Text, Image, Pressable, StyleSheet, useColorScheme } from "react-native";
 
-// add chat parameter
 const Chat = ({ chat }) => {
+
+  const currentTheme = useColorScheme();
+
+  const themeStyles = StyleSheet.create({
+    text: {
+      color: currentTheme === "dark" ? DarkTheme.colors.primary : DefaultTheme.colors.primary,
+    },
+  })
+
   const { navigate } = useNavigation();
   return (
     <Pressable
@@ -39,11 +47,11 @@ const styles = StyleSheet.create({
   sender: {
     fontSize: 16,
     fontWeight: "bold",
-    // color: "#FFF",
+    // color: ,
   },
   message: {
     fontSize: 14,
-    // color: "#FFF",
+    // color: "#000",
   },
 });
 
