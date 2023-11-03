@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View, Text, TouchableWithoutFeedback, TextInput, StyleSheet } from "react-native";
+import { View, Text, Pressable, TouchableWithoutFeedback, TextInput, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import jsonData from "../data/transactions.json";
  
 const TransactionHistory = () => {
-  const navigation = useNavigation();
+  const { navigate }  = useNavigation();
 
   return(
     <View style={styles.container}>
@@ -18,16 +18,26 @@ const TransactionHistory = () => {
           placeholder="Search"
           placeholderTextColor="#FFF"
         />
-
+        
         <View style={styles.transactionList}>
           {jsonData.map((jsonData, index) => (
             <View style = {styles.transactionBlock} key={index}>
               <View style = {styles.transactionSection}>
-                <Text style = {styles.type}>{jsonData.type}</Text>
+                {jsonData.type === "Sent" ? (
+                  <Text style = {styles.sent}>{jsonData.type}</Text>
+                ) : (
+                  <Text style = {styles.received}>{jsonData.type}</Text>
+                )}
                 <Text style = {styles.timestamp}>{jsonData.timestamp}</Text>
               </View>
               <View style = {styles.transactionBlock} key={index}>
-                <Text>To: {jsonData.name}</Text>
+                <Pressable onPress ={() => {navigate('contactScreen')}}>
+                  {jsonData.type === "Sent" ? (
+                    <Text>To: {jsonData.name}</Text>
+                  ) : (
+                    <Text>From: {jsonData.name}</Text>
+                  )}
+                </Pressable>
                 <Text>Amount: {jsonData.amount}</Text>
               </View>
               <View style = {styles.transactionBlock} key={index}>
@@ -80,8 +90,13 @@ const styles = StyleSheet.create({
   transactionSection: {
     flexDirection: 'row',
   },
-  type: {
-    color: 'orange',
+  sent: {
+    color: 'red',
+    fontFamily: 'ways',
+    fontSize: 20,
+  },
+  received: {
+    color: 'green',
     fontFamily: 'ways',
     fontSize: 20,
   },

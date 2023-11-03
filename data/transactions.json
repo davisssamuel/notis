@@ -5,5 +5,12 @@
     "timestamp": "20:01",
     "amount": "$2.00",
     "note": "For the domain"
+  },
+  {
+    "name":"Joshua Lees",
+    "type": "Received",
+    "timestamp": "16:01",
+    "amount": "$2.00",
+    "note": "note"
   }
 ]
