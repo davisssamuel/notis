@@ -6,9 +6,15 @@
     "lastMessage":"Luke isn't doing the mockups"
   },
   {
-    "id":"0",
+    "id":"2",
     "name":"Luke Lyall",
     "timestamp":"20:02",
     "lastMessage":"Josh won't shut up about the mockups"
+  },
+  {
+    "id":"3",
+    "name":"Samuel Katon",
+    "timestamp":"20:03",
+    "lastMessage":"Send me a JavaScript tutorial"
   }
 ]

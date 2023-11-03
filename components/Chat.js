@@ -1,16 +1,23 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 
- export default function Chat() {
+// add chat parameter
+const Chat = ({ chat }) => {
+  const { navigate } = useNavigation();
   return (
-    <Pressable style={styles.chat}>
+    <Pressable
+      style={styles.chat}
+      onPress={() => {
+        navigate("MessagingScreen", { chat });
+      }}
+    >
       <Image
-        style={styles.chatImage}
-        src={"https://github.com/identicons/luke.png"}
+        style={styles.image}
+        src={"https://github.com/identicons/" + chat.name.split(" ")[0] + ".png"}
       />
       <View style={{ justifyContent: "center" }}>
-        <Text style={styles.sender}>Luke Lyall</Text>
-        <Text style={styles.message}>Josh won't shut up about the mockups</Text>
+        <Text style={styles.sender}>{chat.name}</Text>
+        <Text style={styles.message}>{chat.lastMessage}</Text>
       </View>
     </Pressable>
   );
@@ -23,17 +30,21 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 4,
   },
-  chatImage: {
-    width: 40,
-    height: 40,
+  image: {
+    width: 50,
+    height: 50,
     borderRadius: 100,
-    marginRight: 10,
+    marginRight: 15,
   },
   sender: {
+    fontSize: 16,
     fontWeight: "bold",
-    color: "#FFF",
+    // color: "#FFF",
   },
   message: {
-    color: "#FFF",
+    fontSize: 14,
+    // color: "#FFF",
   },
 });
+
+export default Chat;
