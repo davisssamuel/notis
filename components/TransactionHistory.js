@@ -20,7 +20,7 @@ const TransactionHistory = () => {
         />
         
         <View style={styles.transactionList}>
-          {jsonData.map((jsonData, index) => (
+          {jsonData.map((jsonData, index)  => (
             <View style = {styles.transactionBlock} key={index}>
               <View style = {styles.transactionSection}>
                 {jsonData.type === "Sent" ? (
