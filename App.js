@@ -18,7 +18,7 @@ export default function App() {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="TransactionHistory" component={Login} />
+        <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,16 +1,16 @@
 [
   {
     "name":"Samuel Katon",
-    "type": "Sent",
-    "timestamp": "20:01",
-    "amount": "$2.00",
+    "type": "Payment Sent",
+    "timestamp": "Nov 11 20:01",
+    "amount": "2.00 USD",
     "note": "For the domain"
   },
   {
     "name":"Joshua Lees",
-    "type": "Received",
-    "timestamp": "16:01",
-    "amount": "$2.00",
+    "type": "Payment Received",
+    "timestamp": "Sep 26 16:01",
+    "amount": "2.00 USD",
     "note": "note"
   }
 ]

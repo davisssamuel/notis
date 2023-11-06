@@ -23,7 +23,7 @@ const TransactionHistory = () => {
           {jsonData.map((jsonData, index)  => (
             <View style = {styles.transactionBlock} key={index}>
               <View style = {styles.transactionSection}>
-                {jsonData.type === "Sent" ? (
+                {jsonData.type === "Payment Sent" ? (
                   <Text style = {styles.sent}>{jsonData.type}</Text>
                 ) : (
                   <Text style = {styles.received}>{jsonData.type}</Text>
@@ -32,16 +32,33 @@ const TransactionHistory = () => {
               </View>
               <View style = {styles.transactionBlock} key={index}>
                 <Pressable onPress ={() => {navigate('contactScreen')}}>
-                  {jsonData.type === "Sent" ? (
-                    <Text>To: {jsonData.name}</Text>
+                  {jsonData.type === "Payment Sent" ? (
+                    <View>
+                      <View style = {{flexDirection: 'row'}}>
+                        <Text>To: </Text>
+                        <Text style = {{textDecorationLine: 'underline'}}>{jsonData.name}</Text>
+                      </View>
+                      <View style = {{flexDirection: 'row'}}>
+                        <Text>Amount: </Text>
+                        <Text style = {{color: 'red'}}>{jsonData.amount}</Text>
+                      </View>
+                    </View>
                   ) : (
-                    <Text>From: {jsonData.name}</Text>
+                    <View>
+                      <View style = {{flexDirection: 'row'}}>
+                        <Text>From: </Text>
+                        <Text style = {{textDecorationLine: 'underline'}}>{jsonData.name}</Text>
+                      </View>
+                      <View style = {{flexDirection: 'row'}}>
+                        <Text>Amount: </Text>
+                        <Text style = {{color: 'green'}}>{jsonData.amount}</Text>
+                      </View>
+                    </View>
                   )}
                 </Pressable>
-                <Text>Amount: {jsonData.amount}</Text>
               </View>
               <View style = {styles.transactionBlock} key={index}>
-                <Text style = {styles.notes}>{jsonData.note}</Text>
+                <Text style = {styles.notes}>Note: {jsonData.note}</Text>
               </View>
             </View>
           ))}
@@ -83,7 +100,7 @@ const styles = StyleSheet.create({
   },
   transactionBlock: {
     backgroundColor: "rgb(246, 246, 246)",
-    margin: 10,
+    margin: 5,
     borderRadius: 10,
     padding: 5,
   },
@@ -94,14 +111,16 @@ const styles = StyleSheet.create({
     color: 'red',
     fontFamily: 'ways',
     fontSize: 20,
+    fontWeight: 'bold',
   },
   received: {
     color: 'green',
-    fontFamily: 'ways',
+    // fontFamily: 'ways',
     fontSize: 20,
+    fontWeight: 'bold',
   },
   timestamp: {
-    fontFamily: 'source-code-pro',
+    // fontFamily: 'source-code-pro',
     color: '#808080',
     marginLeft: 'auto',
     fontSize: 14,
