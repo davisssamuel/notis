@@ -14,12 +14,14 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.16",
     "expo": "~49.0.15",
+    "expo-font": "~11.4.0",
     "nostr-tools": "^1.17.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.72.6",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
+    "react-native-svg": "13.9.0",
     "react-native-web": "~0.19.6"
   },
   "devDependencies": {
