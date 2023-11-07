@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     padding: 7,
     width: 40,
     height: 40,
-    borderRadius: "100%"
+    borderRadius: 10000
   },
   darkModeImage: {
     backgroundColor: "black",
