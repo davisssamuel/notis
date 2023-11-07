@@ -1,10 +1,16 @@
-import React from "react";
-import { View, Text, TextInput, Image, Pressable} from 'react-native';
+import * as React from "react";
+import { View, Text, TextInput, Image, Pressable, Modal} from 'react-native';
 import { generatePrivateKey } from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
   const navigation = useNavigation();
+
+  const [isModalVisible, setModalVisible] = React.useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
     return(
       <View style={styles.container}>
@@ -19,10 +25,23 @@ const Login = () => {
             placeholderTextColor="black"
             />
           </View>
-          <View style={styles.keyGen}>
-            <Pressable onPress ={() => {}}>
-              <Text style={styles.generator}>Generate a key</Text>
+          <View style = {styles.button}>
+            <Pressable onPress = {() => {navigate('contacts')}}>
+              <Text style={styles.loginButton}>Login</Text>
             </Pressable>
+          </View>
+          <View style={styles.keyGen}>
+            <Pressable onPress ={toggleModal}>
+              <Text style={styles.generator}>generate a private key</Text>
+            </Pressable>
+            <Modal visible={isModalVisible} transparent={true}>
+              <View style={styles.popup}>
+                <Text>Popup</Text>
+                <Pressable onPress = {toggleModal}>
+                  <Text>Close</Text>
+                </Pressable>
+              </View>
+            </Modal>
           </View>
         </View>
       </View>
@@ -30,15 +49,15 @@ const Login = () => {
 }
 const styles =  {
   container: {
+    flex: 1,
     backgroundColor: 'rgb(229, 229, 229)',
   },
   loginPage: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: 100,
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   navName: {
-    fontFamily: 'source-code-pro',
     fontSize: 30,
     height: 90,
     fontWeight: 'bold',
@@ -49,24 +68,39 @@ const styles =  {
   loginForm: {
     height: 35,
     backgroundColor: 'rgb(210, 210, 210)',
-    margin: 10,
+    marginVertical: 10,
     borderRadius: 8,
+  },
+  button: {
+    backgroundColor: 'black',
+    padding: 5,
+    borderRadius: 8,
+  },
+  loginButton: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 20,
   },
   key: {
     margin: 5,
-    marginTop: 5,
     fontSize: 15,
-    fontFamily: 'source-code-pro',
   },
   keyGen: {
     display: 'flex',
-    backgroundColor: 'rgb(200,200,200)',
     borderRadius: 8,
     width: 'auto',
     height: 'auto',
+    
   },
   generator: {
     textAlign: 'center',
+  },
+  popup: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 20,
   },
 }
 

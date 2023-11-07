@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Pressable, TouchableWithoutFeedback, TextInput, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import jsonData from "../data/transactions.json";
- 
+
 const TransactionHistory = () => {
   const { navigate }  = useNavigation();
 
@@ -10,7 +10,6 @@ const TransactionHistory = () => {
     <View style={styles.container}>
       <View style={styles.transactionPage}>
         <View style={styles.navBar}>
-
         </View>
 
         <TextInput
@@ -31,12 +30,14 @@ const TransactionHistory = () => {
                 <Text style = {styles.timestamp}>{jsonData.timestamp}</Text>
               </View>
               <View style = {styles.transactionBlock} key={index}>
-                <Pressable onPress ={() => {navigate('contactScreen')}}>
+                
                   {jsonData.type === "Payment Sent" ? (
                     <View>
                       <View style = {{flexDirection: 'row'}}>
                         <Text>To: </Text>
-                        <Text style = {{textDecorationLine: 'underline'}}>{jsonData.name}</Text>
+                        <Pressable onPress ={() => {navigate('contactScreen')}}>
+                          <Text style = {{textDecorationLine: 'underline'}}>{jsonData.name}</Text>
+                        </Pressable>
                       </View>
                       <View style = {{flexDirection: 'row'}}>
                         <Text>Amount: </Text>
@@ -47,7 +48,9 @@ const TransactionHistory = () => {
                     <View>
                       <View style = {{flexDirection: 'row'}}>
                         <Text>From: </Text>
-                        <Text style = {{textDecorationLine: 'underline'}}>{jsonData.name}</Text>
+                        <Pressable onPress ={() => {navigate('contactScreen')}}>
+                          <Text style = {{textDecorationLine: 'underline'}}>{jsonData.name}</Text>
+                        </Pressable>
                       </View>
                       <View style = {{flexDirection: 'row'}}>
                         <Text>Amount: </Text>
@@ -55,7 +58,6 @@ const TransactionHistory = () => {
                       </View>
                     </View>
                   )}
-                </Pressable>
               </View>
               <View style = {styles.transactionBlock} key={index}>
                 <Text style = {styles.notes}>Note: {jsonData.note}</Text>
@@ -93,6 +95,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: "rgb(58,58,60)",
+    borderRadius: 10,
+    color: 'white',
   },
   transactionList: {
     flex: 1,
@@ -109,18 +113,15 @@ const styles = StyleSheet.create({
   },
   sent: {
     color: 'red',
-    fontFamily: 'ways',
     fontSize: 20,
     fontWeight: 'bold',
   },
   received: {
     color: 'green',
-    // fontFamily: 'ways',
     fontSize: 20,
     fontWeight: 'bold',
   },
   timestamp: {
-    // fontFamily: 'source-code-pro',
     color: '#808080',
     marginLeft: 'auto',
     fontSize: 14,
