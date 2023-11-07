@@ -13,7 +13,6 @@ import jsonData from "../data/chats.json";
 const chats = jsonData
 
 export default function ChatsScreen() {
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
