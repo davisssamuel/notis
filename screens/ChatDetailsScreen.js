@@ -1,6 +1,6 @@
 import { SafeAreaView, Text } from "react-native";
 
-export default function ChatDetailScreen() {
+export default function ChatDetailsScreen() {
   return (
     <SafeAreaView>
       <Text>Chat Details Screen</Text>

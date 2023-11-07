@@ -13,7 +13,7 @@ const Chat = ({ chat }) => {
   const currentTheme = useColorScheme();
   return (
     <Pressable
-      style={styles.chatWrapper}
+      style={styles.chat}
       onPress={() => {
         navigate("MessagingScreen", { chat });
       }}
@@ -24,7 +24,7 @@ const Chat = ({ chat }) => {
           "https://github.com/identicons/" + chat.name.split(" ")[0] + ".png"
         }
       />
-      <View style={styles.chat}>
+      <View style={styles.chatDetails}>
         <View style={styles.chatFirstLine}>
           <Text
             style={
@@ -38,8 +38,8 @@ const Chat = ({ chat }) => {
           <Text
             style={
               currentTheme === "dark"
-                ? styles.timestapeDark
-                : styles.timestapeLight
+                ? styles.timestampDark
+                : styles.timestampLight
             }
           >
             {chat.timestamp}
@@ -60,15 +60,12 @@ const Chat = ({ chat }) => {
 };
 
 const styles = StyleSheet.create({
-  chatWrapper: {
+  chat: {
     flexDirection: "row",
     width: "100%",
-    // padding: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginVertical: 4,
+    marginVertical: 10,
   },
-  chat: {
+  chatDetails: {
     flex: 1,
     justifyContent: "center",
   },
@@ -103,12 +100,12 @@ const styles = StyleSheet.create({
     color: "#FFF",
     color: "rgba(225, 225, 225, 0.75)",
   },
-  timestapeLight: {
+  timestampLight: {
     fontSize: 12,
     color: "#000",
     color: "rgba(0, 0, 0, 0.5)",
   },
-  timestapeDark: {
+  timestampDark: {
     fontSize: 12,
     color: "#FFF",
     color: "rgba(225, 225, 225, 0.75)",
