@@ -16,6 +16,7 @@ export default function ChatsScreen() {
         }}
         keyExtractor={(item) => item.id}
         style={{ paddingHorizontal: 16 }}
+        contentInsetAdjustmentBehavior="automatic"
       />
     </SafeAreaView>
   );

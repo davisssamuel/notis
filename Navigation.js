@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import ChatsScreen from "./screens/ChatsScreen";
 import MesssagingScreen from "./screens/MessagingScreen";
-import { StatusBar, useColorScheme } from "react-native";
+import { Platform, StatusBar, useColorScheme } from "react-native";
 
 // stack
 const Stack = createNativeStackNavigator();
@@ -31,12 +31,20 @@ export default function Navigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="ChatsScreen"
-          options={headerOptions.ChatsScreenHeader}
+          options={{
+            title: "Chats",
+            headerLargeTitle: true,
+            headerTransparent: Platform.OS === "ios" ? true : false,
+            headerSearchBarOptions: {
+              textColor: currentTheme === "dark" ? "#FFF" : "#000",
+              // onChangeText: (text) => console.log(text),
+            },
+          }}
           component={ChatsScreen}
         />
         <Stack.Screen
           name="MessagingScreen"
-          options={headerOptions.MessagingScreenHeader}
+          options={{ headerTransparent: Platform.OS === "ios" ? true : false }}
           component={MesssagingScreen}
         />
       </Stack.Navigator>
@@ -48,14 +56,14 @@ const headerOptions = {
   ChatsScreenHeader: {
     title: "Chats",
     headerLargeTitle: true,
-    headerTransparent: true,
+    headerTransparent: Platform.OS === "ios" ? true : false,
     headerSearchBarOptions: {
       textColor: "#FFF",
       // onChangeText: (text) => console.log(text),
     },
   },
   MessagingScreenHeader: {
-    headerTransparent: true,
+    headerTransparent: Platform.OS === "ios" ? true : false,
   },
   ChatDetailsScreen: {},
 };
