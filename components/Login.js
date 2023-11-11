@@ -1,14 +1,30 @@
 import * as React from "react";
 import { View, Text, TextInput, Image, Pressable, Modal} from 'react-native';
-import { generatePrivateKey } from 'nostr-tools';
+import { generatePrivateKey, getPublicKey} from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
-  const navigation = useNavigation();
+  const { navigate }  = useNavigation();
 
+  const [privateKey, setPrivateKey] = React.useState("");
+  const [publicKey, setPublicKey] = React.useState("");
   const [isModalVisible, setModalVisible] = React.useState(false);
 
+  const generateKeys = async () => {
+    try {
+      const sk = await generatePrivateKey();
+      const pk = getPublicKey(sk);
+      setPrivateKey(sk);
+      setPublicKey(pk);
+      toggleModal();
+    } 
+    catch (error) {
+      console.error("Error generating keys:", error);
+    }
+  };
+
   const toggleModal = () => {
+    console.log("Modal Toggled");
     setModalVisible(!isModalVisible);
   };
 
@@ -31,15 +47,29 @@ const Login = () => {
             </Pressable>
           </View>
           <View style={styles.keyGen}>
-            <Pressable onPress ={toggleModal}>
+            <Pressable onPress ={generateKeys}>
               <Text style={styles.generator}>generate a private key</Text>
             </Pressable>
-            <Modal visible={isModalVisible} transparent={true}>
-              <View style={styles.popup}>
-                <Text>Popup</Text>
-                <Pressable onPress = {toggleModal}>
-                  <Text>Close</Text>
-                </Pressable>
+            <Modal 
+              animationType = "scale"
+              transparent = {true}
+              visible = {isModalVisible}
+            >
+              <View style={styles.popupContainer}>
+                <View style={styles.popup}>
+                  <View style={styles.popupKeys}>
+                    <Text style = {styles.popupKey}>Public Key: {publicKey}</Text>
+                    <Text style = {styles.popupKey}>Private Key: {privateKey}</Text>
+                  </View>
+                  <View style={styles.popupFooter}>
+                    <Pressable style = {styles.popupButtons} onPress = {toggleModal}>
+                      <Text style = {styles.popupText}>Close</Text>
+                    </Pressable>
+                    <Pressable style = {styles.popupButtons} onPress = {() => {navigate('contacts')}}>
+                      <Text style = {styles.popupText}>Login</Text>
+                    </Pressable>
+                  </View>
+                </View>
               </View>
             </Modal>
           </View>
@@ -57,13 +87,17 @@ const styles =  {
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
+  navBar: {
+    alignItems: 'center',
+    // marginTop: 10,
+  },
   navName: {
     fontSize: 30,
-    height: 90,
+    // height: 90,
     fontWeight: 'bold',
     textAlign: 'center',
-    display: 'flex',
-    marginTop: 10,
+    // display: 'flex',
+    // marginTop: 10,
   },
   loginForm: {
     height: 35,
@@ -95,12 +129,40 @@ const styles =  {
   generator: {
     textAlign: 'center',
   },
-  popup: {
+  popupContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  popup: {
+    width: '75%',
     backgroundColor: 'white',
     padding: 20,
+    borderRadius: 10,
+    borderColor: 'grey',
+    borderWidth: 2,
+  },
+  popupKeys: {
+    borderColor: 'grey',
+    borderRadius: 2,
+    borderRadius: 10,
+  },
+  popupKey: {
+    color: 'black',
+  },
+  popupFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  popupButtons: {
+    backgroundColor: 'black',
+    padding: 5,
+    borderRadius: 5,
+  },
+  popupText: {
+    color: 'white',
+    textAlign: 'center',
   },
 }
 

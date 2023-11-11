@@ -66,8 +66,6 @@ const TransactionHistory = () => {
           ))}
         </View>
       </View>
-      <View style={styles.footer}>
-      </View>
     </View>
   )
 };
@@ -130,14 +128,6 @@ const styles = StyleSheet.create({
     color: '#808080',
     fontSize: 14,
   },
-  footer: {
-    height: 50,
-    backgroundColor: "rgb(255, 255,255)",
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    },
 });
 
 export default TransactionHistory;
