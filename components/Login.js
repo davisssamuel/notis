@@ -1,7 +1,8 @@
 import * as React from "react";
-import { View, Text, TextInput, Image, Pressable, Modal} from 'react-native';
+import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
 import { generatePrivateKey, getPublicKey} from 'nostr-tools';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
+import Clipboard from 'react-native-clipboard';
 
 const Login = () => {
   const { navigate }  = useNavigation();
@@ -51,16 +52,24 @@ const Login = () => {
               <Text style={styles.generator}>generate a private key</Text>
             </Pressable>
             <Modal 
-              animationType = "scale"
+              animationType = "none"
               transparent = {true}
               visible = {isModalVisible}
+              onRequestClose={() => {
+                setModalVisible(false);
+              }}
             >
               <View style={styles.popupContainer}>
                 <View style={styles.popup}>
-                  <View style={styles.popupKeys}>
-                    <Text style = {styles.popupKey}>Public Key: {publicKey}</Text>
-                    <Text style = {styles.popupKey}>Private Key: {privateKey}</Text>
+                  <View style={styles.popupBar}>
+                    <ScrollView horizontal = {true} style={styles.popupKeys}>
+                      <Text style = {styles.popupKey}>{privateKey}</Text>
+                    </ScrollView>
+                    <Pressable style={styles.popupCopy} onPress = {() => Clipboard.setString(privateKey)}>
+                      <Text style={styles.popupText}>Copy</Text>
+                    </Pressable>
                   </View>
+                  <Text>Remember to save the private key or you will lose your account!</Text>
                   <View style={styles.popupFooter}>
                     <Pressable style = {styles.popupButtons} onPress = {toggleModal}>
                       <Text style = {styles.popupText}>Close</Text>
@@ -89,19 +98,15 @@ const styles =  {
   },
   navBar: {
     alignItems: 'center',
-    // marginTop: 10,
   },
   navName: {
     fontSize: 30,
-    // height: 90,
     fontWeight: 'bold',
     textAlign: 'center',
-    // display: 'flex',
-    // marginTop: 10,
   },
   loginForm: {
-    height: 35,
     backgroundColor: 'rgb(210, 210, 210)',
+    justifyContent: 'center',
     marginVertical: 10,
     borderRadius: 8,
   },
@@ -118,6 +123,7 @@ const styles =  {
   key: {
     margin: 5,
     fontSize: 15,
+    
   },
   keyGen: {
     display: 'flex',
@@ -125,6 +131,9 @@ const styles =  {
     width: 'auto',
     height: 'auto',
     
+  },
+  popupBar: {
+    flexDirection: 'row',
   },
   generator: {
     textAlign: 'center',
@@ -143,12 +152,19 @@ const styles =  {
     borderWidth: 2,
   },
   popupKeys: {
+    flexDirection: 'row',
     borderColor: 'grey',
-    borderRadius: 2,
-    borderRadius: 10,
+    borderWidth: 2,
+    borderRadius: 3,
   },
   popupKey: {
     color: 'black',
+  },
+  popupCopy: {
+    backgroundColor: 'black',
+    padding: 5,
+    borderRadius: 5,
+    marginLeft: 10,
   },
   popupFooter: {
     flexDirection: 'row',
