@@ -8,57 +8,73 @@ import {
   Pressable,
   Image,
   StyleSheet,
+  useColorScheme
 } from "react-native";
 
-import DarkModeSVG from "../assets/images/jsx/DarkModeSVG"
-import LiveActivitySVG from "../assets/images/jsx/LiveActivitySVG";
-import KeysSVG from "../assets/images/jsx/KeysSVG";
-import NotificationsSVG from "../assets/images/jsx/NotificationsSVG";
-import TransactionHistorySVG from "../assets/images/jsx/TransactionHistorySVG";
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { 
+  Ionicons, 
+  MaterialCommunityIcons, 
+  Entypo,
+  Foundation } from "@expo/vector-icons";
 
-export default function Settings() {
+export default function SettingsScreen() {
+  const currentTheme = useColorScheme();
   return (
-    <View style={styles.settingsContainer}>
-      {/* Settings */}
-      <ScrollView style={styles.settingsWrapper}>
+    <SafeAreaView style={styles.settingsContainer}>
+      <ScrollView style={styles.settingsWrapper} scrollIndicatorInsets={{ right: 1 }}>
         <View style={styles.profileInfo}>
           <Image
             style={styles.profileImage}
             src={"https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"}
           />
-          <Text style={styles.profileName}>Luke Lyall</Text>
-          <View style={styles.settings}>
+          <Text style={currentTheme === "dark"
+                ? styles.profileNameDark
+                : styles.profileNameLight}>Luke Lyall</Text>
+          <View style={currentTheme === "dark"
+                ? styles.settingsDark
+                : styles.settingsLight}>
             <View style={styles.setting}>
               <View style={styles.settingLeft}>
-                <View style={[styles.settingImage, styles.darkModeImage]}><DarkModeSVG></DarkModeSVG></View>
-                <Text>Dark Mode</Text>
+                <View style={[styles.settingImage, styles.darkModeImage]}><Ionicons name="moon" size={25} color="white" /></View>
+                <Text style={currentTheme === "dark"
+                  ? styles.settingNameDark
+                  : styles.settingNameLight}>Dark Mode</Text>
               </View>
               <Switch></Switch>
             </View>
             <View style={styles.setting}>
               <View style={styles.settingLeft}>
-                <View style={[styles.settingImage, styles.liveActivityImage]}><LiveActivitySVG></LiveActivitySVG></View>
-                <Text>Live Activity</Text>
+                <View style={[styles.settingImage, styles.liveActivityImage]}><Entypo name="notification" size={25} color="white" /></View>
+                <Text style={currentTheme === "dark"
+                  ? styles.settingNameDark
+                  : styles.settingNameLight}>Live Activity</Text>
               </View>
               <Switch></Switch>
             </View>
             <View style={styles.setting}>
               <View style={styles.settingLeft}>
-                <View style={[styles.settingImage, styles.keysImage]}><KeysSVG></KeysSVG></View>
-                <Text>Keys</Text>
+                <View style={[styles.settingImage, styles.keysImage]}><Ionicons name="at" size={32} color="white" /></View>
+                <Text style={currentTheme === "dark"
+                  ? styles.settingNameDark
+                  : styles.settingNameLight}>Keys</Text>
               </View>
             </View>
             <View style={styles.setting}>
               <View style={styles.settingLeft}>
-                <View style={[styles.settingImage, styles.notificationsImage]}><NotificationsSVG></NotificationsSVG></View>
-                <Text>Notifications</Text>
+                <View style={[styles.settingImage, styles.notificationsImage]}><MaterialCommunityIcons name="bell" size={30} color="white" /></View>
+                <Text style={currentTheme === "dark"
+                  ? styles.settingNameDark
+                  : styles.settingNameLight}>Notifications</Text>
               </View>
               <Switch></Switch>
             </View>
             <View style={styles.setting}>
               <View style={styles.settingLeft}>
-                <View style={[styles.settingImage, styles.transactionHistoryImage]}><TransactionHistorySVG></TransactionHistorySVG></View>
-                <Text>Transaction History</Text>
+                <View style={[styles.settingImage, styles.transactionHistoryImage]}><Foundation name="dollar" size={41} color="white" /></View>
+                <Text style={currentTheme === "dark"
+                  ? styles.settingNameDark
+                  : styles.settingNameLight}>Transaction History</Text>
               </View>
             </View>
           </View>
@@ -73,18 +89,17 @@ export default function Settings() {
           
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   settingsContainer: {
     flex: 1,
-    backgroundColor: "rgb(28,28,30)",
+    marginTop: 25,
   },
   settingsWrapper: {
-    paddingTop: 60,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
   },
   profileImage: {
     width: 175,
@@ -92,11 +107,17 @@ const styles = StyleSheet.create({
     borderRadius: 10000,
     alignSelf: "center",
   },
-  profileName: {
+  profileNameDark: {
     fontSize: 28,
-    color: "#FFF",
     alignSelf: "center",
-    padding: 10
+    padding: 10,
+    color: "white"
+  },
+  profileNameLight: {
+    fontSize: 28,
+    alignSelf: "center",
+    padding: 10,
+    color: "black"
   },
   profileInfo: {
     flexDirection: "column",
@@ -104,15 +125,25 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 4,
   },
-  settings: {
+  settingsDark: {
     flexDirection: "column",
     marginTop: 10,
     borderRadius: 10,
     padding: 10,
     width: "100%",
-    backgroundColor: "rgb(65,65,70)",
     alignSelf: "center",
     gap: 10,
+    backgroundColor: "#222222"
+  },
+  settingsLight: {
+    flexDirection: "column",
+    marginTop: 10,
+    borderRadius: 10,
+    padding: 10,
+    width: "100%",
+    alignSelf: "center",
+    gap: 10,
+    backgroundColor: "#DDDDDD"
   },
   setting: {
     display: "flex",
@@ -127,6 +158,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10
+  },
+  settingNameDark: {
+    fontSize: 16,
+    color: "white"
+  },
+  settingNameLight: {
+    fontSize: 16,
+    color: "black"
   },
   qrCodeWrapper: {
     width: "auto",
@@ -144,10 +183,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   settingImage: {
-    padding: 7,
     width: 40,
     height: 40,
-    borderRadius: 10000
+    borderRadius: 10000,
+    alignItems: "center",
+    justifyContent: "center"
   },
   darkModeImage: {
     backgroundColor: "black",
