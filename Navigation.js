@@ -42,7 +42,7 @@ function ChatsStackGroup() {
                 navigation.openDrawer();
               }}
             >
-              <NavImage/>
+              <NavImage />
             </Pressable>
           ),
         }}
@@ -74,7 +74,7 @@ function ContactsStackGroup() {
                 navigation.openDrawer();
               }}
             >
-              <NavImage/>
+              <NavImage />
             </Pressable>
           ),
         }}
@@ -100,7 +100,7 @@ function SettingsStackGroup() {
                 navigation.openDrawer();
               }}
             >
-              <NavImage/>
+              <NavImage />
             </Pressable>
           ),
         }}
@@ -115,17 +115,11 @@ function DrawerGroup() {
   return (
     <Drawer.Navigator
       screenOptions={{ headerShown: false }}
-      drawerContent={(props) => <CustomDrawer {...props}></CustomDrawer>}
+      drawerContent={(props) => <CustomDrawer {...props} />}
     >
-      <Drawer.Screen name="Chats" component={ChatsStackGroup}></Drawer.Screen>
-      <Drawer.Screen
-        name="Contacts"
-        component={ContactsStackGroup}
-      ></Drawer.Screen>
-      <Drawer.Screen
-        name="Settings"
-        component={SettingsStackGroup}
-      ></Drawer.Screen>
+      <Drawer.Screen name="Chats" component={ChatsStackGroup} />
+      <Drawer.Screen name="Contacts" component={ContactsStackGroup} />
+      <Drawer.Screen name="Settings" component={SettingsStackGroup} />
     </Drawer.Navigator>
   );
 }
@@ -137,7 +131,7 @@ export default function Navigation() {
       theme={currentTheme === "dark" ? DarkTheme : DefaultTheme}
     >
       <StatusBar style="auto" />
-      <DrawerGroup></DrawerGroup>
+      <DrawerGroup />
     </NavigationContainer>
   );
 }
