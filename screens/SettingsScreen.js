@@ -17,8 +17,10 @@ import {
   MaterialCommunityIcons, 
   Entypo,
   Foundation } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SettingsScreen() {
+  const navigation = useNavigation();
   const currentTheme = useColorScheme();
   return (
     <SafeAreaView style={styles.settingsContainer}>
@@ -70,12 +72,14 @@ export default function SettingsScreen() {
               <Switch></Switch>
             </View>
             <View style={styles.setting}>
-              <View style={styles.settingLeft}>
+              <Pressable style={styles.settingLeft} onPress={() => {
+                navigation.navigate("TransactionHistoryScreen");
+              }}>
                 <View style={[styles.settingImage, styles.transactionHistoryImage]}><Foundation name="dollar" size={41} color="white" /></View>
                 <Text style={currentTheme === "dark"
                   ? styles.settingNameDark
                   : styles.settingNameLight}>Transaction History</Text>
-              </View>
+              </Pressable>
             </View>
           </View>
           <View style={styles.qrCodeWrapper}>

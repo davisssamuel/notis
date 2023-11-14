@@ -11,6 +11,7 @@ import ChatsScreen from "./screens/ChatsScreen";
 import ContactsScreen from "./screens/ContactsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import MesssagingScreen from "./screens/MessagingScreen";
+import TransactionHistoryScreen from "./screens/TransactionHistoryScreen";
 import CustomDrawer from "./components/CustomDrawer";
 import NavImage from "./components/NavImage";
 
@@ -105,6 +106,11 @@ function SettingsStackGroup() {
           ),
         }}
         component={SettingsScreen}
+      />
+      <ChatsStack.Screen
+        name="TransactionHistoryScreen"
+        options={{ headerTransparent: Platform.OS === "ios" ? true : false }}
+        component={TransactionHistoryScreen}
       />
     </SettingsStack.Navigator>
   );

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View, Text, Pressable, TouchableWithoutFeedback, TextInput, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native'
-import jsonData from "../data/transactions.json";
+import jsonData from "../data/transacions.json"
 
-const TransactionHistory = () => {
+const TransactionHistoryScreen = () => {
   const { navigate }  = useNavigation();
 
   return(
@@ -130,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TransactionHistory;
+export default TransactionHistoryScreen;
