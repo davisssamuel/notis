@@ -1,8 +1,4 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-} from "@react-navigation/native";
+import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
@@ -15,13 +11,7 @@ import TransactionHistoryScreen from "./screens/TransactionHistoryScreen";
 import CustomDrawer from "./components/CustomDrawer";
 import NavImage from "./components/NavImage";
 
-import {
-  Platform,
-  StatusBar,
-  useColorScheme,
-  Pressable,
-  Image,
-} from "react-native";
+import { Platform, StatusBar, useColorScheme, Pressable, Image } from "react-native";
 
 const ChatsStack = createNativeStackNavigator();
 function ChatsStackGroup() {
@@ -50,11 +40,7 @@ function ChatsStackGroup() {
         component={ChatsScreen}
       />
 
-      <ChatsStack.Screen
-        name="MessagingScreen"
-        options={{ headerTransparent: Platform.OS === "ios" ? true : false }}
-        component={MesssagingScreen}
-      />
+      <ChatsStack.Screen name="MessagingScreen" options={{ headerTransparent: Platform.OS === "ios" ? true : false }} component={MesssagingScreen} />
     </ChatsStack.Navigator>
   );
 }
@@ -94,7 +80,8 @@ function SettingsStackGroup() {
         name="SettingsScreen"
         options={{
           title: "Settings",
-          headerTransparent: Platform.OS === "ios" ? true : false,
+          // headerShown: false,
+          // headerTransparent: Platform.OS === "ios" ? true : false,
           headerLeft: () => (
             <Pressable
               onPress={() => {
@@ -133,9 +120,7 @@ function DrawerGroup() {
 export default function Navigation() {
   const currentTheme = useColorScheme();
   return (
-    <NavigationContainer
-      theme={currentTheme === "dark" ? DarkTheme : DefaultTheme}
-    >
+    <NavigationContainer theme={currentTheme === "dark" ? DarkTheme : DefaultTheme}>
       <StatusBar style="auto" />
       <DrawerGroup />
     </NavigationContainer>

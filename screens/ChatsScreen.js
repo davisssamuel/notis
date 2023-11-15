@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView, StyleSheet, FlatList, Pressable, Image, Text } from "react-native";
+import { SafeAreaView, FlatList, Pressable, Image, Text } from "react-native";
 import Chat from "../components/Chat";
 
 // importing temp chats data
@@ -8,7 +8,6 @@ import { useLayoutEffect } from "react";
 const chats = jsonData;
 
 export default function ChatsScreen() {
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
@@ -23,7 +22,3 @@ export default function ChatsScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  chatsWrapper: {},
-});

@@ -1,73 +1,90 @@
-import * as React from 'react';
-import { View, Text, Pressable, TouchableWithoutFeedback, TextInput, StyleSheet } from "react-native";
-import { useNavigation } from '@react-navigation/native'
-import jsonData from "../data/transacions.json"
+import * as React from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  TextInput,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import jsonData from "../data/transacions.json";
 
 const TransactionHistoryScreen = () => {
-  const { navigate }  = useNavigation();
+  const { navigate } = useNavigation();
 
-  return(
-    <View style={styles.container}>
-      <View style={styles.transactionPage}>
-        <View style={styles.navBar}>
-        </View>
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.transactionPage}>
 
-        <TextInput
+        {/* <TextInput
           style={styles.searchBar}
           placeholder="Search"
           placeholderTextColor="#FFF"
-        />
-        
+        /> */}
+
         <View style={styles.transactionList}>
-          {jsonData.map((jsonData, index)  => (
-            <View style = {styles.transactionBlock} key={index}>
-              <View style = {styles.transactionSection}>
+          {jsonData.map((jsonData, index) => (
+            <View style={styles.transactionBlock} key={index}>
+              <View style={styles.transactionSection}>
                 {jsonData.type === "Payment Sent" ? (
-                  <Text style = {styles.sent}>{jsonData.type}</Text>
+                  <Text style={styles.sent}>{jsonData.type}</Text>
                 ) : (
-                  <Text style = {styles.received}>{jsonData.type}</Text>
+                  <Text style={styles.received}>{jsonData.type}</Text>
                 )}
-                <Text style = {styles.timestamp}>{jsonData.timestamp}</Text>
+                <Text style={styles.timestamp}>{jsonData.timestamp}</Text>
               </View>
-              <View style = {styles.transactionBlock} key={index}>
-                
-                  {jsonData.type === "Payment Sent" ? (
-                    <View>
-                      <View style = {{flexDirection: 'row'}}>
-                        <Text>To: </Text>
-                        <Pressable onPress ={() => {navigate('contactScreen')}}>
-                          <Text style = {{textDecorationLine: 'underline'}}>{jsonData.name}</Text>
-                        </Pressable>
-                      </View>
-                      <View style = {{flexDirection: 'row'}}>
-                        <Text>Amount: </Text>
-                        <Text style = {{color: 'red'}}>{jsonData.amount}</Text>
-                      </View>
+              <View style={styles.transactionBlock} key={index}>
+                {jsonData.type === "Payment Sent" ? (
+                  <View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text>To: </Text>
+                      <Pressable
+                        onPress={() => {
+                          navigate("contactScreen");
+                        }}
+                      >
+                        <Text style={{ textDecorationLine: "underline" }}>
+                          {jsonData.name}
+                        </Text>
+                      </Pressable>
                     </View>
-                  ) : (
-                    <View>
-                      <View style = {{flexDirection: 'row'}}>
-                        <Text>From: </Text>
-                        <Pressable onPress ={() => {navigate('contactScreen')}}>
-                          <Text style = {{textDecorationLine: 'underline'}}>{jsonData.name}</Text>
-                        </Pressable>
-                      </View>
-                      <View style = {{flexDirection: 'row'}}>
-                        <Text>Amount: </Text>
-                        <Text style = {{color: 'green'}}>{jsonData.amount}</Text>
-                      </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text>Amount: </Text>
+                      <Text style={{ color: "red" }}>{jsonData.amount}</Text>
                     </View>
-                  )}
+                  </View>
+                ) : (
+                  <View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text>From: </Text>
+                      <Pressable
+                        onPress={() => {
+                          navigate("contactScreen");
+                        }}
+                      >
+                        <Text style={{ textDecorationLine: "underline" }}>
+                          {jsonData.name}
+                        </Text>
+                      </Pressable>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text>Amount: </Text>
+                      <Text style={{ color: "green" }}>{jsonData.amount}</Text>
+                    </View>
+                  </View>
+                )}
               </View>
-              <View style = {styles.transactionBlock} key={index}>
-                <Text style = {styles.notes}>Note: {jsonData.note}</Text>
+              <View style={styles.transactionBlock} key={index}>
+                <Text style={styles.notes}>Note: {jsonData.note}</Text>
               </View>
             </View>
           ))}
         </View>
-      </View>
-    </View>
-  )
+      </ScrollView>
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -77,15 +94,15 @@ const styles = StyleSheet.create({
   },
   transactionPage: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   navBar: {
-    width: '100%',
+    width: "100%",
     height: 50,
     backgroundColor: "rgb(28,28,30)",
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
   },
   searchBar: {
@@ -94,7 +111,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "rgb(58,58,60)",
     borderRadius: 10,
-    color: 'white',
+    color: "white",
   },
   transactionList: {
     flex: 1,
@@ -107,25 +124,25 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   transactionSection: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   sent: {
-    color: 'red',
+    color: "red",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   received: {
-    color: 'green',
+    color: "green",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   timestamp: {
-    color: '#808080',
-    marginLeft: 'auto',
+    color: "#808080",
+    marginLeft: "auto",
     fontSize: 14,
   },
   notes: {
-    color: '#808080',
+    color: "#808080",
     fontSize: 14,
   },
 });
