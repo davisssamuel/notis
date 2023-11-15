@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   qrCodeWrapper: {
     marginTop: 30,
     padding: 15,
-    borderRadius: 20,
+    borderRadius: 15,
     alignSelf: "center",
     justifyContent: "center",
     backgroundColor: "#FFF",
