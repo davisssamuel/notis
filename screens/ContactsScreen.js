@@ -4,13 +4,16 @@ import Contact from "../components/Contact"
 
 // importing temp contacts data
 import jsonData from "../data/contacts.json";
+import getContacts from "../utils/contacts";
 const contacts = jsonData;
 
 export default function ContactsScreen() {
-
+  getContacts().then((c) => {
+    console.log(c)
+  })
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Text>Placeholder Contacts Screen</Text>
+      <Text>{}</Text>
     </SafeAreaView>
   );
 }
