@@ -13,7 +13,7 @@ const Contact = ({ contact }) => {
   const currentTheme = useColorScheme();
   return (
     <Pressable>
-      {contact}
+      <Text>{JSON.stringify(contact)}</Text>
     </Pressable>
   );
 };

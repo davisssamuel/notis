@@ -5,19 +5,35 @@ import Contact from "../components/Contact"
 // importing temp contacts data
 import jsonData from "../data/contacts.json";
 import getContacts from "../utils/contacts";
+import { getPublicKeyHex } from "../utils/keys";
 const contacts = jsonData;
+import { useState } from "react";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function ContactsScreen() {
+
+  const [contactsList, setContactsList] = useState([])
+
   getContacts().then((c) => {
+    setContactsList(c)
     console.log(c)
   })
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Text>{}</Text>
+      <FlatList
+        data={contactsList}
+        renderItem={({ item }) => {
+          return <Contact contact={item}/>;
+        }}
+        keyExtractor={(item) => item.publicKey}
+        style={{ paddingHorizontal: 16 }}
+        contentInsetAdjustmentBehavior="automatic"
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  chatsWrapper: {},
+
 });

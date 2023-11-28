@@ -1,30 +1,51 @@
 import { 
   SimplePool,
   getEventHash,
-  getSignature } from "nostr-tools";
+  getSignature, 
+  relayInit} from "nostr-tools";
 import getRelays from "./relays";
-import { getPrivateKeyHex, getPublicKeyHex } from "./keys";
+import { getPrivateKeyHex, getPublicKeyHex, hexToBech } from "./keys";
+import NDK, { NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
+
+// used to block while waiting for events
+function block(name, event) {
+  return new Promise((resolve) => {
+    event.on(name, (e) => {
+      resolve(e)
+    })
+  })
+}
 
 export default async function getContacts() {
-  const pool = new SimplePool()
-  const events = await pool.list([...getRelays()], [{ kinds: [3], authors: [getPublicKeyHex()] }])
+  const sig = new NDKPrivateKeySigner(getPrivateKeyHex())
 
-  if (events.length == 0) {
-    return null
-  }
+  const ndk = new NDK({
+    explicitRelayUrls: getRelays(),
+    signer: sig})
 
-  const contacts = []
+  await ndk.connect()
 
-  for (let contact of events[0].tags) {
-    let contact_profile = await pool.list([...getRelays()], [{ kinds: [0], authors: [contact[1]] }])
+  let events = await block("event",
+    ndk.subscribe({
+      kinds: [3],
+      authors: [getPublicKeyHex()]
+    })
+  );
+
+  let contacts = []
+
+  for (let contact of events.tags) {
+    let usr = ndk.getUser({ npub: hexToBech(contact[1]) })
+    await usr.fetchProfile()
+
     contacts.push({
-      ...JSON.parse(contact_profile[contact_profile.length - 1].content),
+      ...usr.profile,
       nickname: contact[3],
       publicKey: contact[1]
     })
   }
 
-  return contacts;
+  return contacts
 }
 
 export async function addContact(npub, nickname) {

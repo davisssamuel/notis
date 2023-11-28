@@ -23,3 +23,7 @@ export function getPublicKeyHex() {
 export function bechToHex(bechKey) {
   return nip19.decode(bechKey).data
 }
+
+export function hexToBech(hexKey) {
+  return nip19.npubEncode(hexKey)
+}
