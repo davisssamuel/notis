@@ -25,6 +25,22 @@ export default async function encrypt(message, theirPublicKey) {
   return `${ctb64}?iv=${ivb64}`
 }
 
+export async function decrypt(theirPublicKey, data) {
+  let [ctb64, ivb64] = data.split('?iv=')
+  let key = secp256k1.getSharedSecret(getPrivateKeyHex(), '02' + theirPublicKey)
+  let normalizedKey = getNormalizedX(key)
+
+  let cryptoKey = await crypto.subtle.importKey('raw', normalizedKey, { name: 'AES-CBC' }, false, ['decrypt'])
+  let ciphertext = base64.decode(ctb64)
+  let iv = base64.decode(ivb64)
+
+  let plaintext = await crypto.subtle.decrypt({ name: 'AES-CBC', iv }, cryptoKey, ciphertext)
+
+  let text = utf8Decoder.decode(plaintext)
+  return text
+}
+
+
 function getNormalizedX(key) {
   return key.slice(1, 33)
 }
