@@ -12,7 +12,6 @@ import bechToHex, { getPrivateKeyHex } from './keys';
 import getRelays from './relays';
 import encrypt, { decrypt, send, receive } from './messages';
 
-/*
 const sig = new NDKPrivateKeySigner(getPrivateKeyHex())
 
 const ndk = new NDK({
@@ -34,4 +33,3 @@ let sub = ndk.subscribe({
 sub.on("event", (e) => {
   console.log(e);
 }) 
-*/

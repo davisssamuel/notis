@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
 } from "react-native";
+import { send, receive } from "../utils/messages.js"
 
 export default function MessagingScreen() {
   return (
@@ -15,6 +16,7 @@ export default function MessagingScreen() {
         <TextInput
           style={styles.messageCompose}
           placeholder="Message"
+          onSubmitEditing={send}
           // placeholderTextColor="#000"
         />
       </View>
