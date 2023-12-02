@@ -13,7 +13,7 @@ export default function getPrivateKeyBech() {
 export function getPrivateKeyHex() {
   return privateHex
 }
-export function getPubliceKeyBech() {
+export function getPublicKeyBech() {
   return publicBech
 }
 export function getPublicKeyHex() {
