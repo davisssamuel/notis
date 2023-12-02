@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView, StyleSheet, FlatList, Pressable, Image, Text } from "react-native";
-import Contact from "../components/Contact"; //FIXME back to C
+import Contact from "../components/Contact"; 
 
 // importing temp contacts data
 import jsonData from "../data/contacts.json";

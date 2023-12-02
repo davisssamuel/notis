@@ -17,13 +17,13 @@ const Contact = ({ contact }) => {
     <Pressable
       style={styles.contact}
       onPress={() => {
-        navigate("MessagingScreen", { contact }); //FIXME make contact screen
+        navigate("ContactInfoScreen", { contact }); 
       }}
     >
       <Image
         style={styles.image}
         src={
-          "https://github.com/identicons/" + contact.name.split(" ")[0] + ".png" //FIXME name is the error
+          "https://github.com/identicons/" + contact.name.split(" ")[0] + ".png"
         }
       />
       <View style={styles.contactDetails}>
@@ -49,7 +49,7 @@ const Contact = ({ contact }) => {
           >           
             {contact.lastMessage}  
           </Text>
-          <Ionicons name="ios-chevron-forward" size={18} color="gray" />
+          <Ionicons name="ios-chevron-forward" size={18} color="gainsboro" />
         </View>
         </View>
         <Text

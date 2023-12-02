@@ -6,9 +6,11 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 import ChatsScreen from "./screens/ChatsScreen";
 import ContactsScreen from "./screens/ContactsScreen";
+import ContactInfoScreen from "./screens/ContactInfoScreen"; 
 import SettingsScreen from "./screens/SettingsScreen";
 import MesssagingScreen from "./screens/MessagingScreen";
 import TransactionHistoryScreen from "./screens/TransactionHistoryScreen";
@@ -80,6 +82,28 @@ function ContactsStackGroup() {
           ),
         }}
         component={ContactsScreen}
+      />
+
+      <ContactsStack.Screen
+        screenOptions={{ 
+          headerShown: false
+         }}
+         
+        name="ContactInfoScreen"
+        options={({ navigation }) => ({
+          title: "",
+          headerTransparent: Platform.OS === "ios" ? true : false,
+          headerLeft: () => (
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={35}
+              color="gainsboro"
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 15 }}
+            />
+          ),
+        })}
+        component={ContactInfoScreen}
       />
     </ContactsStack.Navigator>
   );
