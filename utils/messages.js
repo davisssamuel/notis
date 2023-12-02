@@ -37,17 +37,28 @@ export default async function encrypt(message, theirPublicKey) {
 }
 
 export async function decrypt(data, theirPublicKey) {
+  if (typeof data !== 'string') {
+    throw new Error('Invalid input for decrypt: data should be a string');
+  }
+
   let [ctb64, ivb64] = data.split('?iv=');
+
+  if (typeof ctb64 !== 'string') {
+    throw new Error('Invalid input for decrypt: ctb64 should be a string');
+  }
+
   let key = secp256k1.getSharedSecret(getPrivateKeyHex(), '02' + theirPublicKey);
   let normalizedKey = getNormalizedX(key);
 
   let iv = base64.decode(ivb64);
   let ciphertext = base64.decode(ctb64);
+
   const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(normalizedKey), iv);
   let decrypted = decipher.update(ciphertext, 'base64', 'utf-8');
   decrypted += decipher.final('utf-8');
   return decrypted;
 }
+
 
 function getNormalizedX(key) {
   return key.slice(1, 33)
