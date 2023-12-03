@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { SafeAreaView, ScrollView, View, Text, TextInput, StyleSheet } from "react-native";
 import { relayInit, finishEvent, generatePrivateKey, nip19 } from "nostr-tools";
-import { getPublicKeyHex } from "../utils/keys.js";
-import encrypt from "../utils/messages.js";
+import { getPrivateKeyHex, getPublicKeyHex } from "../utils/keys.js";
+// import encrypt from "../utils/messages.js";
+import crypto from '../utils/crypto.js'
+import * as secp from '@noble/secp256k1'
+import { Buffer } from "buffer"
+// import { nip04 } from "nostr-tools";
 
 const MessagingScreen = () => {
   const [messages, setMessages] = useState([]);
@@ -19,16 +23,37 @@ const MessagingScreen = () => {
 
     await relayInstance.connect();
 
+    const sk = getPrivateKeyHex();
     const pk = getPublicKeyHex();
-    const codedPubKey = "npub14t4uyrrgvyweuxkdhjqfsx2vnwxvedmar480r57v76ktnl7tfe8qrkd2tx";
+    const codedPubKey = "npub18e7wwjt0524mz78l23k7pudcsqu5dppztscdrkyycp65mwkx9rnsema6lh";
     let theirPublicKey = nip19.decode(codedPubKey);
 
-    let encryptedMessage = await encrypt(messageInput, theirPublicKey.data);
+    //let encryptedMessage = await encrypt(messageInput, theirPublicKey.data);
+    //let encryptedMessage = await nip04.encrypt(sk, theirPublicKey.data, messageInput, );
+
+    let sharedPoint = secp.getSharedSecret(sk, '02' + theirPublicKey.data);
+    let sharedX = sharedPoint.slice(1, 33);
+
+    let iv = crypto.randomFillSync(new Uint8Array(16))
+    var cipher = crypto.createCipheriv(
+      'aes-256-cbc',
+      Buffer.from(sharedX),
+      iv
+    )
+    let encryptedMessage = cipher.update(messageInput, 'utf8', 'base64')
+    encryptedMessage += cipher.final('base64')
+    let ivBase64 = Buffer.from(iv.buffer).toString('base64')
+    console.log(ivBase64);
 
     let sub = relayInstance.sub([{
       kinds: [4],
       authors: [pk],
       "#p": [theirPublicKey.data],
+    },
+    {
+      kinds: [4],
+      authors: [theirPublicKey.data],
+      "#p": [pk],
     }]);
 
     sub.on('event', event => {
@@ -40,11 +65,13 @@ const MessagingScreen = () => {
       created_at: Math.floor(Date.now() / 1000),
       kind: 4,
       tags: [['p', theirPublicKey.data]],
-      content: encryptedMessage,
+      content: encryptedMessage + '?iv=' + ivBase64,
     };
 
-    const signedEvent = finishEvent(newEvent, generatePrivateKey());
+    console.log("signing")
+    const signedEvent = finishEvent(newEvent, sk);
     await relayInstance.publish(signedEvent);
+    console.log("published")
 
     relayInstance.close();
     setMessageInput("");
