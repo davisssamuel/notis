@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faMessage, faBellSlash, faFile } from '@fortawesome/free-regular-svg-icons';
+import { faBolt, faUsers, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
+
+//NOTE: the fonts may look strange because these are free. If you want consistent fonts, we may need to find something else or pay
+//for a license
 
 const MyComponent = () => {
   const [dogApiPhoto, setDogApiPhoto] = useState(null);
@@ -18,6 +24,45 @@ const MyComponent = () => {
     fetchDogImage();
   }, []);
 
+  const renderButtons = () => (
+    <View style={styles.buttonContainer}>
+    {/* Rows 1 and 2 */}
+    <View style={styles.buttonRow}>
+      <TouchableOpacity style={styles.button}>
+        <FontAwesomeIcon icon={faMessage} style={styles.icon} size={25} color='rgba(60, 219, 192, 1)'/>
+        <Text style={styles.buttonText}>Message</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        <FontAwesomeIcon icon={faBolt} style={styles.icon} size={25} color='rgba(241, 190, 72, 1)'/>
+        <Text style={styles.buttonText}>Pay</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        <FontAwesomeIcon icon={faBellSlash} style={styles.icon} size={30} color='rgba(224, 60, 49, 1)'/>
+        <Text style={styles.buttonText}>Silence</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={styles.buttonRow}>
+      <TouchableOpacity style={styles.button}>
+      <FontAwesomeIcon icon={faUsers} style={styles.icon} size={25} color='rgba(34, 125, 118, 1)'/>
+        <Text style={styles.buttonText}>Groups</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        <FontAwesomeIcon icon={faFile} style={styles.icon} size={25} color='rgba(21, 45, 81, 1)'/>
+        <Text style={styles.buttonText}>Files</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        <FontAwesomeIcon icon={faShieldHalved} style={styles.icon} size={25} color ='rgba(224, 60, 49, 1)'/>
+        <Text style={styles.buttonText}>Block</Text>
+      </TouchableOpacity>
+    </View>
+
+    {/* Additional Button */}
+    <TouchableOpacity style={styles.fullWidthButton}>
+      <Text style={styles.fullWidthButtonText}>Delete Contact</Text>
+    </TouchableOpacity>
+  </View>
+);
+
   return (
     <View style={styles.container}>
       {/* Dog image section */}
@@ -28,31 +73,24 @@ const MyComponent = () => {
       </View>
 
       {/* Overlay */}
-        <View style={styles.overlay}></View>
-          <View style={styles.profileName}>
-            <Text style={styles.profileNameText}>Luke Lyall</Text>
-            <Text style={styles.profileStatusText}>Sleeping...</Text>
-            
-          </View>
-        <View/>
+      <View style={styles.overlay}></View>
+      <View style={styles.profileName}>
+        <Text style={styles.profileNameText}>Luke Lyall</Text>
+        <Text style={styles.profileStatusText}>Sleeping...</Text>
+      </View>
 
       {/* Additional components section */}
       <View style={styles.additionalContainer}>
-
-      <Image
-            style={styles.profileImage}
-            src={"https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"}
-          />
-
+        <Image
+          style={styles.profileImage}
+          source={{
+            uri: 'https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg',
+          }}
+        />
       </View>
 
-      <View style={styles.profileInfo}>
-         
-      </View>
-      
-
-      
-      
+      {/* Buttons on top of everything */}
+      {renderButtons()}
     </View>
   );
 };
@@ -71,12 +109,12 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   dogImage: {
-    flex: .9,
+    flex: 0.9,
     width: '100%',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255, 255, 255, 1)',
+    backgroundColor: 'rgba(240, 240, 242, 1)',
     top: '40%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -85,9 +123,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  profileInfo: {
-    width: "100%",
   },
   profileImage: {
     top: '-77%',
@@ -100,18 +135,58 @@ const styles = StyleSheet.create({
     top: '-6%',
     right: '-8%',
   },
-  profileNameText: { //text adjusts incorrectly for different names. Gonna need to lock the text
-    //to a specific place when pulling json data
+  profileNameText: {
     fontSize: 25,
     fontWeight: 'bold',
-    textAlign: 'left', //does not work with android
+    textAlign: 'left',
   },
   profileStatusText: {
     color: 'lightslategrey',
   },
-  messageButton: { //TODO: currently working on this
-    borderRadius: 10000,
-
+  buttonContainer: {
+    position: 'absolute',
+    top: '52%',
+    width: '100%',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginLeft: 5,
+    marginRight: 5,
+    marginBottom: 2, //space between on y-axis
+  },
+  button: {
+    borderRadius: 5,
+    backgroundColor: 'white',
+    padding: 20, //how thick button is
+    width: '33%', //button width (space between on x-axis)
+  },
+  buttonText: {
+    color: 'lightslategrey',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  fullWidthButtonText: {
+    color: 'red',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  fullWidthButton: {
+    backgroundColor: 'white',
+    marginHorizontal: 'auto',
+    padding: 20,
+    //marginBottom: 10
+    width: '90%', // Adjust the width as needed
+    borderRadius: 10,
+    top: 110,
+    alignItems: 'center', // Center the button vertically
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  icon: {
+    fontSize: 45,      // Set the font size to make it bigger
+    marginBottom: 10,  // Optional: Add margin if needed
+    alignSelf: 'center' // Center the icon horizontally
   },
 });
 
