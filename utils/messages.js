@@ -5,6 +5,7 @@ import
   getPublicKeyBech, 
   hexToBech} from "./keys";
 import { secp256k1 } from '@noble/curves/secp256k1'
+
 // import * as ExpoCrypto from 'expo-crypto'; causes a typeof error in the message.js file
 //import { getRandomBytes } from 'react-native-get-random-values'; causes a typeof error
 // import { getRandomValues } from './crypto'; causes a typeof error
@@ -15,7 +16,6 @@ import { Buffer } from "buffer";
 import NDK, { NDKEvent, NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
 import { getSignature } from "nostr-tools";
 import getRelays from "./relays";
-
 
 const utf8Decoder = new TextDecoder('utf-8')
 const utf8Encoder = new TextEncoder()
@@ -59,7 +59,6 @@ export async function decrypt(data, theirPublicKey) {
   return decrypted;
 }
 
-
 function getNormalizedX(key) {
   return key.slice(1, 33)
 }
@@ -99,6 +98,7 @@ export async function receive(pubkey) {
   let sub = ndk.subscribe({ kinds: [4], authors: [getPublicKeyHex()] });
 
   sub.on("event", (e) => {
+    // console.log(e);
     console.log(e.rawEvent())
   })
 }

@@ -16,20 +16,20 @@ import encrypt, { decrypt, send, receive } from './messages';
 
 const ndk = new NDK({
   explicitRelayUrls: getRelays()})
-  //signer: sig})
+  // signer: sig})
 
 console.log("awaiting connection");
 await ndk.connect()
 console.log("connected");
 
 const message = "Wow this actually works?"
-const pubkey = "80360bdf97003c107eca7dbea9ba8a7cd7eb965f1e9ad0abc49ec2ce117e6d78"
+// const pubkey = "80360bdf97003c107eca7dbea9ba8a7cd7eb965f1e9ad0abc49ec2ce117e6d78"
+const pubkey = "aaebc20c68611d9e1acdbc8098194c9b8cccb77d1d4ef1d3ccf6acb9ffcb4e4e"
 
 let encrypted_message = await encrypt(message, pubkey);
 console.log('encrypted message:', encrypted_message);
 let decrypted_message = await decrypt(encrypted_message, pubkey);
 console.log('decrypted message:', decrypted_message);
-
 
 send(message, pubkey)
 
@@ -39,5 +39,6 @@ let sub = ndk.subscribe({
 })
 
 sub.on("event", (e) => {
-  console.log(e);
+  // console.log(e);
+  e.toNostrEvent().then((e)=>{console.log(e)});
 })
