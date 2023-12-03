@@ -5,7 +5,7 @@ import Navigation from "./Navigation";
 // const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return <Navigation/>
+  return (<Navigation/>);
 };
 
 // const headerOptions = {

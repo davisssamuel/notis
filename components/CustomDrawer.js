@@ -8,7 +8,7 @@ export default function CustomDrawer(props) {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView>
         <View style={styles.profileWrapper}>
-          <Image src={"https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"} style={styles.profileImage}></Image>
+          <Image source={{uri:"https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"}} style={styles.profileImage}></Image>
           <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>John Smith</Text>
         </View>
         <DrawerItemList {...props}></DrawerItemList>

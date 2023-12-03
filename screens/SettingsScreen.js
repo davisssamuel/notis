@@ -17,7 +17,7 @@ export default function SettingsScreen() {
 
     <ScrollView style={styles.container}>
         
-        <Image style={styles.profileImage} src={"https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"} />
+        <Image style={styles.profileImage} source={{uri: "https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"}} />
         <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>John Smith</Text>
 
         <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
@@ -82,7 +82,7 @@ export default function SettingsScreen() {
 
         {/* QR CODE */}
         <View style={styles.qrCodeWrapper}>
-          <Image style={styles.qrCode} src={"https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + "This is a test"}></Image>
+          <Image style={styles.qrCode} source={{uri: "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + "This is a test"}}></Image>
         </View>
     </ScrollView>
   );

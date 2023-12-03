@@ -20,9 +20,9 @@ const Chat = ({ chat }) => {
     >
       <Image
         style={styles.image}
-        src={
-          "https://github.com/identicons/" + chat.name.split(" ")[0] + ".png"
-        }
+        source={{
+          uri: "https://github.com/identicons/" + chat.name.split(" ")[0] + ".png"
+        }}
       />
       <View style={styles.chatDetails}>
         <View style={styles.chatFirstLine}>
