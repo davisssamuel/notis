@@ -4,16 +4,7 @@ import getPrivateKeyBech, { bechToHex, getPrivateKeyHex, getPublicKeyHex, hexToB
 import { nip04 } from "nostr-tools";
 import NDK from "@nostr-dev-kit/ndk";
 import { formatUnixTimestamp } from "../utils/misc";
-
-import contactsData from "../data/contacts.json"
-
-let getContactFromKey = (key) => {
-  for(let contact of contactsData) {
-    if (contact.id == key) {
-      return contact
-    }
-  }
-}
+import { getContactFromKey } from "../utils/misc";
 
 const Message = ({ message }) => {
 

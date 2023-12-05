@@ -20,6 +20,7 @@ export default function SettingsScreen() {
         
         <Image style={styles.profileImage} source={{uri: profileData.image}} />
         <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{profileData.name}</Text>
+        <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameLight}>{profileData.nickname}</Text>
 
         <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
           
@@ -206,4 +207,23 @@ const styles = StyleSheet.create({
   transactionHistoryImage: {
     backgroundColor: "#00D200",
   },
+
+  nickNameDark: {
+    marginTop: 10,
+    marginBottom:0,
+    alignSelf: "center",
+    
+    // FONT
+    fontSize: 15,
+    color: "#999",
+  },
+  nickNameLight: {
+    marginTop:0,
+    marginBottom:5,
+    alignSelf: "center",
+    
+    // FONT
+    fontSize: 15,
+    color: "#000",
+  }
 });
