@@ -1,16 +1,14 @@
-[ {
-  "about": "Cedarville student helping to expand and improve Nostr", 
-  "banner": "https://img.freepik.com/premium-vector/blue-matrix-background-abstract-binary-code-wallpaper-template-hackathon-other-digital-pro_87408-263.jpg", 
-  "image": "https://i.pinimg.com/550x/f5/6b/ae/f56baef86aed6c261c422402aab59065.jpg", 
-  "name": "Joshua Lees", 
-  "nickname": "", 
-  "nip05": "gucciwonk", 
-  "publicKey": "80360bdf97003c107eca7dbea9ba8a7cd7eb965f1e9ad0abc49ec2ce117e6d78", 
-  "username": "Joshua Lees"}, 
+[ 
   {
-  "about": "Test profile for the notis dev team", 
-  "image": "https://void.cat/d/GQmo1W7DN9Mb5RcRkrFWvb.webp", 
-  "name": "Notis Dev Test Profile", 
-  "nickname": "", 
-  "publicKey": "f9768f3ca999bc1661afc28a26d9291c595e7343cd5730f8de62cad80e877a52"}
+    "id": "78189f3a453ae5e31c2894a4ded5eabd737ae624f29fc694e87bb4b550a9ae41",
+    "name": "Notis A",
+    "nickname": "",
+    "image": "https://images.squarespace-cdn.com/content/v1/5452398fe4b08a9d2089dea2/1416676112689-B9DRN1TT7UT1JFPDW00U/2014-10-22+16.32.17.jpg"
+  },
+  {
+    "id": "e0247921b4e62e780f6e30992a734e17de9c299c134f9e3912f0fffb8b5dea1b",
+    "name": "Notis B",
+    "nickname": "",
+    "image": "https://images.squarespace-cdn.com/content/v1/5452398fe4b08a9d2089dea2/1416676254285-TA7RF1R4YF7UK835CGRX/2014-10-22+16.32.57.jpg"
+  }
 ]

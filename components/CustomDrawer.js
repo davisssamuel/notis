@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, useColorScheme } from "react-native";
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+import profileData from "../data/profile.json"
 
 export default function CustomDrawer(props) {
   const currentTheme = useColorScheme();
@@ -8,8 +9,8 @@ export default function CustomDrawer(props) {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView>
         <View style={styles.profileWrapper}>
-          <Image source={{uri:"https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"}} style={styles.profileImage}></Image>
-          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>John Smith</Text>
+          <Image source={{uri:profileData.image}} style={styles.profileImage}></Image>
+          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{profileData.name}</Text>
         </View>
         <DrawerItemList {...props}></DrawerItemList>
       </DrawerContentScrollView>

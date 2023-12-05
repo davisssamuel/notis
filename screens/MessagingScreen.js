@@ -5,94 +5,145 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  FlatList
 } from "react-native";
-import { relayInit, finishEvent, nip19 } from "nostr-tools";
-import React, { useState } from "react";
+import { relayInit, finishEvent, nip19, nip04, nip44, nip10, Event} from "nostr-tools";
+import { insertEventIntoDescendingList, insertEventIntoAscendingList } from "../utils/sorting.js";
+import React, { useEffect, useState } from "react";
 import crypto from '../utils/crypto.js'
 import * as secp from '@noble/secp256k1'
 import { Buffer } from "buffer"
 import { getPrivateKeyHex, getPublicKeyHex } from "../utils/keys.js"
+import Message from "../components/Message.js";
+import DecryptionQueue from "../utils/DecryptionQueue.js"
 
 export default function MessagingScreen() {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
 
-  const send = async () => {
-    const relayInstance = relayInit("wss://relay.damus.io");
-    relayInstance.on('connect', () => {
-      console.log(`connected to ${relayInstance.url}`);
-    });
-    relayInstance.on('error', () => {
-      console.log(`failed to connect to ${relayInstance.url}`);
-    });
+  DecryptionQueue.setDecryptFn(nip04.decrypt)
 
-    await relayInstance.connect();
+  const sk = getPrivateKeyHex();
+  const pk = getPublicKeyHex();
+  const codedPubKey = "npub1uqj8jgd5uch8srmwxzvj5u6wzl0fc2vuzd8euwgj7rllhz6aagdslf3lxy";
+  let theirPublicKey = "e0247921b4e62e780f6e30992a734e17de9c299c134f9e3912f0fffb8b5dea1b";
 
-    const sk = getPrivateKeyHex();
-    const pk = getPublicKeyHex();
-    const codedPubKey = "npub16xth77fwr2ddavn0mmr6znsumwvqe6y0ne3tznnh4w6frhjp67jqwj8vm3";
-    let theirPublicKey = nip19.decode(codedPubKey);
+  const relayInstance = relayInit("wss://relay1.nostrchat.io");
+  relayInstance.on('connect', () => {
+    console.log(`connected to ${relayInstance.url}`);
+  });
+  relayInstance.on('error', () => {
+    console.log(`failed to connect to ${relayInstance.url}`);
+  });
 
-    //let encryptedMessage = await encrypt(messageInput, theirPublicKey.data);
-    //let encryptedMessage = await nip04.encrypt(sk, theirPublicKey.data, messageInput, );
+  useEffect(() => {
 
-    let sharedPoint = secp.getSharedSecret(sk, '02' + theirPublicKey.data);
-    let sharedX = sharedPoint.slice(1, 33);
+    relayInstance.connect().then(() => {
+      let sub = relayInstance.sub([{
+        kinds: [4],
+        authors: [pk],
+        "#p": [theirPublicKey],
+      },
+      {
+        kinds: [4],
+        authors: [theirPublicKey],
+        "#p": [pk],
+      }]);
 
-    let iv = crypto.randomFillSync(new Uint8Array(16))
-    var cipher = crypto.createCipheriv(
-      'aes-256-cbc',
-      Buffer.from(sharedX),
-      iv
-    )
-    let encryptedMessage = cipher.update(messageInput, 'utf8', 'base64')
-    encryptedMessage += cipher.final('base64')
-    let ivBase64 = Buffer.from(iv.buffer).toString('base64')
-    console.log(ivBase64);
+      const onEvent = async (event) => {
+        nip04.decrypt(getPrivateKeyHex(), theirPublicKey, event.content).then((e) => {
+          setMessages((messages) =>
+            insertEventIntoAscendingList(messages, {
+              ...event,
+              content: e
+            }))
+        })
+        /*
+        DecryptionQueue.add(event.content, theirPublicKey, (err, msg) => {
+          if (err) {
+            return console.log(err);
+          }
+  
+          const decryptedEvent = {
+            ...event,
+            content: msg,
+          }
 
-    let sub = relayInstance.sub([{
-      kinds: [4],
-      authors: [pk],
-      "#p": [theirPublicKey.data],
-    },
-    {
-      kinds: [4],
-      authors: [theirPublicKey.data],
-      "#p": [pk],
-    }]);
+          console.log(msg)
 
-    sub.on('event', event => {
-      console.log(event);
-    });
+          setMessages((messages) =>
+            insertEventIntoDescendingList(messages, decryptedEvent)
+          );
+        });*/
+      };
+    
+      sub.on('event', onEvent);
 
-    let newEvent = {
-      pubkey: pk,
-      created_at: Math.floor(Date.now() / 1000),
-      kind: 4,
-      tags: [['p', theirPublicKey.data]],
-      content: encryptedMessage + '?iv=' + ivBase64,
-    };
+      return () => {
+        sub.unsub();
+        sub.off("event", onEvent);
+        DecryptionQueue.clear();
+      };
+    })
+  },[])
 
-    console.log("signing")
-    const signedEvent = finishEvent(newEvent, sk);
-    await relayInstance.publish(signedEvent);
-    console.log("published")
+  const send = async (self) => {
+    self.target.value = ""
+    relayInstance.connect().then(() => {
 
-    relayInstance.close();
-    setMessageInput("");
+      let sharedPoint = secp.getSharedSecret(sk, '02' + theirPublicKey);
+      let sharedX = sharedPoint.slice(1, 33);
+
+      let iv = crypto.randomFillSync(new Uint8Array(16))
+      var cipher = crypto.createCipheriv(
+        'aes-256-cbc',
+        Buffer.from(sharedX),
+        iv
+      )
+      let encryptedMessage = cipher.update(messageInput, 'utf8', 'base64')
+      encryptedMessage += cipher.final('base64')
+      let ivBase64 = Buffer.from(iv.buffer).toString('base64')
+      //console.log(ivBase64);
+
+      let newEvent = {
+        pubkey: pk,
+        created_at: Math.floor(Date.now() / 1000),
+        kind: 4,
+        tags: [['p', theirPublicKey]],
+        content: encryptedMessage + '?iv=' + ivBase64,
+      };
+
+      //console.log("signing")
+      const signedEvent = finishEvent(newEvent, sk);
+      relayInstance.publish(signedEvent).catch((e) => {
+        console.log(e)
+      })
+      //console.log("published")
+
+      setMessageInput("");
+      self.target.value = ""
+    })
   };
 
   return (
     <SafeAreaView style={{flex:1}}>
       <KeyboardAvoidingView style={styles.keyboardAvoidingView}>
-        <ScrollView style={styles.messageWrapper}></ScrollView>
+        <FlatList
+          data={messages}
+          renderItem={({ item }) => {
+            return <Message message={item}/>;
+          }}
+          keyExtractor={(item) => item.id}
+          style={styles.messageWrapper}
+          contentInsetAdjustmentBehavior="automatic"
+        />
         <TextInput
           style={styles.messageCompose}
-          placeholder="Message"
+          placeholder="Text message"
           onChangeText={(text) => setMessageInput(text)}
           onSubmitEditing={send}
-          // placeholderTextColor="#000"
+          placeholderTextColor="#888"
         />
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -102,16 +153,27 @@ export default function MessagingScreen() {
 const styles = StyleSheet.create({
   messageWrapper: {
     paddingHorizontal: 10,
+    marginTop: "auto"
   },
   messageCompose: {
-    padding: 10,
-    borderRadius: 100,
+    paddingHorizontal: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    marginHorizontal: 5,
+    borderStyle: "dashed",
+    borderWidth: 3,
+    borderBottomWidth: 1,
+    borderColor: "gray",
+    backgroundColor:"#222222",
     height: 40,
-    marginHorizontal: 10,
-    backgroundColor: "gray",
+    fontSize: 20,
+    color: "white",
+    position: "absolute",
+    left:0,
+    right:0,
+    bottom:0
   },
   keyboardAvoidingView: {
     flex:1,
-    justifyContent: "space-between",
   }
 });

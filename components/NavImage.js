@@ -1,10 +1,12 @@
 import { Image } from "react-native";
 
+import profileData from "../data/profile.json"
+
 export default function NavImage() {
   return (
     <Image
       source={{
-        uri: "https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"
+        uri: profileData.image
       }}
       style={{
         width: 25,

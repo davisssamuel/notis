@@ -1,20 +1,9 @@
 [
   {
-    "id":"1",
-    "name":"Josh Lees",
-    "timestamp":"20:01",
-    "lastMessage":"Luke isn't doing the mockups"
-  },
-  {
-    "id":"2",
-    "name":"Luke Lyall",
-    "timestamp":"20:02",
-    "lastMessage":"Does Josh want me to do the mockups?"
-  },
-  {
-    "id":"3",
-    "name":"Samuel Katon",
-    "timestamp":"20:03",
-    "lastMessage":"What's a JavaScript?"
+    "id":"e0247921b4e62e780f6e30992a734e17de9c299c134f9e3912f0fffb8b5dea1b",
+    "name":"Notis B",
+    "timestamp":"Today",
+    "lastMessage":"Created Dec 3, 2023",
+    "image": "https://images.squarespace-cdn.com/content/v1/5452398fe4b08a9d2089dea2/1416676254285-TA7RF1R4YF7UK835CGRX/2014-10-22+16.32.57.jpg"
   }
 ]

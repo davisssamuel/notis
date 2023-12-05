@@ -2,6 +2,7 @@ import * as React from "react";
 import { View, ScrollView, Text, Switch, TextInput, Pressable, Image, StyleSheet, useColorScheme } from "react-native";
 import { Ionicons, MaterialCommunityIcons, Entypo, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import profileData from "../data/profile.json"
 
 export default function SettingsScreen() {
   const navigation = useNavigation();
@@ -17,8 +18,8 @@ export default function SettingsScreen() {
 
     <ScrollView style={styles.container}>
         
-        <Image style={styles.profileImage} source={{uri: "https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg"}} />
-        <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>John Smith</Text>
+        <Image style={styles.profileImage} source={{uri: profileData.image}} />
+        <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{profileData.name}</Text>
 
         <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
           
@@ -82,7 +83,7 @@ export default function SettingsScreen() {
 
         {/* QR CODE */}
         <View style={styles.qrCodeWrapper}>
-          <Image style={styles.qrCode} source={{uri: "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + "This is a test"}}></Image>
+          <Image style={styles.qrCode} source={{uri: "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + profileData.id}}></Image>
         </View>
     </ScrollView>
   );

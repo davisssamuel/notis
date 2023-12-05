@@ -21,7 +21,7 @@ const Chat = ({ chat }) => {
       <Image
         style={styles.image}
         source={{
-          uri: "https://github.com/identicons/" + chat.name.split(" ")[0] + ".png"
+          uri: chat.image
         }}
       />
       <View style={styles.chatDetails}>
