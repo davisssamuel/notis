@@ -17,8 +17,11 @@ const Message = ({ message }) => {
   return (
     <View style={message.pubkey == getPublicKeyHex() ? styles.messageWrapperSent : styles.messageWrapperRec}>
       <Image source={{uri:sender.image}} style={styles.messageImage}></Image>
-      <View>
-        <Text style={styles.messageTime}>{formattedTime}</Text>
+      <View style={{flex:1, gap:0}}>
+        <View style={styles.messageHeader}>
+          <Text style={styles.messageSender}>{sender.name}</Text>
+          <Text style={styles.messageTime}>{formattedTime}</Text>
+        </View>
         <Text style={styles.messageBody}>{text}</Text>
       </View>
     </View>
@@ -50,12 +53,25 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   messageBody: {
-    color: "white",
-    fontSize: 18
+    color: "#DDD",
+    fontSize: 19
   },
   messageTime: {
     color: "gray",
-    fontSize: 15
+    fontSize: 15,
+    flex:1
+  },
+  messageHeader: {
+    flex:1,
+    flexDirection: "row",
+    gap: 3,
+    justifyContent: "space-between"
+  },
+  messageSender: {
+    color: "white",
+    flex:1,
+    fontSize: 17,
+    fontWeight: "bold"
   }
 });
 

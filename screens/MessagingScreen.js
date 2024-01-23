@@ -153,7 +153,8 @@ export default function MessagingScreen() {
 const styles = StyleSheet.create({
   messageWrapper: {
     paddingHorizontal: 10,
-    marginTop: "auto"
+    marginTop: "auto",
+    borderBottomWidth:45
   },
   messageCompose: {
     paddingHorizontal: 10,
