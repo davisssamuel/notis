@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMessage, faBellSlash, faFile } from '@fortawesome/free-regular-svg-icons';
 import { faBolt, faUsers, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/core';
 
-//NOTE: the fonts may look strange because these are free. If you want consistent fonts, we may need to find something else or pay
-//for a license
-
 const ContactInfoScreen = ({ navigation, route }) => {
 
   const contact = route.params.contact
+  const { width, height } = useWindowDimensions();
 
   const [dogApiPhoto, setDogApiPhoto] = useState(null);
 
@@ -28,7 +26,101 @@ const ContactInfoScreen = ({ navigation, route }) => {
     fetchDogImage();
   }, []);
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'white',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    dogImageContainer: {
+      flex: 1,
+      width: '100%',
+      alignSelf: 'flex-start',
+      position: 'relative',
+    },
+    dogImage: {
+      flex: 0.9,
+      width: '100%',
+    },
+    overlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'rgba(240, 240, 242, 1)',
+      top: 0.4 * height,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+    },
+    additionalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    profileImage: {
+      top: height * -0.77,
+      right: width * 1.11,
+      width: 115,
+      height: 115,
+      borderRadius: 10000,
+    },
+    profileName: {
+      alignSelf: "center",
+    },
+    profileNameText: {
+      fontSize: 25,
+      fontWeight: 'bold',
+      textAlign: 'left',
+    },
+    profileStatusText: {
+      color: 'lightslategrey',
+    },
+    buttonContainer: {
+      position: 'absolute',
+      top: height * 0.52,
+      width: '100%',
+    },
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginLeft: 5,
+      marginRight: 5,
+      marginBottom: 2,
+    },
+    button: {
+      borderRadius: 5,
+      backgroundColor: 'white',
+      padding: 20,
+      width: '33%',
+    },
+    buttonText: {
+      color: 'lightslategrey',
+      fontSize: 12,
+      textAlign: 'center',
+    },
+    fullWidthButtonText: {
+      color: 'red',
+      fontSize: 16,
+      textAlign: 'center',
+    },
+    fullWidthButton: {
+      backgroundColor: 'white',
+      marginHorizontal: 'auto',
+      padding: 20,
+      width: '90%',
+      borderRadius: 10,
+      top: height * 0.11,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
+    },
+    icon: {
+      fontSize: 45,
+      marginBottom: 10,
+      alignSelf: 'center'
+    },
+  });
+
   const renderButtons = () => (
+
     <View style={styles.buttonContainer}>
     {/* Rows 1 and 2 */}
     <View style={styles.buttonRow}>
@@ -98,99 +190,5 @@ const ContactInfoScreen = ({ navigation, route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  dogImageContainer: {
-    flex: 1,
-    width: '100%',
-    alignSelf: 'flex-start',
-    position: 'relative',
-  },
-  dogImage: {
-    flex: 0.9,
-    width: '100%',
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(240, 240, 242, 1)',
-    top: '40%',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  additionalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  profileImage: {
-    top: '-77%',
-    right: '111%',
-    width: 115,
-    height: 115,
-    borderRadius: 10000,
-  },
-  profileName: {
-    alignSelf: "center",
-  },
-  profileNameText: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'left',
-  },
-  profileStatusText: {
-    color: 'lightslategrey',
-  },
-  buttonContainer: {
-    position: 'absolute',
-    top: '52%',
-    width: '100%',
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginLeft: 5,
-    marginRight: 5,
-    marginBottom: 2, //space between on y-axis
-  },
-  button: {
-    borderRadius: 5,
-    backgroundColor: 'white',
-    padding: 20, //how thick button is
-    width: '33%', //button width (space between on x-axis)
-  },
-  buttonText: {
-    color: 'lightslategrey',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  fullWidthButtonText: {
-    color: 'red',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  fullWidthButton: {
-    backgroundColor: 'white',
-    marginHorizontal: 'auto',
-    padding: 20,
-    //marginBottom: 10
-    width: '90%', // Adjust the width as needed
-    borderRadius: 10,
-    top: 110,
-    alignItems: 'center', // Center the button vertically
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
-  icon: {
-    fontSize: 45,      // Set the font size to make it bigger
-    marginBottom: 10,  // Optional: Add margin if needed
-    alignSelf: 'center' // Center the icon horizontally
-  },
-});
 
 export default ContactInfoScreen;
