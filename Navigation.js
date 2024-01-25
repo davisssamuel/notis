@@ -4,6 +4,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
 
 import ChatsScreen from "./screens/ChatsScreen";
+import LoginScreen from "./screens/LoginScreen";
 import ContactsScreen from "./screens/ContactsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import MesssagingScreen from "./screens/MessagingScreen";
@@ -94,6 +95,19 @@ function ContactsStackGroup() {
   );
 }
 
+const LoginStack = createNativeStackNavigator();
+function LoginStackGroup() {
+  const navigation = useNavigation();
+  return(
+    <LoginStack.Navigator>
+      <LoginStack.Screen
+        name="Login"
+        component={LoginScreen}
+      />
+    </LoginStack.Navigator>
+  );
+}
+
 const SettingsStack = createNativeStackNavigator();
 function SettingsStackGroup() {
   const navigation = useNavigation();
@@ -130,12 +144,14 @@ const Drawer = createDrawerNavigator();
 function DrawerGroup() {
   return (
     <Drawer.Navigator
+      initialRouteName="Login"
       screenOptions={{ headerShown: false }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
       <Drawer.Screen name="Chats" component={ChatsStackGroup} />
       <Drawer.Screen name="Contacts" component={ContactsStackGroup} />
       <Drawer.Screen name="Settings" component={SettingsStackGroup} />
+      <Drawer.Screen name="Login" component={LoginStackGroup} />
     </Drawer.Navigator>
   );
 }

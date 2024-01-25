@@ -2,8 +2,6 @@ import * as React from "react";
 import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
 import { generatePrivateKey, getPublicKey} from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
-import Clipboard from 'react-native-clipboard';
-import "react-native-get-random-values";
 
 const Login = () => {
   const { navigate }  = useNavigation();
@@ -44,7 +42,7 @@ const Login = () => {
             />
           </View>
           <View style = {styles.button}>
-            <Pressable onPress = {() => {navigate('contacts')}}>
+            <Pressable onPress={() => navigate('Chats')}> 
               <Text style={styles.loginButton}>Login</Text>
             </Pressable>
           </View>
@@ -90,7 +88,7 @@ const Login = () => {
 const styles =  {
   container: {
     flex: 1,
-    backgroundColor: 'rgb(229, 229, 229)',
+    backgroundColor: '#FF',
   },
   loginPage: {
     flex: 1,
@@ -104,6 +102,7 @@ const styles =  {
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: 'white',
   },
   loginForm: {
     backgroundColor: 'rgb(210, 210, 210)',
@@ -112,13 +111,13 @@ const styles =  {
     borderRadius: 8,
   },
   button: {
-    backgroundColor: 'black',
+    backgroundColor: 'grey',
     padding: 5,
     borderRadius: 8,
   },
   loginButton: {
     textAlign: 'center',
-    color: 'white',
+    color: '#FF',
     fontSize: 20,
   },
   key: {
@@ -138,6 +137,7 @@ const styles =  {
   },
   generator: {
     textAlign: 'center',
+    color: 'white',
   },
   popupContainer: {
     flex: 1,
@@ -146,23 +146,23 @@ const styles =  {
   },
   popup: {
     width: '75%',
-    backgroundColor: 'white',
+    backgroundColor: 'grey',
     padding: 20,
     borderRadius: 10,
-    borderColor: 'grey',
+    borderColor: '#FF',
     borderWidth: 2,
   },
   popupKeys: {
     flexDirection: 'row',
-    borderColor: 'grey',
+    borderColor: '#FF',
     borderWidth: 2,
     borderRadius: 3,
   },
   popupKey: {
-    color: 'black',
+    color: 'white',
   },
   popupCopy: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     padding: 5,
     borderRadius: 5,
     marginLeft: 10,
@@ -173,12 +173,12 @@ const styles =  {
     marginTop: 10,
   },
   popupButtons: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     padding: 5,
     borderRadius: 5,
   },
   popupText: {
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
   },
 }
