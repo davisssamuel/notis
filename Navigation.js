@@ -151,7 +151,7 @@ function DrawerGroup() {
       <Drawer.Screen name="Chats" component={ChatsStackGroup} />
       <Drawer.Screen name="Contacts" component={ContactsStackGroup} />
       <Drawer.Screen name="Settings" component={SettingsStackGroup} />
-      <Drawer.Screen name="Login" component={LoginStackGroup} />
+      <Drawer.Screen name="Logout" component={LoginStackGroup} />
     </Drawer.Navigator>
   );
 }

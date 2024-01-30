@@ -21,6 +21,8 @@ export default function ContactsScreen() {
   })
 */
 
+  getContacts();
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList

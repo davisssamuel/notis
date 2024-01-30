@@ -1,9 +1,6 @@
 // returns an array containing the urls to our preferred relays
 let relays = [
-  "wss://relay.damus.io",
-  "wss://purplerelay.com",
-  "wss://ch.purplerelay.com",
-  "wss://nostr-pub.wellorder.net"
+  "wss://relay1.nostrchat.io",
 ]
 
 export default function getRelays() {

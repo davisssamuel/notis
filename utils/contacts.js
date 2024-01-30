@@ -1,11 +1,14 @@
 import { 
-  SimplePool,
   getEventHash,
   getSignature, 
   relayInit} from "nostr-tools";
 import getRelays from "./relays";
 import { getPrivateKeyHex, getPublicKeyHex, hexToBech } from "./keys";
 import NDK, { NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
+import {
+  finishEvent
+} from "nostr-tools";
+import {RelayPool} from "nostr-relaypool";
 
 // used to block while waiting for events
 function block(name, event) {
@@ -17,6 +20,22 @@ function block(name, event) {
 }
 
 export default async function getContacts() {
+  let relays = new RelayPool();
+  relays.subscribe(
+    [
+      {
+        kinds: [3], // get actual contact data
+        authors: [getPublicKeyHex()]
+      },
+    ],
+    [
+      getRelays(),
+    ],
+    (event) => console.log(event)
+  )
+
+
+  /*
   const sig = new NDKPrivateKeySigner(getPrivateKeyHex())
 
   const ndk = new NDK({
@@ -46,9 +65,12 @@ export default async function getContacts() {
   }
 
   return contacts
+  */
 }
 
 export async function addContact(npub, nickname) {
+
+  /*
   const pool = new SimplePool()
   const contacts_event = await pool.list([...getRelays()], [{ kinds: [3], authors: [getPublicKeyHex()] }])
 
@@ -73,9 +95,12 @@ export async function addContact(npub, nickname) {
   event.sig = getSignature(event, getPrivateKeyHex())
   
   pool.publish([...getRelays()], event)
+  */
 }
 
 export async function deleteContact(npub) {
+
+  /*
   const pool = new SimplePool()
   const contacts_event = await pool.list([...getRelays()], [{ kinds: [3], authors: [getPublicKeyHex()] }])
 
@@ -107,6 +132,7 @@ export async function deleteContact(npub) {
   event.sig = getSignature(event, getPrivateKeyHex())
   
   pool.publish([...getRelays()], event)
+  */
 }
 
 
@@ -121,6 +147,8 @@ export function editNickName() {
 
 // deletes the event with the specified id
 export function wipe(id) {
+
+  /*
   const pool = new SimplePool()
   let event = {
     kind: 5,
@@ -137,4 +165,5 @@ export function wipe(id) {
   event.sig = getSignature(event, getPrivateKeyHex())
   
   pool.publish([...getRelays()], event)
+  */
 }

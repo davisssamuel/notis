@@ -2,6 +2,7 @@ import * as React from "react";
 import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
 import { generatePrivateKey, getPublicKey} from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
 
 const Login = () => {
   const { navigate }  = useNavigation();
@@ -64,7 +65,9 @@ const Login = () => {
                     <ScrollView horizontal = {true} style={styles.popupKeys}>
                       <Text style = {styles.popupKey}>{privateKey}</Text>
                     </ScrollView>
-                    <Pressable style={styles.popupCopy} onPress = {() => Clipboard.setString(privateKey)}>
+                    <Pressable style={styles.popupCopy} onPress = {() => {
+                      Clipboard.setStringAsync(privateKey)
+                      }}>
                       <Text style={styles.popupText}>Copy</Text>
                     </Pressable>
                   </View>
