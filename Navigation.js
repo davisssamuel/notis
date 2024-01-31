@@ -102,6 +102,9 @@ function LoginStackGroup() {
     <LoginStack.Navigator>
       <LoginStack.Screen
         name="Login"
+        options={{
+          headerShown: false,
+        }}
         component={LoginScreen}
       />
     </LoginStack.Navigator>
@@ -144,14 +147,14 @@ const Drawer = createDrawerNavigator();
 function DrawerGroup() {
   return (
     <Drawer.Navigator
-      initialRouteName="Login"
+      initialRouteName="Logout"
       screenOptions={{ headerShown: false }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
       <Drawer.Screen name="Chats" component={ChatsStackGroup} />
       <Drawer.Screen name="Contacts" component={ContactsStackGroup} />
       <Drawer.Screen name="Settings" component={SettingsStackGroup} />
-      <Drawer.Screen name="Login" component={LoginStackGroup} />
+      <Drawer.Screen name="Logout" component={LoginStackGroup} />
     </Drawer.Navigator>
   );
 }

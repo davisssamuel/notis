@@ -2,21 +2,40 @@ import * as React from "react";
 import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
 import { generatePrivateKey, getPublicKey} from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
-
+import * as Clipboard from 'expo-clipboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+ 
 const Login = () => {
   const { navigate }  = useNavigation();
-
   const [privateKey, setPrivateKey] = React.useState("");
   const [publicKey, setPublicKey] = React.useState("");
   const [isModalVisible, setModalVisible] = React.useState(false);
 
+  React.useEffect(() => {
+    const loadPrivateKey = async () => {
+      const generated_sk = await AsyncStorage.getItem('privateKey');
+      if(generated_sk){
+        setPrivateKey(generated_sk);
+        const pk = getPublicKey(generated_sk);
+        setPublicKey(pk);
+      }
+    };
+      loadPrivateKey();
+  }, []);
+
   const generateKeys = async () => {
     try {
-      const sk = await generatePrivateKey();
-      const pk = getPublicKey(sk);
-      setPrivateKey(sk);
-      setPublicKey(pk);
-      toggleModal();
+      let sk = await AsyncStorage.getItem('privateKey');
+      if(!sk) {
+        sk = await generatePrivateKey();
+        await AsyncStorage.setItem('privateKey', sk)
+      }
+      if(sk){
+        const pk = getPublicKey(sk);
+        setPrivateKey(sk);
+        setPublicKey(pk);
+        toggleModal();
+      }
     } 
     catch (error) {
       console.error("Error generating keys:", error);
@@ -24,7 +43,6 @@ const Login = () => {
   };
 
   const toggleModal = () => {
-    console.log("Modal Toggled");
     setModalVisible(!isModalVisible);
   };
 
@@ -64,7 +82,7 @@ const Login = () => {
                     <ScrollView horizontal = {true} style={styles.popupKeys}>
                       <Text style = {styles.popupKey}>{privateKey}</Text>
                     </ScrollView>
-                    <Pressable style={styles.popupCopy} onPress = {() => Clipboard.setString(privateKey)}>
+                    <Pressable style={styles.popupCopy} onPress = {() => Clipboard.setStringAsync(privateKey)}>
                       <Text style={styles.popupText}>Copy</Text>
                     </Pressable>
                   </View>
@@ -73,7 +91,7 @@ const Login = () => {
                     <Pressable style = {styles.popupButtons} onPress = {toggleModal}>
                       <Text style = {styles.popupText}>Close</Text>
                     </Pressable>
-                    <Pressable style = {styles.popupButtons} onPress = {() => {navigate('contacts')}}>
+                    <Pressable style = {styles.popupButtons} onPress = {() => {toggleModal();navigate('Chats'); }}>
                       <Text style = {styles.popupText}>Login</Text>
                     </Pressable>
                   </View>

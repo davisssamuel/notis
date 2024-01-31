@@ -3,9 +3,10 @@ import { View, Image, Text, StyleSheet, TouchableOpacity, useWindowDimensions } 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMessage, faBellSlash, faFile } from '@fortawesome/free-regular-svg-icons';
 import { faBolt, faUsers, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/native';
 
 const ContactInfoScreen = ({ navigation, route }) => {
+  const { navigate }  = useNavigation();
 
   const contact = route.params.contact
   const { width, height } = useWindowDimensions();
@@ -22,7 +23,6 @@ const ContactInfoScreen = ({ navigation, route }) => {
         console.error('Error fetching dog image:', error);
       }
     };
-
     fetchDogImage();
   }, []);
 
@@ -75,7 +75,7 @@ const ContactInfoScreen = ({ navigation, route }) => {
     },
     buttonContainer: {
       position: 'absolute',
-      top: height * 0.52,
+      top: height * 0.50,
       width: '100%',
     },
     buttonRow: {
@@ -124,7 +124,7 @@ const ContactInfoScreen = ({ navigation, route }) => {
     <View style={styles.buttonContainer}>
     {/* Rows 1 and 2 */}
     <View style={styles.buttonRow}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigate("MessagingScreen")}>
         <FontAwesomeIcon icon={faMessage} style={styles.icon} size={25} color='rgba(60, 219, 192, 1)'/>
         <Text style={styles.buttonText}>Message</Text>
       </TouchableOpacity>
@@ -132,7 +132,7 @@ const ContactInfoScreen = ({ navigation, route }) => {
         <FontAwesomeIcon icon={faBolt} style={styles.icon} size={25} color='rgba(241, 190, 72, 1)'/>
         <Text style={styles.buttonText}>Pay</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button /* nip 28 */}>
         <FontAwesomeIcon icon={faBellSlash} style={styles.icon} size={30} color='rgba(224, 60, 49, 1)'/>
         <Text style={styles.buttonText}>Silence</Text>
       </TouchableOpacity>
