@@ -3,10 +3,13 @@ import { View, ScrollView, Text, Switch, TextInput, Pressable, Image, StyleSheet
 import { Ionicons, MaterialCommunityIcons, Entypo, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import profileData from "../data/profile.json"
+import QRCode from 'react-native-qrcode-svg'
+import getPublicKey from "../utils/keys";
 
 export default function SettingsScreen() {
   const navigation = useNavigation();
   const currentTheme = useColorScheme();
+  
   return (
     // TESTING SCROLLVIEW IN SAFEAREAVIEW
     // <View>
@@ -82,10 +85,17 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* QR CODE */}
-        <View style={styles.qrCodeWrapper}>
+        {/* QR CODE 
           <Image style={styles.qrCode} source={{uri: "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + profileData.id}}></Image>
-        </View>
+        */}
+        <View style={styles.qrCodeWrapper}>           
+          <QRCode
+            value = {getPublicKey()}
+            size = {150}
+            color = "black"
+            backgroundColor= "white"
+          />
+        </View> 
     </ScrollView>
   );
 }
