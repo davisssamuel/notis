@@ -10,6 +10,28 @@ const Login = () => {
   const [privateKey, setPrivateKey] = React.useState("");
   const [publicKey, setPublicKey] = React.useState("");
   const [isModalVisible, setModalVisible] = React.useState(false);
+  const [ispopupVisible, setPopupVisible] = React.useState(false);
+  const [copyMessage, setCopyMessage] = React.useState(false);
+
+  const copyPopup = (message) => {
+    setPopupVisible(true);
+    setCopyMessage(message);
+      setTimeout(() => {
+        setPopupVisible(false);
+      }, 1000);setPopupVisible(true);
+  }
+
+  const copyKey = async () => {
+    try {
+      await Clipboard.setStringAsync(privateKey);
+      copyPopup('Copied!');
+      console.log('Copied!');
+    }
+    catch (error){
+      copyPopup('Copy Error!');
+      console.error('Copy Error!')
+    }
+  }
 
   React.useEffect(() => {
     const loadPrivateKey = async () => {
@@ -82,7 +104,7 @@ const Login = () => {
                     <ScrollView horizontal = {true} style={styles.popupKeys}>
                       <Text style = {styles.popupKey}>{privateKey}</Text>
                     </ScrollView>
-                    <Pressable style={styles.popupCopy} onPress = {() => Clipboard.setStringAsync(privateKey)}>
+                    <Pressable style={styles.popupCopy} onPress = {copyKey}>
                       <Text style={styles.popupText}>Copy</Text>
                     </Pressable>
                   </View>
@@ -100,6 +122,16 @@ const Login = () => {
             </Modal>
           </View>
         </View>
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={ispopupVisible}
+          onRequestClose={() => setPopupVisible(false)}
+        >
+          <View style={styles.copyModal}>
+            <Text style={styles.copyText}>{copyMessage}</Text>
+          </View>
+        </Modal>
       </View>
     )
 }
@@ -198,6 +230,16 @@ const styles =  {
   popupText: {
     color: 'black',
     textAlign: 'center',
+  },
+  copyModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  copyText: {
+    color: 'white',
+    fontSize: 20,
   },
 }
 
