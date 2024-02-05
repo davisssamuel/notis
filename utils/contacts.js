@@ -1,14 +1,7 @@
-import { 
-  getEventHash,
-  getSignature, 
-  relayInit} from "nostr-tools";
 import getRelays from "./relays";
 import { getPrivateKeyHex, getPublicKeyHex, hexToBech } from "./keys";
-import NDK, { NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
-import {
-  finishEvent
-} from "nostr-tools";
 import {RelayPool} from "nostr-relaypool";
+import { SimplePool, finalizeEvent } from "nostr-tools";
 
 // used to block while waiting for events
 function block(name, event) {
@@ -20,84 +13,56 @@ function block(name, event) {
 }
 
 export default async function getContacts() {
-  let relays = new RelayPool();
-  relays.subscribe(
-    [
-      {
-        kinds: [3], // get actual contact data
-        authors: [getPublicKeyHex()]
-      },
-    ],
-    [
-      getRelays(),
-    ],
-    (event) => console.log(event)
-  )
+  let pool = new SimplePool();
 
-  /*
-  const sig = new NDKPrivateKeySigner(getPrivateKeyHex())
-
-  const ndk = new NDK({
-    explicitRelayUrls: getRelays(),
-    signer: sig})
-
-  await ndk.connect()
-
-  let events = await block("event",
-    ndk.subscribe({
+  return pool.subscribeMany(
+    getRelays(),
+    [{
       kinds: [3],
       authors: [getPublicKeyHex()]
-    })
-  );
-
-  let contacts = []
-
-  for (let contact of events.tags) {
-    let usr = ndk.getUser({ npub: hexToBech(contact[1]) })
-    await usr.fetchProfile()
-
-    contacts.push({
-      ...usr.profile,
-      nickname: contact[3],
-      publicKey: contact[1]
-    })
-  }
-
-  return contacts
-  */
+    }],
+    {
+      onevent(e) {
+        console.log(e)
+      },
+      oneose() {
+        h.close();
+      }
+    }
+  )
 }
 
+console.log()
+
 export async function addContact(npub, nickname) {
-
-  /*
-  const pool = new SimplePool()
-  const contacts_event = await pool.list([...getRelays()], [{ kinds: [3], authors: [getPublicKeyHex()] }])
-
-  let tags = []
-
-  if (contacts_event.length > 0) {
-    wipe(contacts_event[0].id)
-    tags = contacts_event[0].tags
-  }
-
-  tags.push([ "p", npub, "", nickname ])
-
+  let pool = new SimplePool()
   let event = {
     kind: 3,
-    created_at: Math.floor(Date.now() / 1000),
-    tags: tags,
-    content: '',
     pubkey: getPublicKeyHex(),
+    created_at: Math.floor(Date.now() / 1000),
+    tags: [
+      [
+        "p",
+        npub,
+        "",
+        nickname
+      ]
+    ],
+    content:"",
   }
-  
-  event.id = getEventHash(event)
-  event.sig = getSignature(event, getPrivateKeyHex())
-  
-  pool.publish([...getRelays()], event)
-  */
+
+  const signedEvent = finalizeEvent(event, getPrivateKeyHex())
+  await Promise.any(pool.publish(getRelays(), signedEvent))
 }
 
 export async function deleteContact(npub) {
+
+  // query contacts
+  // get event ID of the contact u want to delete
+  // delete event
+
+
+
 
   /*
   const pool = new SimplePool()
