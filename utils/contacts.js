@@ -14,7 +14,7 @@ export default async function getContacts(func) {
   pool.subscribeMany(
     getRelays(),
     [{
-      kinds: [5],
+      kinds: [3],
       authors: [getPublicKeyHex()]
     }],
     {
@@ -28,6 +28,13 @@ export default async function getContacts(func) {
   )
 }
 
+//deleteContact("another")
+
+getContacts((e) => {
+  console.log(e)
+})
+
+
 /*
 Usage: 
 addContact("[public key hex]", "nickname");
@@ -35,7 +42,7 @@ addContact("[public key hex]", "nickname");
 export async function addContact(npub, nickname) {
   let pool = new SimplePool()
   let event = {
-    kind: 3,
+    kinds: [3],
     pubkey: getPublicKeyHex(),
     created_at: Math.floor(Date.now() / 1000),
     tags: [
@@ -51,6 +58,7 @@ export async function addContact(npub, nickname) {
 
   const signedEvent = finalizeEvent(event, getPrivateKeyHex())
   await Promise.any(pool.publish(getRelays(), signedEvent))
+  pool.close()
 }
 
 /*
@@ -58,7 +66,8 @@ Usage:
 deleteContact("[public key hex]")
 */
 export async function deleteContact(npub) {
-  getContacts((e) => {
+  getContacts(async (e) => {
+    let pool = new SimplePool()
     // found the contact, now delete (NIP-05)
     if (npub == e.tags[0][1]) {
       //e.id
@@ -72,7 +81,8 @@ export async function deleteContact(npub) {
         content: "",
       }
       const signedEvent = finalizeEvent(event, getPrivateKeyHex());
-      Promise.any(pool.publish(getRelays(), signedEvent));
+      await Promise.any(pool.publish(getRelays(), signedEvent));
+      pool.close();
     }
   })
 }
