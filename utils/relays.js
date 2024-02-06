@@ -3,7 +3,7 @@ let relays = [
   "wss://relay.damus.io",
   "wss://nostr-pub.wellorder.net",
   "wss://nostr.mom",
-  "wss://nostr.slothy.win" 
+  "wss://nostr.slothy.win" ,
 ]
 
 export default function getRelays() {
