@@ -1,9 +1,13 @@
 import * as React from "react";
 import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
-import { generatePrivateKey, getPublicKey} from 'nostr-tools';
+import { generateSecretKey, getPublicKey, nip19} from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import getPrivateKeyBech, { getPrivateKeyHex, setPrivateKeyHex } from "../utils/keys";
+import { decode } from "punycode";
+
+import { bytesToHex } from '@noble/hashes/utils';
  
 const Login = () => {
   const { navigate }  = useNavigation();
@@ -36,7 +40,7 @@ const Login = () => {
   React.useEffect(() => {
     const loadPrivateKey = async () => {
       const generated_sk = await AsyncStorage.getItem('privateKey');
-      if(generated_sk){
+      if(generated_sk) {
         setPrivateKey(generated_sk);
         const pk = getPublicKey(generated_sk);
         setPublicKey(pk);
@@ -47,18 +51,11 @@ const Login = () => {
 
   const generateKeys = async () => {
     try {
-      let sk = await AsyncStorage.getItem('privateKey');
-      if(!sk) {
-        sk = await generatePrivateKey();
-        await AsyncStorage.setItem('privateKey', sk)
-      }
-      if(sk){
-        const pk = getPublicKey(sk);
-        setPrivateKey(sk);
-        setPublicKey(pk);
-        toggleModal();
-      }
-    } 
+      const sk = bytesToHex(generateSecretKey());
+      await AsyncStorage.setItem('privateKey', sk);
+      setPrivateKey(sk);
+      toggleModal();
+    }
     catch (error) {
       console.error("Error generating keys:", error);
     }
