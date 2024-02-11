@@ -7,7 +7,7 @@ import jsonData from "../data/chats.json";
 import { useLayoutEffect } from "react";
 const chats = jsonData;
 
-export default async function ChatsScreen() {
+export default function ChatsScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
