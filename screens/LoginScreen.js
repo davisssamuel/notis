@@ -51,9 +51,13 @@ const Login = () => {
 
   const generateKeys = async () => {
     try {
-      const sk = bytesToHex(generateSecretKey());
-      await AsyncStorage.setItem('privateKey', sk);
-      setPrivateKey(sk);
+      const sk = generateSecretKey();
+      const skHex = bytesToHex(sk);
+      await AsyncStorage.setItem('privateKey', JSON.stringify({
+        "uint8": sk,
+        "hex": skHex
+      }));
+      setPrivateKey(skHex);
       toggleModal();
     }
     catch (error) {
