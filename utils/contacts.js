@@ -27,13 +27,6 @@ export default async function getContactsListener(func) {
   )
 }
 
-//deleteContact("another")
-
-getContacts((e) => {
-  console.log(e)
-})
-
-
 /*
 Usage: 
 addContact("[public key hex]", "nickname");
