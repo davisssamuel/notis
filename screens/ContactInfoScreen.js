@@ -40,7 +40,7 @@ const ContactInfoScreen = ({ navigation, route }) => {
       position: 'relative',
     },
     dogImage: {
-      flex: 0.9,
+      flex: 1,
       width: '100%',
     },
     overlay: {
