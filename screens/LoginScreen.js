@@ -4,10 +4,10 @@ import { generateSecretKey, getPublicKey, nip19} from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import getPrivateKeyBech, { getPrivateKeyHex, setPrivateKeyHex } from "../utils/keys";
+import getPrivateKeyBech, { getPrivateKeyHex, hexToBech, setPrivateKeyHex } from "../utils/keys";
 import { decode } from "punycode";
 
-import { bytesToHex } from '@noble/hashes/utils';
+import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
  
 const Login = () => {
   const { navigate }  = useNavigation();
@@ -36,7 +36,7 @@ const Login = () => {
       console.error('Copy Error!')
     }
   }
-
+  /*
   React.useEffect(() => {
     const loadPrivateKey = async () => {
       const generated_sk = await AsyncStorage.getItem('privateKey');
@@ -48,16 +48,15 @@ const Login = () => {
     };
       loadPrivateKey();
   }, []);
-
+  */
   const generateKeys = async () => {
     try {
       const sk = generateSecretKey();
       const skHex = bytesToHex(sk);
-      await AsyncStorage.setItem('privateKey', JSON.stringify({
+      setPrivateKey({
         "uint8": sk,
-        "hex": skHex
-      }));
-      setPrivateKey(skHex);
+        "hex": skHex,
+      });
       toggleModal();
     }
     catch (error) {
@@ -83,7 +82,12 @@ const Login = () => {
             />
           </View>
           <View style = {styles.button}>
-            <Pressable onPress={() => navigate('Chats')}> 
+            <Pressable onPress={async () => {
+              AsyncStorage.setItem("privateKey", JSON.stringify({
+                uint8: hexToBytes("b7d648b92c57ff6d22ad5eb50de103461b5f3812be42b2da7b8aa99410bd4dc1"),
+                hex: "b7d648b92c57ff6d22ad5eb50de103461b5f3812be42b2da7b8aa99410bd4dc1",
+              }))
+              navigate('Chats')}}>
               <Text style={styles.loginButton}>Login</Text>
             </Pressable>
           </View>
@@ -103,7 +107,7 @@ const Login = () => {
                 <View style={styles.popup}>
                   <View style={styles.popupBar}>
                     <ScrollView horizontal = {true} style={styles.popupKeys}>
-                      <Text style = {styles.popupKey}>{privateKey}</Text>
+                      <Text style = {styles.popupKey}>{privateKey.hex}</Text>
                     </ScrollView>
                     <Pressable style={styles.popupCopy} onPress = {copyKey}>
                       <Text style={styles.popupText}>Copy</Text>
@@ -114,7 +118,10 @@ const Login = () => {
                     <Pressable style = {styles.popupButtons} onPress = {toggleModal}>
                       <Text style = {styles.popupText}>Close</Text>
                     </Pressable>
-                    <Pressable style = {styles.popupButtons} onPress = {() => {toggleModal();navigate('Chats'); }}>
+                    <Pressable style = {styles.popupButtons} onPress = {async () => {
+                      await AsyncStorage.setItem('privateKey', JSON.stringify(privateKey));
+                      toggleModal();
+                      navigate('Chats'); }}>
                       <Text style = {styles.popupText}>Login</Text>
                     </Pressable>
                   </View>

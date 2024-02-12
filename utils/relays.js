@@ -1,3 +1,11 @@
+import { SimplePool, finalizeEvent } from "nostr-tools";
+
+export let relayPool = null;
+
+export default function initPool() {
+  relayPool = new SimplePool()
+}
+
 // returns an array containing the urls to our preferred relays
 let relays = [
   "wss://relay.damus.io",
@@ -6,7 +14,7 @@ let relays = [
   "wss://nostr.slothy.win" ,
 ]
 
-export default function getRelays() {
+export function getRelays() {
   return relays   // TODO: get form storage
 }
 

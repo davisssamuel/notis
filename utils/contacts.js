@@ -1,6 +1,7 @@
 import getRelays from "./relays";
 import { getPrivateKeyHex, getPublicKeyHex, hexToBech } from "./keys";
 import { SimplePool, finalizeEvent } from "nostr-tools";
+import { relayPool } from "./relays";
 
 /*
 Usage: 
@@ -8,10 +9,8 @@ getContacts((e) => {
   // do something with the event e
 });
 */
-export default async function getContacts(func) {
-  let pool = new SimplePool();
-
-  pool.subscribeMany(
+export default async function getContactsListener(func) {
+  return relayPool.subscribeMany(
     getRelays(),
     [{
       kinds: [3],
@@ -22,7 +21,7 @@ export default async function getContacts(func) {
         func(e)
       },
       oneose() {
-        pool.close();
+        relayPool.close();
       }
     }
   )
@@ -40,7 +39,6 @@ Usage:
 addContact("[public key hex]", "nickname");
 */
 export async function addContact(npub, nickname) {
-  let pool = new SimplePool()
   let event = {
     kinds: [3],
     pubkey: getPublicKeyHex(),
@@ -57,8 +55,8 @@ export async function addContact(npub, nickname) {
   }
 
   const signedEvent = finalizeEvent(event, getPrivateKeyHex())
-  await Promise.any(pool.publish(getRelays(), signedEvent))
-  pool.close()
+  await Promise.any(relayPool.publish(getRelays(), signedEvent))
+  relayPool.close()
 }
 
 /*
@@ -67,7 +65,6 @@ deleteContact("[public key hex]")
 */
 export async function deleteContact(npub) {
   getContacts(async (e) => {
-    let pool = new SimplePool()
     // found the contact, now delete (NIP-05)
     if (npub == e.tags[0][1]) {
       //e.id
@@ -81,8 +78,8 @@ export async function deleteContact(npub) {
         content: "",
       }
       const signedEvent = finalizeEvent(event, getPrivateKeyHex());
-      await Promise.any(pool.publish(getRelays(), signedEvent));
-      pool.close();
+      await Promise.any(relayPool.publish(getRelays(), signedEvent));
+      relayPool.close();
     }
   })
 }

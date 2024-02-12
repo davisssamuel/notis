@@ -1,8 +1,11 @@
 import * as React from "react";
 import "react-native-gesture-handler"
 import Navigation from "./Navigation";
+import initPool from "./utils/relays";
 
 // const Stack = createNativeStackNavigator();
+
+initPool()
 
 export default function App() {
   return (<Navigation/>);
