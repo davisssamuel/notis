@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "notis",
     "name": "notis",
     "slug": "notis",
     "version": "1.0.0",
