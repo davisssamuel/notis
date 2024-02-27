@@ -11,9 +11,6 @@ const publicBech = "npub10qvf7wj98tj7x8pgjjjda402h4eh4e3y720ud98g0w6t259f4eqsu50
 const publicHex = bechToHex(publicBech)
 */
 
-/*export default async function getPrivateKeyBech() {
-  return await getPrivateKeyHex();
-}*/
 export default async function getPrivateKeyHex() {
   return JSON.parse(await AsyncStorage.getItem("privateKey")).hex;
 }
@@ -24,9 +21,7 @@ export async function getPrivateKeyArray() {
     )
   );
 }
-/*export function getPublicKeyBech() {
-  return hexToBech(getPublicKeyHex());
-}*/
+
 export async function getPublicKeyHex() {
   return getPublicKey(await getPrivateKeyHex());
 }

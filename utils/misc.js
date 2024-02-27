@@ -1,13 +1,5 @@
 import contactsData from "../data/contacts.json"
 
-export function getContactFromKey(key) {
-  for(let contact of contactsData) {
-    if (contact.id == key) {
-      return contact
-    }
-  }
-}
-
 export function formatUnixTimestamp(timestamp) {
   // Convert Unix timestamp to milliseconds
   const milliseconds = timestamp * 1000;

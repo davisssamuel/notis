@@ -4,31 +4,32 @@ import Contact from "../components/Contact"
 
 // importing temp contacts data
 import jsonData from "../data/contacts.json";
-import getContacts from "../utils/contacts";
+import getContacts, { getContactsFromStorage } from "../utils/contacts";
 import { getPublicKeyHex } from "../utils/keys";
 const contacts = jsonData;
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import contactsList from "../data/contacts.json"
 
 export default function ContactsScreen() {
-/*
-  const [contactsList, setContactsList] = useState([])
+  const [contacts, setContacts] = useState([])
 
-  getContacts().then((c) => {
-    setContactsList(c)
-    console.log(c)
-  })
-*/
+  useEffect(() => {
+    async function f() {
+      let c = await getContactsFromStorage()
+      setContacts(c)
+    }
+    f()
+  }, [])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
-        data={contactsList}
+        data={contacts}
         renderItem={({ item }) => {
           return <Contact contact={item}/>;
         }}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.pubkey}
         style={{ paddingHorizontal: 16 }}
         contentInsetAdjustmentBehavior="automatic"
       />

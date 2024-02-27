@@ -5,7 +5,7 @@ import initPool from "./utils/relays";
 
 // const Stack = createNativeStackNavigator();
 
-initPool()
+initPool();
 
 export default function App() {
   return (<Navigation/>);

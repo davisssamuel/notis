@@ -8,6 +8,7 @@ import getPrivateKeyBech, { getPrivateKeyHex, hexToBech, setPrivateKeyHex } from
 import { decode } from "punycode";
 
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import getContactsListener from "../utils/contacts";
  
 const Login = () => {
   const { navigate }  = useNavigation();
@@ -27,7 +28,7 @@ const Login = () => {
 
   const copyKey = async () => {
     try {
-      await Clipboard.setStringAsync(privateKey);
+      await Clipboard.setStringAsync(privateKey.hex);
       copyPopup('Copied!');
       console.log('Copied!');
     }
@@ -79,15 +80,37 @@ const Login = () => {
             style={styles.key}
             placeholder="> Private Key"
             placeholderTextColor="black"
+            onChangeText={(inp) => setPrivateKey(inp)}
             />
           </View>
+          <Text id="input-status" style={styles.inputStatus}>Invalid Key</Text>
           <View style = {styles.button}>
             <Pressable onPress={async () => {
-              AsyncStorage.setItem("privateKey", JSON.stringify({
-                uint8: hexToBytes("b7d648b92c57ff6d22ad5eb50de103461b5f3812be42b2da7b8aa99410bd4dc1"),
-                hex: "b7d648b92c57ff6d22ad5eb50de103461b5f3812be42b2da7b8aa99410bd4dc1",
-              }))
-              navigate('Chats')}}>
+                if (privateKey.length != 64) {
+                  document.getElementById("input-status").style.color = "red";
+                  console.log("wrong length")
+                }
+                else {
+                  document.getElementById("input-status").style.color = "transparent";
+                  let uint8;
+                  let hex = privateKey;
+                  try {
+                    uint8 = hexToBytes(hex);
+                    AsyncStorage.setItem("privateKey", JSON.stringify({
+                      uint8: uint8,
+                      hex: hex,
+                    }))
+                    setPrivateKey("")
+                    navigate('Chats')
+                  }
+                  //b7d648b92c57ff6d22ad5eb50de103461b5f3812be42b2da7b8aa99410bd4dc1
+                  catch(e) {
+                    document.getElementById("input-status").style.color = "red";
+                    console.log("not a hex key")
+                  }
+                }
+              }}>
+              
               <Text style={styles.loginButton}>Login</Text>
             </Pressable>
           </View>
@@ -144,6 +167,12 @@ const Login = () => {
     )
 }
 const styles =  {
+  inputStatus: {
+    color: "transparent",
+    paddingBottom: 10,
+    justifyContent: 'center',
+    display: "flex"
+  },
   container: {
     flex: 1,
     backgroundColor: '#FF',

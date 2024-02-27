@@ -8,14 +8,12 @@ export default function initPool() {
 
 // returns an array containing the urls to our preferred relays
 let relays = [
-  "wss://relay.damus.io",
-  "wss://nostr-pub.wellorder.net",
-  "wss://nostr.mom",
-  "wss://nostr.slothy.win" ,
+  "wss://relay1.nostrchat.io",
+  "wss://relay2.nostrchat.io"
 ]
 
 export function getRelays() {
-  return relays   // TODO: get form storage
+  return relays;   // TODO: get form storage
 }
 
 // possible types are: online, offline, public, paid
