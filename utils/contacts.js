@@ -6,9 +6,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default async function queryContacts(func) {
   const ndk = new NDK({
-    explicitRelayUrls: getRelays()
+    explicitRelayUrls: getRelays("contacts")
   })
-  await ndk.connect()
+  await ndk.connect();
 
   ndk.subscribe({
     kinds:[3],
@@ -16,29 +16,13 @@ export default async function queryContacts(func) {
   }).on("event", (e) => { 
     func(e) 
   })
-
-  /*
-  return relayPool.subscribeMany(
-    getRelays(),
-    [{
-      kinds: [3],
-      authors: [await getPublicKeyHex()],
-    }],
-    {
-      onevent(e) {
-        func(e)
-      },
-      oneose() {
-        relayPool.close(getRelays());
-      }
-    }
-  )*/
 }
 
 export async function getContactDataFromKey(npub, func) {
   const ndk = new NDK({
-    explicitRelayUrls: getRelays()
+    explicitRelayUrls: getRelays("meta")
   })
+
   await ndk.connect()
 
   ndk.subscribe({
@@ -66,42 +50,21 @@ export async function saveContactsToRelays() {
 
   let sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
   let ndk = new NDK({
-    explicitRelayUrls: getRelays(),
+    explicitRelayUrls: getRelays("contacts"),
     signer: sig
   })
+
+  await ndk.connect();
 
   let event = new NDKEvent(ndk)
   event.kind = 3
   event.pubkey = await getPublicKeyHex()
   event.created_at = Math.floor(Date.now() / 1000)
   event.tags = relayContacts
-  event.content = ""
+  event.content = "update contacts"
 
   await event.sign()
-  event.publish()
-  /*
-  
-  let event = {
-    kind: 3,
-    author: await getPublicKeyHex(),
-    created_at: Math.floor(Date.now() / 1000),
-    tags: relayContacts,
-    content:"",
-  }
-
-  const signedEvent = finalizeEvent(event, await getPrivateKeyHex());
-  try {
-    relayPool.publish(getRelays(), signedEvent);
-  }
-  catch(e) {
-    console.log(e);
-  }
-}
-
-export async function loadContactsFromRelays() {
-  queryContacts((event) => {
-    saveContactsToStorage(event.tags)
-  })*/
+  await event.publish()
 }
 
 export async function addContact(npub, nickname) {

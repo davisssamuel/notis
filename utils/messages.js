@@ -24,9 +24,11 @@ export async function send(message, theirPublicKey) {
 
     let sig = new NDKPrivateKeySigner(privateKey)
     let ndk = new NDK({
-        explicitRelayUrls: getRelays(),
+        explicitRelayUrls: getRelays("messages"),
         signer: sig
     })
+
+    await ndk.connect();
 
     let event = new NDKEvent(ndk);
     event.kind = 4;
@@ -36,7 +38,7 @@ export async function send(message, theirPublicKey) {
     event.content = encryptedMessage;
 
     await event.sign();
-    event.publish();
+    await event.publish();
 
 }
 

@@ -7,12 +7,33 @@ export default function initPool() {
 }
 
 // returns an array containing the urls to our preferred relays
-let relays = [
-  "wss://purplepag.es",
+let metaRelays = [
+    "wss://relay.damus.io",
+    "wss://relay1.nostrchat.io",
+    "wss://relay2.nostrchat.io",
+    "wss://relay.snort.social",
 ]
 
-export function getRelays() {
-  return relays;   // TODO: get form storage
+let contactsRelays = [
+    "ws://163.11.236.128:4848",
+]
+
+let messagesRelays = [
+    "ws://163.11.236.128:4848",
+]
+
+
+export function getRelays(type) {
+    if (type == "meta") {
+        return metaRelays;
+    }
+    else if (type == "contacts") {
+        return contactsRelays;
+    }
+    else if (type == "messages") {
+        return messagesRelays
+    }
+    return null;
 }
 
 // possible types are: online, offline, public, paid

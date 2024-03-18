@@ -10,6 +10,7 @@ import getPrivateKeyHex, { getPrivateKeyArray, getPublicKeyHex, getPublicKeyArra
 import getContactsListener, { addContact, deleteContact, getContactDataFromKey, saveContactsToRelays } from "../utils/contacts";
 import { getAllRelaysFromAPI, getRelays } from "../utils/relays";
 import { decrypt, receive, send } from "../utils/messages";
+import queryContacts from "../utils/contacts";
 const chats = jsonData;
 
 export default function ChatsScreen() {
@@ -18,10 +19,8 @@ export default function ChatsScreen() {
   //addContact(bechToHex("npub107krzcztxmzr9654v30t7afmtptwf3ux0nygdunldn3ga2w8q56sq6yp9y"),"NotisC");
   //deleteContact(bechToHex("npub1uqj8jgd5uch8srmwxzvj5u6wzl0fc2vuzd8euwgj7rllhz6aagdslf3lxy"))
   //deleteContact(bechToHex("npub107krzcztxmzr9654v30t7afmtptwf3ux0nygdunldn3ga2w8q56sq6yp9y"))
-  //saveContactsToRelays()
-  //send("Hi Mom! :)", bechToHex("npub1uqj8jgd5uch8srmwxzvj5u6wzl0fc2vuzd8euwgj7rllhz6aagdslf3lxy"))
-  
-  receive(bechToHex("npub10qvf7wj98tj7x8pgjjjda402h4eh4e3y720ud98g0w6t259f4eqsu50pe7"), (e) => {
+  //saveContactsToRelays();
+  queryContacts((e) => {
     console.log(e)
   })
   
