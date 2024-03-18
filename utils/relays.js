@@ -8,8 +8,7 @@ export default function initPool() {
 
 // returns an array containing the urls to our preferred relays
 let relays = [
-  "wss://relay1.nostrchat.io",
-  "wss://relay2.nostrchat.io"
+  "wss://purplepag.es",
 ]
 
 export function getRelays() {
