@@ -24,7 +24,7 @@ const Contact = ({ contact }) => {
       <Image
         style={styles.image}
         source={{
-          uri:getContactFromKey(contact.id).image
+          uri:contact.image
         }}
       />
       <View style={styles.contactDetails}>
@@ -36,7 +36,7 @@ const Contact = ({ contact }) => {
                 : styles.contactNameLight
             }
           >
-          {contact.name}
+          {contact.nickname}
           </Text>
           <View style={{ width: 100, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text
@@ -48,7 +48,7 @@ const Contact = ({ contact }) => {
                 
             }}
           >           
-            {contact.lastMessage}  
+            {}  
           </Text>
           <Ionicons name="ios-chevron-forward" size={18} color="gainsboro" />
         </View>
@@ -60,7 +60,7 @@ const Contact = ({ contact }) => {
               : styles.statusLight
           }
         >
-          {contact.status}
+          {contact.description}
         </Text>
       </View>
     </Pressable>

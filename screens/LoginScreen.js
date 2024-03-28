@@ -1,9 +1,14 @@
 import * as React from "react";
 import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
-import { generatePrivateKey, getPublicKey} from 'nostr-tools';
+import { generateSecretKey, getPublicKey, nip19} from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import getPrivateKeyBech, { getPrivateKeyHex, hexToBech, setPrivateKeyHex } from "../utils/keys";
+import { decode } from "punycode";
+
+import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import getContactsListener from "../utils/contacts";
  
 const Login = () => {
   const { navigate }  = useNavigation();
@@ -23,7 +28,7 @@ const Login = () => {
 
   const copyKey = async () => {
     try {
-      await Clipboard.setStringAsync(privateKey);
+      await Clipboard.setStringAsync(privateKey.hex);
       copyPopup('Copied!');
       console.log('Copied!');
     }
@@ -32,11 +37,11 @@ const Login = () => {
       console.error('Copy Error!')
     }
   }
-
+  /*
   React.useEffect(() => {
     const loadPrivateKey = async () => {
       const generated_sk = await AsyncStorage.getItem('privateKey');
-      if(generated_sk){
+      if(generated_sk) {
         setPrivateKey(generated_sk);
         const pk = getPublicKey(generated_sk);
         setPublicKey(pk);
@@ -44,21 +49,17 @@ const Login = () => {
     };
       loadPrivateKey();
   }, []);
-
+  */
   const generateKeys = async () => {
     try {
-      let sk = await AsyncStorage.getItem('privateKey');
-      if(!sk) {
-        sk = await generatePrivateKey();
-        await AsyncStorage.setItem('privateKey', sk)
-      }
-      if(sk){
-        const pk = getPublicKey(sk);
-        setPrivateKey(sk);
-        setPublicKey(pk);
-        toggleModal();
-      }
-    } 
+      const sk = generateSecretKey();
+      const skHex = bytesToHex(sk);
+      setPrivateKey({
+        "uint8": sk,
+        "hex": skHex,
+      });
+      toggleModal();
+    }
     catch (error) {
       console.error("Error generating keys:", error);
     }
@@ -79,10 +80,37 @@ const Login = () => {
             style={styles.key}
             placeholder="> Private Key"
             placeholderTextColor="black"
+            onChangeText={(inp) => setPrivateKey(inp)}
             />
           </View>
+          <Text id="input-status" style={styles.inputStatus}>Invalid Key</Text>
           <View style = {styles.button}>
-            <Pressable onPress={() => navigate('Chats')}> 
+            <Pressable onPress={async () => {
+                if (privateKey.length != 64) {
+                  document.getElementById("input-status").style.color = "red";
+                  console.log("wrong length")
+                }
+                else {
+                  document.getElementById("input-status").style.color = "transparent";
+                  let uint8;
+                  let hex = privateKey;
+                  try {
+                    uint8 = hexToBytes(hex);
+                    AsyncStorage.setItem("privateKey", JSON.stringify({
+                      uint8: uint8,
+                      hex: hex,
+                    }))
+                    setPrivateKey("")
+                    navigate('Chats')
+                  }
+                  //b7d648b92c57ff6d22ad5eb50de103461b5f3812be42b2da7b8aa99410bd4dc1
+                  catch(e) {
+                    document.getElementById("input-status").style.color = "red";
+                    console.log("not a hex key")
+                  }
+                }
+              }}>
+              
               <Text style={styles.loginButton}>Login</Text>
             </Pressable>
           </View>
@@ -102,7 +130,7 @@ const Login = () => {
                 <View style={styles.popup}>
                   <View style={styles.popupBar}>
                     <ScrollView horizontal = {true} style={styles.popupKeys}>
-                      <Text style = {styles.popupKey}>{privateKey}</Text>
+                      <Text style = {styles.popupKey}>{privateKey.hex}</Text>
                     </ScrollView>
                     <Pressable style={styles.popupCopy} onPress = {copyKey}>
                       <Text style={styles.popupText}>Copy</Text>
@@ -113,7 +141,10 @@ const Login = () => {
                     <Pressable style = {styles.popupButtons} onPress = {toggleModal}>
                       <Text style = {styles.popupText}>Close</Text>
                     </Pressable>
-                    <Pressable style = {styles.popupButtons} onPress = {() => {toggleModal();navigate('Chats'); }}>
+                    <Pressable style = {styles.popupButtons} onPress = {async () => {
+                      await AsyncStorage.setItem('privateKey', JSON.stringify(privateKey));
+                      toggleModal();
+                      navigate('Chats'); }}>
                       <Text style = {styles.popupText}>Login</Text>
                     </Pressable>
                   </View>
@@ -136,6 +167,12 @@ const Login = () => {
     )
 }
 const styles =  {
+  inputStatus: {
+    color: "transparent",
+    paddingBottom: 10,
+    justifyContent: 'center',
+    display: "flex"
+  },
   container: {
     flex: 1,
     backgroundColor: '#FF',
