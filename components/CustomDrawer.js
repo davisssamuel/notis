@@ -1,10 +1,35 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, useColorScheme, Button, Pressable } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, StyleSheet, useColorScheme, NativeModules } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import profileData from "../data/profile.json"
-import { removeLogin } from "../utils/keys";
+import { getPublicKeyHex, removeLogin } from "../utils/keys";
+import queryMeta from "../utils/meta";
 
 export default function CustomDrawer(props) {
+
+    const ReloadModule = NativeModules.ReloadModule;
+
+    const [imageURL, setImageURL] = useState("")
+    const [name, setName] = useState("")
+
+    useEffect(() => {
+        const f = async () => {
+            const data = await queryMeta()
+            if (Object.keys(data).includes("image")) {
+                setImageURL(data.image)
+            }
+            else {
+                setImageURL("https://api.dicebear.com/8.x/identicon/svg?seed=" + await getPublicKeyHex())
+            }
+            if (Object.keys(data).includes("name")) {
+                setName(data.name)
+            }
+            else {
+                setName(await getPublicKeyHex())
+            }
+        }
+        f();
+    })
 
     // filter out "logout" prop
     const { state, ...rest } = props;
@@ -16,8 +41,8 @@ export default function CustomDrawer(props) {
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView>
         <View style={styles.profileWrapper}>
-          <Image source={{uri:profileData.image}} style={styles.profileImage}></Image>
-          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{profileData.name}</Text>
+          <Image source={{uri:imageURL}} style={styles.profileImage}></Image>
+          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{name}</Text>
         </View>
         {newState.routes.map((route, index) => (
             <DrawerItem
