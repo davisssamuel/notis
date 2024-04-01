@@ -6,34 +6,13 @@ export default function initPool() {
   relayPool = new SimplePool()
 }
 
-// returns an array containing the urls to our preferred relays
-let metaRelays = [
-    "wss://relay.damus.io",
-    "wss://relay1.nostrchat.io",
-    "wss://relay2.nostrchat.io",
-    "wss://relay.snort.social",
-]
-
-let contactsRelays = [
-    "ws://163.11.236.128:4848",
-]
-
-let messagesRelays = [
+let relays = [
     "ws://163.11.236.128:4848",
 ]
 
 
 export function getRelays(type) {
-    if (type == "meta") {
-        return metaRelays;
-    }
-    else if (type == "contacts") {
-        return contactsRelays;
-    }
-    else if (type == "messages") {
-        return messagesRelays
-    }
-    return null;
+    return relays;
 }
 
 // possible types are: online, offline, public, paid

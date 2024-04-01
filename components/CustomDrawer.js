@@ -1,9 +1,16 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, useColorScheme } from "react-native";
-import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+import { View, Text, Image, StyleSheet, useColorScheme, Button, Pressable } from "react-native";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import profileData from "../data/profile.json"
+import { removeLogin } from "../utils/keys";
 
 export default function CustomDrawer(props) {
+
+    // filter out "logout" prop
+    const { state, ...rest } = props;
+    const newState = { ...state };
+    newState.routes = newState.routes.filter(item => item.name !== 'Logout');
+
   const currentTheme = useColorScheme();
   return (
     <View style={{ flex: 1 }}>
@@ -12,7 +19,23 @@ export default function CustomDrawer(props) {
           <Image source={{uri:profileData.image}} style={styles.profileImage}></Image>
           <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{profileData.name}</Text>
         </View>
-        <DrawerItemList {...props}></DrawerItemList>
+        {newState.routes.map((route, index) => (
+            <DrawerItem
+                key={route.key}
+                label={route.name}
+                onPress={() => props.navigation.navigate(route.name)}
+            />
+        ))}
+
+        <DrawerItem 
+            onPress={() => {
+                removeLogin();
+                props.navigation.navigate("Logout")
+            }}
+            key={"Logout"}
+            label={"Logout"}
+        />
+        
       </DrawerContentScrollView>
     </View>
   );
@@ -41,5 +64,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "black",
+  },
+  button: {
+    backgroundColor: "red"
   },
 });

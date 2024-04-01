@@ -4,7 +4,7 @@ import { generateSecretKey, getPublicKey, nip19} from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import getPrivateKeyBech, { getPrivateKeyHex, hexToBech, setPrivateKeyHex } from "../utils/keys";
+import getPrivateKeyBech, { getPrivateKeyHex, hexToBech, loggedIn, setPrivateKeyHex } from "../utils/keys";
 import { decode } from "punycode";
 
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
@@ -37,19 +37,6 @@ const Login = () => {
       console.error('Copy Error!')
     }
   }
-  /*
-  React.useEffect(() => {
-    const loadPrivateKey = async () => {
-      const generated_sk = await AsyncStorage.getItem('privateKey');
-      if(generated_sk) {
-        setPrivateKey(generated_sk);
-        const pk = getPublicKey(generated_sk);
-        setPublicKey(pk);
-      }
-    };
-      loadPrivateKey();
-  }, []);
-  */
   const generateKeys = async () => {
     try {
       const sk = generateSecretKey();
@@ -68,6 +55,16 @@ const Login = () => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+
+  // if we already have a key in storage, log in.
+  React.useEffect(() => {
+    const f = async () => {
+        if (await loggedIn()) {
+            navigate("Chats");
+        }
+    }
+    f()
+  }, [])
 
     return(
       <View style={styles.container}>

@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default async function queryContacts(func) {
   const ndk = new NDK({
-    explicitRelayUrls: getRelays("contacts")
+    explicitRelayUrls: getRelays()
   })
   await ndk.connect();
 
@@ -20,7 +20,7 @@ export default async function queryContacts(func) {
 
 export async function getContactDataFromKey(npub, func) {
   const ndk = new NDK({
-    explicitRelayUrls: getRelays("meta")
+    explicitRelayUrls: getRelays()
   })
 
   await ndk.connect()
@@ -50,7 +50,7 @@ export async function saveContactsToRelays() {
 
   let sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
   let ndk = new NDK({
-    explicitRelayUrls: getRelays("contacts"),
+    explicitRelayUrls: getRelays(),
     signer: sig
   })
 

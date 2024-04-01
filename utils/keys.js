@@ -29,6 +29,13 @@ export async function getPublicKeyArray() {
   return hexToBytes(await getPublicKeyHex());
 }
 
+export async function removeLogin() {
+    AsyncStorage.removeItem("privateKey")
+}
+export async function loggedIn() {
+    return await AsyncStorage.getItem("privateKey") != null;
+}
+
 export function bechToHex(bechKey) {
   return nip19.decode(bechKey).data
 }

@@ -24,7 +24,7 @@ export async function send(message, theirPublicKey) {
 
     let sig = new NDKPrivateKeySigner(privateKey)
     let ndk = new NDK({
-        explicitRelayUrls: getRelays("messages"),
+        explicitRelayUrls: getRelays(),
         signer: sig
     })
 
