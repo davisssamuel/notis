@@ -7,8 +7,6 @@ import queryMeta from "../utils/meta";
 
 export default function CustomDrawer(props) {
 
-    const ReloadModule = NativeModules.ReloadModule;
-
     const [imageURL, setImageURL] = useState("")
     const [name, setName] = useState("")
 
@@ -25,7 +23,7 @@ export default function CustomDrawer(props) {
                 setName(data.name)
             }
             else {
-                setName(await getPublicKeyHex())
+                setName("notis profile")
             }
         }
         f();

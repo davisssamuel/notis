@@ -10,16 +10,18 @@ const contacts = jsonData;
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import contactsList from "../data/contacts.json"
+import { setPage } from "../utils/statePersistence";
 
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState([])
 
   useEffect(() => {
-    async function f() {
-      let c = await getContactsFromStorage()
-      setContacts(c)
-    }
-    f()
+        async function f() {
+            setPage("Contacts");
+            let c = await getContactsFromStorage()
+            setContacts(c)
+        }
+        f()
   }, [])
 
   return (

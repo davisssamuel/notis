@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import getPrivateKeyBech, { getPrivateKeyHex, hexToBech, loggedIn, setPrivateKeyHex } from "../utils/keys";
-import { decode } from "punycode";
+import getPage, { setPage } from "../utils/statePersistence";
 
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import getContactsListener from "../utils/contacts";
@@ -60,7 +60,10 @@ const Login = () => {
   React.useEffect(() => {
     const f = async () => {
         if (await loggedIn()) {
-            navigate("Chats");
+            navigate(await getPage());
+        }
+        else {
+            setPage("Logout");
         }
     }
     f()

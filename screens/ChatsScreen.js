@@ -11,9 +11,17 @@ import { getAllRelaysFromAPI, getRelays } from "../utils/relays";
 import { decrypt, receive, send } from "../utils/messages";
 import queryContacts from "../utils/contacts";
 import queryMeta, { setMetaDescription, setMetaName, setMetaImage } from "../utils/meta";
+import { setPage } from "../utils/statePersistence";
 const chats = jsonData;
 
 export default function ChatsScreen() {
+
+    useEffect(() => {
+        const f = async () => {
+            setPage("Chats");
+        }
+        f()
+    }, [])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
