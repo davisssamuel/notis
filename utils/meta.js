@@ -20,6 +20,21 @@ export default async function queryMeta() {
     return usr.profile
 }
 
+export async function queryMetaFromKey(npub) {
+    const ndk = new NDK({
+        explicitRelayUrls: getRelays(),
+    })
+    await ndk.connect();
+
+    const usr = await ndk.getUser({
+        pubkey: npub
+    })
+
+    await usr.fetchProfile();
+
+    return usr.profile
+}
+
 export async function setMetaImage(url) {
     const sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
     const ndk = new NDK({

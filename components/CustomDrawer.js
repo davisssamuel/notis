@@ -4,6 +4,8 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import profileData from "../data/profile.json"
 import { getPublicKeyHex, removeLogin } from "../utils/keys";
 import queryMeta from "../utils/meta";
+import { setPage } from "../utils/statePersistence";
+import { wipeContacts } from "../utils/contacts";
 
 export default function CustomDrawer(props) {
 
@@ -46,13 +48,17 @@ export default function CustomDrawer(props) {
             <DrawerItem
                 key={route.key}
                 label={route.name}
-                onPress={() => props.navigation.navigate(route.name)}
+                onPress={() => {
+                    props.navigation.navigate(route.name)
+                    setPage(route.name)
+                }}
             />
         ))}
 
         <DrawerItem 
             onPress={() => {
                 removeLogin();
+                wipeContacts();
                 props.navigation.navigate("Logout")
             }}
             key={"Logout"}

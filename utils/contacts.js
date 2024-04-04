@@ -3,6 +3,7 @@ import { SimplePool, finalizeEvent } from "nostr-tools";
 import { getRelays, relayPool } from "./relays";
 import NDK, { NDKPrivateKeySigner, NDKEvent } from "@nostr-dev-kit/ndk";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { queryMetaFromKey } from "./meta";
 
 export default async function queryContacts(func) {
   const ndk = new NDK({
@@ -18,27 +19,12 @@ export default async function queryContacts(func) {
   })
 }
 
-export async function getContactDataFromKey(npub, func) {
-  const ndk = new NDK({
-    explicitRelayUrls: getRelays()
-  })
-
-  await ndk.connect()
-
-  ndk.subscribe({
-    kinds:[0],
-    authors:[npub]
-  }).on("event", (e) => { 
-    func(JSON.parse(e.content)) 
-  })
-}
-
 export async function getContactsFromStorage() {
   return JSON.parse(await AsyncStorage.getItem("contactsList"));
 }
 
-export async function saveContactsToStorage(tagsList) {
-  AsyncStorage.setItem("contactsList", JSON.stringify(tagsList));
+export async function saveContactsToStorage(contactsList) {
+  AsyncStorage.setItem("contactsList", JSON.stringify(contactsList));
 }
 
 export async function saveContactsToRelays() {
@@ -68,17 +54,18 @@ export async function saveContactsToRelays() {
 }
 
 export async function addContact(npub, nickname) {
-  if (await AsyncStorage.getItem("contactsList") == null) {
-    await AsyncStorage.setItem("contactsList", JSON.stringify([]))
-  }
-  let contacts = JSON.parse(await AsyncStorage.getItem("contactsList"));
-  getContactDataFromKey(npub, (data) => {
+    if (await AsyncStorage.getItem("contactsList") == null) {
+        await AsyncStorage.setItem("contactsList", JSON.stringify([]))
+    }
+    let contacts = JSON.parse(await AsyncStorage.getItem("contactsList"));
+    let data = await queryMetaFromKey(npub)
     let contactObj = {
       pubkey: npub,
       name: data.name,
       nickname: nickname,
       description: data.about,
-      image: data.picture
+      banner: data.banner,
+      image: data.image
     }
 
     let inList = false;
@@ -94,13 +81,16 @@ export async function addContact(npub, nickname) {
       saveContactsToStorage(contacts);
       saveContactsToRelays();
     }
-  })
 }
 
 export async function deleteContact(npub) {
   let contacts = await getContactsFromStorage()
-  contacts = contacts.filter(contact => contact[1] !== npub);
+  contacts = contacts.filter(contact => contact.pubkey !== npub);
   await saveContactsToStorage(contacts);
+}
+
+export async function wipeContacts() {
+    await AsyncStorage.setItem("contactsList", JSON.stringify([]))
 }
 
 export async function editNickName(npub, nickname) {

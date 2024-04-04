@@ -18,22 +18,22 @@ export default function ChatsScreen() {
 
     useEffect(() => {
         const f = async () => {
-            setPage("Chats");
+            
         }
         f()
     }, [])
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <FlatList
-        data={chats}
-        renderItem={({ item }) => {
-          return <Chat chat={item} />;
-        }}
-        keyExtractor={(item) => item.id}
-        style={{ paddingHorizontal: 16 }}
-        contentInsetAdjustmentBehavior="automatic"
-      />
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+        <FlatList
+            data={chats}
+            renderItem={({ item }) => {
+            return <Chat chat={item} />;
+            }}
+            keyExtractor={(item) => item.id}
+            style={{ paddingHorizontal: 16 }}
+            contentInsetAdjustmentBehavior="automatic"
+        />
+        </SafeAreaView>
+    );
 }

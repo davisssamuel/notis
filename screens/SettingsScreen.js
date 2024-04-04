@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
-import { View, ScrollView, Text, Switch, TextInput, Pressable, Image, StyleSheet, useColorScheme } from "react-native";
+import { View, ScrollView, Text, Switch, TextInput, Pressable, Image, StyleSheet, useColorScheme, Modal } from "react-native";
 import { Ionicons, MaterialCommunityIcons, Entypo, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import profileData from "../data/profile.json"
 import QRCode from 'react-native-qrcode-svg'
-import { getPublicKeyHex } from "../utils/keys";
+import getPrivateKeyHex, { getPublicKeyHex } from "../utils/keys";
 import queryMeta, { setAllMeta, setMetaBanner, setMetaBio, setMetaImage, setMetaName } from "../utils/meta";
 import { setPage } from "../utils/statePersistence";
+import * as Clipboard from 'expo-clipboard';
 
 export default function SettingsScreen() {
   const navigation = useNavigation();
   const currentTheme = useColorScheme();
 
+  const [ispopupVisible, setPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupSubMessage, setPopupSubMessage] = useState("");
+
   const [pk, setPK] = useState("")
+  const [privK, setPrivK] = useState("")
   const [imageURL, setImageURL] = useState("")
   const [name, setName] = useState("")
   const [bio, setBio] = useState("")
@@ -25,22 +31,34 @@ export default function SettingsScreen() {
 
   useEffect(() => {
     const f = async () => {
-        setPage("Settings");
-        let key = await getPublicKeyHex();
-        setPK(key)
+        let pubKey = await getPublicKeyHex();
+        setPK(pubKey)
+        let privKey = await getPrivateKeyHex();
+        setPrivK(privKey)
+
         let data = await queryMeta();
 
         console.log(data)
         if (Object.keys(data).includes("image")) {
-            setImageURL(data.image)
-            setEditedImageURL(data.image)
+            if (data.image != "") {
+                setImageURL(data.image)
+                setEditedImageURL(data.image)
+            }
+            else {
+                setImageURL("https://api.dicebear.com/8.x/identicon/svg?seed=" + await getPublicKeyHex())
+            }
         }
         else {
             setImageURL("https://api.dicebear.com/8.x/identicon/svg?seed=" + await getPublicKeyHex())
         }
         if (Object.keys(data).includes("name")) {
-            setName(data.name)
-            setEditedName(data.name)
+            if (data.name != "") {
+                setName(data.name)
+                setEditedName(data.name)
+            }
+            else {
+                setName("notis profile")
+            }
         }
         else {
             setName("notis profile")
@@ -53,15 +71,30 @@ export default function SettingsScreen() {
             setBio("notis bio")
         }
         if (Object.keys(data).includes("banner")) {
-            setBannerURL(data.banner)
-            setEditedBannerURL(data.banner)
+            if (data.banner != "") {
+                setBannerURL(data.banner)
+                setEditedBannerURL(data.banner)
+            }
+            else {
+                setBannerURL("https://t4.ftcdn.net/jpg/05/71/83/47/360_F_571834789_ujYbUnH190iUokdDhZq7GXeTBRgqYVwa.jpg")
+            }
         }
         else {
             setBannerURL("https://t4.ftcdn.net/jpg/05/71/83/47/360_F_571834789_ujYbUnH190iUokdDhZq7GXeTBRgqYVwa.jpg")
         }
     }
     f();
-  }, []) 
+  }, [])
+
+  const setPopup = (message, subMessage, timeout) => {
+        setPopupVisible(true);
+        setPopupMessage(message);
+        setPopupSubMessage(subMessage);
+        setTimeout(() => {
+            setPopupVisible(false);
+        }, timeout);
+        setPopupVisible(true);
+  }
   
   return (
 
@@ -72,8 +105,9 @@ export default function SettingsScreen() {
         <Image style={styles.profileImage} source={{uri: imageURL}} />
         <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{name}</Text>
         <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameLight}>{bio}</Text>
-        <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
 
+        <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+            <Text style={styles.settingsTitle}>Public Data</Text>
             <View style={styles.setting}>
                 <View style={styles.settingLeft}>
                     <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameLight}>Name: </Text>
@@ -132,8 +166,11 @@ export default function SettingsScreen() {
             </View>
             <View style={styles.setting}>
                 <Pressable style={styles.centerButton} onPress={() => {
-                    setAllMeta(editedName, editedBio, editedImageURL, editedBannerURL);
-                    navigation.navigate("SettingsScreen", { refreshTimeStamp: new Date().toISOString() });
+                    setAllMeta(editedName, editedBio, editedImageURL, editedBannerURL).then(() => {
+                        setPopup("Saved!", "Refresh the page to see changes", 2500)
+                    }).catch(() => {
+                        setPopup("Error Saving", "", 2500)
+                    })
                     }}>
                     <Text style={{color:"inherit"}}>Save</Text>
                 </Pressable>
@@ -141,15 +178,28 @@ export default function SettingsScreen() {
         </View>
 
         <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
-
-            {/* KEYS */}
+            <Text style={styles.settingsTitle}>Keys</Text>
             <View style={styles.setting}>
-                <View style={styles.settingLeft}>
-                {/* <View style={[styles.settingImage, styles.keysImage]}>
-                    <Ionicons name="at" size={32} color="white" />
-                </View> */}
-                <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameLight}>Keys</Text>
-                </View>
+                <Pressable style={styles.keyButton} onPress={() => {
+                    Clipboard.setStringAsync(pk).then(() => {
+                        setPopup("Copied!", "", 1500)
+                    }).catch(() => {
+                        setPopup("Error Copying", "", 2500)
+                    })
+                }}>
+                    <Text style={{color:"inherit", fontWeight: "inherit"}}>Copy Public Key</Text>
+                </Pressable>
+            </View>
+            <View style={styles.setting}>
+                <Pressable style={styles.keyButton} onPress={() => {
+                    Clipboard.setStringAsync(privK).then(() => {
+                        setPopup("Copied!", "", 1500)
+                    }).catch(() => {
+                        setPopup("Error Copying", "", 2500)
+                    })
+                }}>
+                    <Text style={{color:"inherit", fontWeight: "inherit"}}>Copy Private Key</Text>
+                </Pressable>
             </View>
         </View>
 
@@ -159,7 +209,21 @@ export default function SettingsScreen() {
         <View style={styles.qrCodeWrapper}>    
             <Image style={styles.qrCode} source={{uri: pk == "" ? "loading" : "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + pk}}></Image>
         </View>
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={ispopupVisible}
+          onRequestClose={() => setPopupVisible(false)}
+        >
+          <View style={styles.popup}>
+            <View style={styles.popupView}>
+                <Text style={styles.popupText}>{popupMessage}</Text>
+                <Text style={styles.popupSubText}>{popupSubMessage}</Text>
+            </View>
+          </View>
+        </Modal>
     </ScrollView>
+    
   );
 }
 
@@ -168,9 +232,9 @@ const styles = StyleSheet.create({
     //paddingHorizontal: 15,
   },
   profileImage: {
-    marginTop: -40,
-    width: 100,
-    height: 100,
+    marginTop: -55,
+    width: 130,
+    height: 130,
     borderRadius: 100,
     alignSelf: "center",
   },
@@ -281,9 +345,10 @@ const styles = StyleSheet.create({
   },
 
   nickNameDark: {
-    marginTop: 10,
-    marginBottom:0,
+    width: "90%",
+    marginVertical: 10,
     alignSelf: "center",
+    textAlign: "center",
     
     // FONT
     fontSize: 15,
@@ -310,11 +375,51 @@ const styles = StyleSheet.create({
   },
   centerButton: {
     color: "#FFF",
-    backgroundColor: "#363",
+    backgroundColor: "#666",
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
     width: 100,
     marginLeft: "auto",
   },
+  keyButton: {
+    color: "#FFF",
+    backgroundColor: "#666",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    marginLeft: "auto",
+    fontWeight: "bold",
+  },
+  settingsTitle: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 20,
+    alignContent: "top",
+    justifyContent: "center",
+  },
+  popup: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  popupView: {
+    backgroundColor:"#999",
+    padding: 30,
+    borderRadius: 15,
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  popupText: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  popupSubText: {
+    color: 'white',
+    fontSize: 20,
+  }
 });

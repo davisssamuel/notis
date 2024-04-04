@@ -36,7 +36,7 @@ const Contact = ({ contact }) => {
                 : styles.contactNameLight
             }
           >
-          {contact.nickname}
+          {contact.nickname != "" ? contact.nickname : contact.name}
           </Text>
           <View style={{ width: 100, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text
@@ -60,7 +60,7 @@ const Contact = ({ contact }) => {
               : styles.statusLight
           }
         >
-          {contact.description}
+          {contact.about}
         </Text>
       </View>
     </Pressable>
