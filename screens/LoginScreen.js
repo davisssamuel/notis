@@ -60,7 +60,12 @@ const Login = () => {
   React.useEffect(() => {
     const f = async () => {
         if (await loggedIn()) {
-            navigate(await getPage());
+            if (await getPage() != "Logout") {
+                navigate(await getPage());
+            }
+            else {
+                navigate("Chats")
+            }
         }
         else {
             setPage("Logout");

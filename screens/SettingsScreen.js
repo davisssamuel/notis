@@ -193,7 +193,7 @@ export default function SettingsScreen() {
             <View style={styles.setting}>
                 <Pressable style={styles.keyButton} onPress={() => {
                     Clipboard.setStringAsync(privK).then(() => {
-                        setPopup("Copied!", "", 1500)
+                        setPopup("Copied!", "Do not share it with anyone", 2000)
                     }).catch(() => {
                         setPopup("Error Copying", "", 2500)
                     })
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   popupView: {
-    backgroundColor:"#999",
+    backgroundColor:"#777",
     padding: 30,
     borderRadius: 15,
     alignContent: "center",
