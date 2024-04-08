@@ -7,8 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loggedIn } from "../utils/keys";
 import getPage, { setPage } from "../utils/statePersistence";
 
-import warning from "../assets/images/warning.png"
-
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 
 const Login = () => {
@@ -142,13 +140,14 @@ const Login = () => {
                     </View>
                     <View style={styles.popupBody}>
                         <Text style={{color:"inherit", fontSize:"inherit", fontSize:"inherit", textAlign:"center"}}>Treat Your <strong>private key</strong> like a password...</Text>
-                        <Text style={{color:"inherit", fontSize:"inherit", fontSize:"inherit", textAlign:"center"}}><strong>Don't lose it</strong> and <strong>don't share it</strong> with anyone! </Text>
+                        <Text style={{color:"inherit", fontSize:"inherit", fontSize:"inherit", textAlign:"center"}}><strong style={{color:"#F66"}}>Don't lose it</strong> and <strong style={{color:"#F66"}}>don't share it</strong> with anyone! </Text>
+                        
                     </View>
                     <View style={styles.popupFooter}>
                         <Pressable style = {styles.popupButtons} onPress = {toggleModal}>
                             <Text style={{color:"inherit",fontWeight:"inherit"}}>Close</Text>
                         </Pressable>
-                        <Image style={styles.popupWarn} source={warning}></Image>
+                        
                         <Pressable style = {styles.popupButtons} onPress = {async () => {
                             await AsyncStorage.setItem('privateKey', JSON.stringify(privateKey));
                             toggleModal();
@@ -263,7 +262,7 @@ const styles =  {
     borderRadius: 8,
     paddingHorizontal: 5,
     borderWidth: 2,
-    borderColor: "#F00",
+    borderColor: "#F44",
     height: 30,
   },
   popupKey: {
@@ -287,8 +286,13 @@ const styles =  {
     gap: 10,
     alignItems: "center",
     marginVertical: 15,
-    fontSize: 16,
-    color: "#FFF"
+    fontSize: 18,
+    color: "#FFF",
+    backgroundColor: "#555",
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#000"
   },
   popupWarn: {
     width: 70,
