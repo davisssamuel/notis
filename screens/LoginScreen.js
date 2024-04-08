@@ -1,22 +1,23 @@
-import * as React from "react";
-import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
-import { generateSecretKey, getPublicKey, nip19} from 'nostr-tools';
+import { useEffect, useState } from 'react';
+import { View, Text, TextInput, ScrollView, Pressable, Modal, Image} from 'react-native';
+import { generateSecretKey } from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import getPrivateKeyBech, { getPrivateKeyHex, hexToBech, loggedIn, setPrivateKeyHex } from "../utils/keys";
+import { loggedIn } from "../utils/keys";
 import getPage, { setPage } from "../utils/statePersistence";
 
+import warning from "../assets/images/warning.png"
+
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
-import getContactsListener from "../utils/contacts";
- 
+
 const Login = () => {
   const { navigate }  = useNavigation();
-  const [privateKey, setPrivateKey] = React.useState("");
-  const [publicKey, setPublicKey] = React.useState("");
-  const [isModalVisible, setModalVisible] = React.useState(false);
-  const [ispopupVisible, setPopupVisible] = React.useState(false);
-  const [copyMessage, setCopyMessage] = React.useState(false);
+  const [privateKey, setPrivateKey] = useState("");
+  const [publicKey, setPublicKey] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [ispopupVisible, setPopupVisible] = useState(false);
+  const [copyMessage, setCopyMessage] = useState(false);
 
   const copyPopup = (message) => {
     setPopupVisible(true);
@@ -37,6 +38,7 @@ const Login = () => {
       console.error('Copy Error!')
     }
   }
+  
   const generateKeys = async () => {
     try {
       const sk = generateSecretKey();
@@ -57,7 +59,7 @@ const Login = () => {
   };
 
   // if we already have a key in storage, log in.
-  React.useEffect(() => {
+  useEffect(() => {
     const f = async () => {
         if (await loggedIn()) {
             if (await getPage() != "Logout") {
@@ -75,100 +77,102 @@ const Login = () => {
   }, [])
 
     return(
-      <View style={styles.container}>
-        <View style={styles.loginPage}>
-          <View style={styles.navBar}>
-            <Text style={styles.navName}>notis</Text>
-          </View>
-          <View style={styles.loginForm}>
-            <TextInput
-            style={styles.key}
-            placeholder="> Private Key"
-            placeholderTextColor="black"
-            onChangeText={(inp) => setPrivateKey(inp)}
-            />
-          </View>
-          <Text id="input-status" style={styles.inputStatus}>Invalid Key</Text>
-          <View style = {styles.button}>
-            <Pressable onPress={async () => {
+        <View style={styles.container}>
+            <View style={styles.loginPage}>
+            <View style={styles.navBar}>
+                <Text style={styles.navName}>notis</Text>
+            </View>
+            <View style={styles.loginForm}>
+                <TextInput
+                    style={styles.key}
+                    placeholder="Private Key"
+                    placeholderTextColor="gray"
+                    onChangeText={(inp) => setPrivateKey(inp)}
+                />
+            </View>
+            <Text id="input-status" style={styles.inputStatus}>Invalid Key</Text>
+            <Pressable style={styles.loginButton} onPress={async () => {
                 if (privateKey.length != 64) {
-                  document.getElementById("input-status").style.color = "red";
-                  console.log("wrong length")
+                    document.getElementById("input-status").style.color = "red";
+                    console.log("wrong length")
                 }
                 else {
-                  document.getElementById("input-status").style.color = "transparent";
-                  let uint8;
-                  let hex = privateKey;
-                  try {
-                    uint8 = hexToBytes(hex);
-                    AsyncStorage.setItem("privateKey", JSON.stringify({
-                      uint8: uint8,
-                      hex: hex,
-                    }))
-                    setPrivateKey("")
-                    navigate('Chats')
-                  }
-                  //b7d648b92c57ff6d22ad5eb50de103461b5f3812be42b2da7b8aa99410bd4dc1
-                  catch(e) {
-                    document.getElementById("input-status").style.color = "red";
-                    console.log("not a hex key")
-                  }
+                    document.getElementById("input-status").style.color = "transparent";
+                    let uint8;
+                    let hex = privateKey;
+                    try {
+                        uint8 = hexToBytes(hex);
+                        AsyncStorage.setItem("privateKey", JSON.stringify({
+                        uint8: uint8,
+                        hex: hex,
+                        }))
+                        setPrivateKey("")
+                        navigate('Chats')
+                    }
+                    catch(e) {
+                        document.getElementById("input-status").style.color = "red";
+                        console.log("not a hex key")
+                    }
                 }
-              }}>
-              
-              <Text style={styles.loginButton}>Login</Text>
+            }}>
+            
+            <Text style={{fontWeight: "inherit", color:"inherit", fontWeight: "inherit"}}>Login</Text>
             </Pressable>
-          </View>
-          <View style={styles.keyGen}>
-            <Pressable onPress ={generateKeys}>
-              <Text style={styles.generator}>generate a private key</Text>
-            </Pressable>
-            <Modal 
-              animationType = "none"
-              transparent = {true}
-              visible = {isModalVisible}
-              onRequestClose={() => {
-                setModalVisible(false);
-              }}
-            >
-              <View style={styles.popupContainer}>
-                <View style={styles.popup}>
-                  <View style={styles.popupBar}>
-                    <ScrollView horizontal = {true} style={styles.popupKeys}>
-                      <Text style = {styles.popupKey}>{privateKey.hex}</Text>
-                    </ScrollView>
-                    <Pressable style={styles.popupCopy} onPress = {copyKey}>
-                      <Text style={styles.popupText}>Copy</Text>
-                    </Pressable>
-                  </View>
-                  <Text>Remember to save the private key or you will lose your account!</Text>
-                  <View style={styles.popupFooter}>
-                    <Pressable style = {styles.popupButtons} onPress = {toggleModal}>
-                      <Text style = {styles.popupText}>Close</Text>
-                    </Pressable>
-                    <Pressable style = {styles.popupButtons} onPress = {async () => {
-                      await AsyncStorage.setItem('privateKey', JSON.stringify(privateKey));
-                      toggleModal();
-                      navigate('Chats'); }}>
-                      <Text style = {styles.popupText}>Login</Text>
-                    </Pressable>
-                  </View>
+            <View style={styles.keyGen}>
+                <Pressable style={styles.generator}onPress ={generateKeys}>
+                    <Text style={{fontWeight: "inherit", color:"inherit", fontWeight: "inherit"}}>generate a private key</Text>
+                </Pressable>
+                <Modal 
+                animationType = "none"
+                transparent = {true}
+                visible = {isModalVisible}
+                onRequestClose={() => {
+                    setModalVisible(false);
+                }}
+                >
+                <View style={styles.popupContainer}>
+                    <View style={styles.popup}>
+                    <View style={styles.popupBar}>
+                        <ScrollView horizontal = {true} style={styles.popupKeys}>
+                            <Text style = {styles.popupKey}>{privateKey.hex}</Text>
+                        </ScrollView>
+                        <Pressable style={styles.popupCopy} onPress = {copyKey}>
+                            <Text style={{color:"inherit",fontWeight:"inherit"}}>Copy</Text>
+                        </Pressable>
+                    </View>
+                    <View style={styles.popupBody}>
+                        <Text style={{color:"inherit", fontSize:"inherit", fontSize:"inherit", textAlign:"center"}}>Treat Your <strong>private key</strong> like a password...</Text>
+                        <Text style={{color:"inherit", fontSize:"inherit", fontSize:"inherit", textAlign:"center"}}><strong>Don't lose it</strong> and <strong>don't share it</strong> with anyone! </Text>
+                    </View>
+                    <View style={styles.popupFooter}>
+                        <Pressable style = {styles.popupButtons} onPress = {toggleModal}>
+                            <Text style={{color:"inherit",fontWeight:"inherit"}}>Close</Text>
+                        </Pressable>
+                        <Image style={styles.popupWarn} source={warning}></Image>
+                        <Pressable style = {styles.popupButtons} onPress = {async () => {
+                            await AsyncStorage.setItem('privateKey', JSON.stringify(privateKey));
+                            toggleModal();
+                            navigate('Chats');
+                        }}>
+                            <Text style={{color:"inherit",fontWeight:"inherit"}}>Login</Text>
+                        </Pressable>
+                    </View>
+                    </View>
                 </View>
-              </View>
+                </Modal>
+            </View>
+            </View>
+            <Modal
+                animationType="none"
+                transparent={true}
+                visible={ispopupVisible}
+                onRequestClose={() => setPopupVisible(false)}
+            >
+            <View style={styles.copyModal}>
+                <Text style={styles.copyText}>{copyMessage}</Text>
+            </View>
             </Modal>
-          </View>
         </View>
-        <Modal
-          animationType="none"
-          transparent={true}
-          visible={ispopupVisible}
-          onRequestClose={() => setPopupVisible(false)}
-        >
-          <View style={styles.copyModal}>
-            <Text style={styles.copyText}>{copyMessage}</Text>
-          </View>
-        </Modal>
-      </View>
     )
 }
 const styles =  {
@@ -208,28 +212,38 @@ const styles =  {
     borderRadius: 8,
   },
   loginButton: {
-    textAlign: 'center',
-    color: '#FF',
-    fontSize: 20,
+    color: "#FFF",
+    backgroundColor: "#666",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    marginLeft: "auto",
+    height: 35,
+    fontWeight: "bold",
   },
   key: {
-    margin: 5,
-    fontSize: 15,
-    
+    height: 35,
+    backgroundColor: "#444",
+    color: "#FFF",
+    borderRadius: 8,
+    paddingHorizontal: 5,
   },
   keyGen: {
     display: 'flex',
     borderRadius: 8,
     width: 'auto',
     height: 'auto',
-    
   },
   popupBar: {
     flexDirection: 'row',
   },
   generator: {
     textAlign: 'center',
-    color: 'white',
+    flex:1,
+    alignItems: "center",
+    marginTop: 10,
+    color: 'gray',
   },
   popupContainer: {
     flex: 1,
@@ -237,41 +251,66 @@ const styles =  {
     alignItems: 'center',
   },
   popup: {
-    width: '75%',
-    backgroundColor: 'grey',
-    padding: 20,
+    width: '75vw',
+    backgroundColor: '#777',
+    padding: 15,
     borderRadius: 10,
-    borderColor: '#FF',
-    borderWidth: 2,
   },
   popupKeys: {
-    flexDirection: 'row',
-    borderColor: '#FF',
+    height: 35,
+    backgroundColor: "#444",
+    color: "#FFF",
+    borderRadius: 8,
+    paddingHorizontal: 5,
     borderWidth: 2,
-    borderRadius: 3,
+    borderColor: "#F00",
+    height: 30,
   },
   popupKey: {
     color: 'white',
   },
   popupCopy: {
-    backgroundColor: 'white',
-    padding: 5,
-    borderRadius: 5,
+    color: "#FFF",
+    backgroundColor: "#666",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: 10,
+    height: 30,
+    width: 55,
+    fontWeight: "bold",
+    borderWidth: 2,
+    borderColor: "#000",
+  },
+  popupBody: {
+    flex:1,
+    gap: 10,
+    alignItems: "center",
+    marginVertical: 15,
+    fontSize: 16,
+    color: "#FFF"
+  },
+  popupWarn: {
+    width: 70,
+    height: 69,
   },
   popupFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginTop: "auto",
   },
   popupButtons: {
-    backgroundColor: 'white',
-    padding: 5,
-    borderRadius: 5,
-  },
-  popupText: {
-    color: 'black',
-    textAlign: 'center',
+    color: "#FFF",
+    backgroundColor: "#666",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 30,
+    width: 55,
+    fontWeight: "bold",
+    borderWidth: 2,
+    borderColor: "#000",
+    marginTop: "auto",
   },
   copyModal: {
     flex: 1,

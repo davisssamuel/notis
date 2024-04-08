@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
-import { View, ScrollView, Text, Switch, TextInput, Pressable, Image, StyleSheet, useColorScheme, Modal } from "react-native";
-import { Ionicons, MaterialCommunityIcons, Entypo, Foundation } from "@expo/vector-icons";
+import { View, ScrollView, Text, TextInput, Pressable, Image, StyleSheet, useColorScheme, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import profileData from "../data/profile.json"
-import QRCode from 'react-native-qrcode-svg'
 import getPrivateKeyHex, { getPublicKeyHex } from "../utils/keys";
-import queryMeta, { setAllMeta, setMetaBanner, setMetaBio, setMetaImage, setMetaName } from "../utils/meta";
-import { setPage } from "../utils/statePersistence";
+import queryMeta, { setAllMeta } from "../utils/meta";
 import * as Clipboard from 'expo-clipboard';
 
 export default function SettingsScreen() {
@@ -203,9 +199,6 @@ export default function SettingsScreen() {
             </View>
         </View>
 
-        {/* QR CODE 
-          <Image style={styles.qrCode} source={{uri: "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + profileData.id}}></Image>
-        */}
         <View style={styles.qrCodeWrapper}>    
             <Image style={styles.qrCode} source={{uri: pk == "" ? "loading" : "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + pk}}></Image>
         </View>
