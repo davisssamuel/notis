@@ -76,6 +76,7 @@ export default function ContactInfoScreen({ navigation, route }) {
           <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
               <View style={styles.setting}>
                   <Pressable style={styles.keyButton} onPress={() => {
+                        navigation.goBack()
                       navigation.navigate("Chats", {screen: "MessagingScreen", params: { pubkey: contact.pubkey }})
                   }}>
                       <Text style={{color:"inherit", fontWeight: "inherit"}}>Messages</Text>
