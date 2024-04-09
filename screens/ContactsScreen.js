@@ -11,7 +11,7 @@ import queryContacts from "../utils/contacts";
 import { queryMetaFromKey } from "../utils/meta";
 
 export default function ContactsScreen() {
-  const [contacts, setContacts] = useState([])
+  const [contacts, setContacts] = useState(null)
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [publicKey, setPublicKey ] = useState('');
@@ -57,6 +57,7 @@ export default function ContactsScreen() {
 
       return (
         <SafeAreaView style={{ flex: 1 }}>
+            <Text style={styles.blankList}>{contacts === null ? "Nothing to see here..." : null}</Text>
           <FlatList
             data={contacts}
             renderItem={({ item }) => {
@@ -112,6 +113,13 @@ export default function ContactsScreen() {
 }
 
 const styles = StyleSheet.create({
+    blankList: {
+        color: "gray",
+        marginHorizontal: "auto",
+        marginTop: 5,
+        marginBottom: -5,
+        fontSize: 17,
+    },
     popupContainer: {
       flex: 1,
       justifyContent: 'center',

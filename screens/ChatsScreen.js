@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView, FlatList, Pressable, Image, Text } from "react-native";
+import { SafeAreaView, FlatList, Pressable, Image, Text, StyleSheet } from "react-native";
 import Chat from "../components/Chat";
 
 // importing temp chats data
@@ -14,26 +14,39 @@ import { setPage } from "../utils/statePersistence";
 
 export default function ChatsScreen() {
 
-    const [chats, setChats] = useState();
+    const [chats, setChats] = useState(null);
 
     useEffect(() => {
         const f = async () => {
-            setChats([])
+            
         }
         f()
     }, [])
 
     return (
+
         <SafeAreaView style={{ flex: 1 }}>
-        <FlatList
-            data={chats}
-            renderItem={({ item }) => {
-            return <Chat chat={item} />;
-            }}
-            keyExtractor={(item) => item.id}
-            style={{ paddingHorizontal: 16 }}
-            contentInsetAdjustmentBehavior="automatic"
-        />
+            <Text style={styles.blankList}>{chats === null ? "Nothing to see here..." : null}</Text>
+            <FlatList
+                data={chats}
+                renderItem={({ item }) => {
+                return <Chat chat={item} />;
+                }}
+                keyExtractor={(item) => item.id}
+                style={{ paddingHorizontal: 16 }}
+                contentInsetAdjustmentBehavior="automatic"
+            />
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    blankList: {
+        color: "gray",
+        marginTop: 5,
+        marginBottom: -5,
+        marginHorizontal: "auto",
+        marginVertical: 10,
+        fontSize: 17,
+    }
+});
