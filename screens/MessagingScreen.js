@@ -36,7 +36,7 @@ export default function MessagingScreen({ route }) {
                     }
 
                     setMessages((messages) =>
-                        insertEventIntoAscendingList(messages, {
+                        insertEventIntoDescendingList(messages, {
                             ...message,
                             user: user
                         }
@@ -68,6 +68,7 @@ export default function MessagingScreen({ route }) {
           keyExtractor={(item) => item.id}
           style={styles.messageWrapper}
           contentInsetAdjustmentBehavior="automatic"
+          inverted={true}
         />
         <TextInput
           style={styles.messageCompose}
@@ -84,8 +85,8 @@ export default function MessagingScreen({ route }) {
 const styles = StyleSheet.create({
   messageWrapper: {
     paddingHorizontal: 10,
-    marginTop: "auto",
-    borderBottomWidth:45
+    marginBottom: 40,
+    marginTop: 0,
   },
   messageCompose: {
     paddingHorizontal: 10,

@@ -139,11 +139,13 @@ const styles = StyleSheet.create({
       //paddingHorizontal: 15,
     },
     profileImage: {
-      marginTop: -55,
-      width: 130,
-      height: 130,
-      borderRadius: 100,
-      alignSelf: "center",
+        marginTop: -55,
+        width: 150,
+        height: 150,
+        borderRadius: 100,
+        alignSelf: "center",
+        borderWidth: 7,
+        borderColor: "#000"
     },
     profileNameLight: {
       marginVertical: 10,

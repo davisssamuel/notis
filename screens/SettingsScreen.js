@@ -225,10 +225,12 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     marginTop: -55,
-    width: 130,
-    height: 130,
+    width: 150,
+    height: 150,
     borderRadius: 100,
     alignSelf: "center",
+    borderWidth: 7,
+    borderColor: "#000"
   },
   profileNameLight: {
     marginVertical: 10,
