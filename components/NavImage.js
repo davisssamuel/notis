@@ -1,6 +1,5 @@
 import { Image } from "react-native";
 
-import profileData from "../data/profile.json"
 import { useEffect, useState } from "react";
 import queryMeta from "../utils/meta";
 import { getPublicKeyHex } from "../utils/keys";

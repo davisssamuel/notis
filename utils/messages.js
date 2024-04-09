@@ -39,19 +39,22 @@ export async function send(message, theirPublicKey) {
 
     await event.sign();
     await event.publish();
-
 }
 
-export async function receive(pubkey) {
+export async function queryMessages(pubkey, func) {
     const ndk = new NDK({
         explicitRelayUrls: getRelays()
     })
     await ndk.connect()
 
     ndk.subscribe({
-        kind: 4,
-        pubkey: pubkey
-        //tags: [['p', await getPublicKeyHex()]]
+        kinds: [4],
+        pubkey: pubkey,
+        tags: [['p', await getPublicKeyHex()]]
+    },{
+        kinds: [4],
+        pubkey: await getPublicKeyHex(),
+        tags: [['p', pubkey]]
     }).on("event", (e) => { 
         func(e)
     })

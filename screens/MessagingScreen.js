@@ -13,23 +13,42 @@ import { insertEventIntoDescendingList, insertEventIntoAscendingList } from "../
 import React, { useEffect, useState } from "react";
 import Message from "../components/Message.js";
 import DecryptionQueue from "../utils/DecryptionQueue.js"
-import { send } from "../utils/messages.js";
+import { decrypt, queryMessages, send } from "../utils/messages.js";
+import queryMeta, { queryMetaFromKey } from "../utils/meta.js";
+import { getContactFromStorage, getContactsFromStorage } from "../utils/contacts.js";
+import { getPublicKeyHex } from "../utils/keys.js";
 
-export default function MessagingScreen(...props) {
+export default function MessagingScreen({ route }) {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
 
-  /*const sk = await getPrivateKeyHex();
-  const pk = await getPublicKeyHex();
-  const codedPubKey = "npub1uqj8jgd5uch8srmwxzvj5u6wzl0fc2vuzd8euwgj7rllhz6aagdslf3lxy";
-  let theirPublicKey = "e0247921b4e62e780f6e30992a734e17de9c299c134f9e3912f0fffb8b5dea1b";*/
+  const pubkey = route.params.pubkey
 
     useEffect(() => {
-        //console.log(props)
+        const f = async () => {
+            queryMessages(pubkey, async (message) => {
+                let user = await getContactFromStorage(message.pubkey);
+                decrypt(message.content, pubkey).then( async (decrypted) => {
+                    message.content = decrypted
+                    if (user == null) {
+                        user = await queryMeta();
+                        user.nickname = "You";
+                    }
+
+                    setMessages((messages) =>
+                        insertEventIntoAscendingList(messages, {
+                            ...message,
+                            user: user
+                        }
+                    ))
+                })
+            })
+        }
+        f();
     },[])
 
     const sendMessage = async (self) => {
-        send(messageInput, "<PUBKEY>").then(() => {
+        send(messageInput, pubkey).then(() => {
             setMessageInput("");
             self.target.value = ""
         }).catch((e) => {
@@ -53,7 +72,7 @@ export default function MessagingScreen(...props) {
         <TextInput
           style={styles.messageCompose}
           placeholder="Text message"
-          onChangeText={(text) => setMessageInput(text)}
+          onChangeText={setMessageInput}
           onSubmitEditing={sendMessage}
           placeholderTextColor="#888"
         />

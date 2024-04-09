@@ -14,18 +14,8 @@ export default function ContactInfoScreen({ navigation, route }) {
     const [ispopupVisible, setPopupVisible] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
     const [popupSubMessage, setPopupSubMessage] = useState("");
-  
-    const [pk, setPK] = useState("")
-    const [privK, setPrivK] = useState("")
-    const [imageURL, setImageURL] = useState("")
-    const [name, setName] = useState("")
-    const [bio, setBio] = useState("")
-    const [bannerURL, setBannerURL] = useState("")
-  
-    const [editedImageURL, setEditedImageURL] = useState("")
+
     const [editedNickname, setEditedNickname] = useState(contact.nickname)
-    const [editedBio, setEditedBio] = useState("")
-    const [editedBannerURL, setEditedBannerURL] = useState("")
   
     useEffect(() => {
       const f = async () => {
@@ -79,6 +69,16 @@ export default function ContactInfoScreen({ navigation, route }) {
                       })
                       }}>
                       <Text style={{color:"inherit"}}>Save</Text>
+                  </Pressable>
+              </View>
+          </View>
+
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+              <View style={styles.setting}>
+                  <Pressable style={styles.keyButton} onPress={() => {
+                      navigation.navigate("Chats", {screen: "MessagingScreen", params: { pubkey: contact.pubkey }})
+                  }}>
+                      <Text style={{color:"inherit", fontWeight: "inherit"}}>Messages</Text>
                   </Pressable>
               </View>
           </View>

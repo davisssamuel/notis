@@ -1,25 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import getPrivateKeyBech, { bechToHex, getPrivateKeyHex, getPublicKeyHex, hexToBech } from "../utils/keys";
 import { nip04 } from "nostr-tools";
 import NDK from "@nostr-dev-kit/ndk";
 import { formatUnixTimestamp } from "../utils/misc";
 import { getContactFromKey } from "../utils/misc";
+import { queryMetaFromKey } from "../utils/meta";
+import blank from "../data/blankProfile.json"
 
 const Message = ({ message }) => {
+
+    const [pk, setPK] = useState("")
+
+    useEffect(() => {
+        const f = async () => {
+            setPK(await getPublicKeyHex())
+        }
+        f();
+    }, [])
 
   let text = message.content
   let unix_time = message.created_at
   let formattedTime = formatUnixTimestamp(unix_time)
-  let sender = getContactFromKey(message.pubkey)
   
 
   return (
-    <View style={message.pubkey == getPublicKeyHex() ? styles.messageWrapperSent : styles.messageWrapperRec}>
-      <Image source={{uri:sender.image}} style={styles.messageImage}></Image>
+    <View style={message.pubkey == pk ? styles.messageWrapperSent : styles.messageWrapperRec}>
+      <Image source={{uri: message.user.image == "" ? blank.image + message.user.pubkey : message.user.image}} style={styles.messageImage}></Image>
       <View style={{flex:1, gap:0}}>
         <View style={styles.messageHeader}>
-          <Text style={styles.messageSender}>{sender.name}</Text>
+          <Text style={styles.messageSender}>{message.user.nickname == "" ? (message.user.name == "" ? blank.name : message.user.name) : message.user.nickname}</Text>
           <Text style={styles.messageTime}>{formattedTime}</Text>
         </View>
         <Text style={styles.messageBody}>{text}</Text>
@@ -59,12 +69,10 @@ const styles = StyleSheet.create({
   messageTime: {
     color: "gray",
     fontSize: 15,
-    flex:1
   },
   messageHeader: {
     flex:1,
     flexDirection: "row",
-    gap: 3,
     justifyContent: "space-between"
   },
   messageSender: {

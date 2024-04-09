@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, useColorScheme, NativeModules } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import profileData from "../data/profile.json"
 import { getPublicKeyHex, removeLogin } from "../utils/keys";
 import queryMeta from "../utils/meta";
 import { setPage } from "../utils/statePersistence";

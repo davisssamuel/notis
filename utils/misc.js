@@ -1,5 +1,3 @@
-import contactsData from "../data/contacts.json"
-
 export function formatUnixTimestamp(timestamp) {
   // Convert Unix timestamp to milliseconds
   const milliseconds = timestamp * 1000;

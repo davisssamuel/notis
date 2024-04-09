@@ -1,9 +1,0 @@
-{
-  "content": "hello world",
-  "created_at": 1701805453,
-  "id": "743bdcbc9d727327e3d68df3e03ed8f22b23e16110de73cfb2f5b78dbec387fb",
-  "kind": 1,
-  "pubkey": "435a2e2aa16a8953afac605fecbacf4284ca9dd7dfdd0e38b0cf8f08fc26a0af",
-  "sig": "f623e6107ab87765d4bb3c7904eb245397c47e00a9bf5fe3b1b3a6e5ccf7b674ab8a9a5a188b24434ca09de43a794deae0d04e9a5f5c929e15867dd232545fd9",
-  "tags": []
-}

@@ -18,6 +18,7 @@ import ContactInfoScreen from "./screens/ContactInfoScreen";
 // COMPONENTS
 import CustomDrawer from "./components/CustomDrawer";
 import NavImage from "./components/NavImage";
+import { setPage } from "./utils/statePersistence";
 
 
 const ChatsStack = createNativeStackNavigator();
@@ -49,8 +50,24 @@ function ChatsStackGroup() {
 
       <ChatsStack.Screen
         name="MessagingScreen"
-        options={{ headerTransparent: Platform.OS === "ios" ? true : false }}
+        options={{ 
+            title: "",
+            headerTransparent: Platform.OS === "ios" ? true : false,
+            headerLeft: () => (
+            <Ionicons
+                name="arrow-back-circle-outline"
+                size={35}
+                color="gainsboro"
+                onPress={() => {
+                    navigation.navigate("ChatsScreen");
+                    setPage("Chats")
+                }}
+                style={{ marginLeft: 15 }}
+            />
+          ),
+        }}
         component={MesssagingScreen}
+        
       />
     </ChatsStack.Navigator>
   );
@@ -91,7 +108,10 @@ function ContactsStackGroup() {
               name="arrow-back-circle-outline"
               size={35}
               color="gainsboro"
-              onPress={() => navigation.goBack()}
+              onPress={() => {
+                navigation.navigate("ContactsScreen")
+                setPage("Contacts")
+              }}
               style={{ marginLeft: 15 }}
             />
           ),

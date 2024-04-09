@@ -2,13 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView, StyleSheet, FlatList, Pressable, View, Text, Modal, TextInput } from "react-native";
 import Contact from "../components/Contact"
 
-// importing temp contacts data
-import jsonData from "../data/contacts.json";
 import { addContact, getContactsFromStorage, saveContactsToStorage } from "../utils/contacts";
 import { getPublicKeyHex } from "../utils/keys";
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import contactsList from "../data/contacts.json"
 import { setPage } from "../utils/statePersistence";
 import queryContacts from "../utils/contacts";
 import { queryMetaFromKey } from "../utils/meta";

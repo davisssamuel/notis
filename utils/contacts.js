@@ -23,6 +23,16 @@ export async function getContactsFromStorage() {
   return JSON.parse(await AsyncStorage.getItem("contactsList"));
 }
 
+export async function getContactFromStorage(pubkey) {
+    let contacts = JSON.parse(await AsyncStorage.getItem("contactsList"));
+    for (let contact of contacts) {
+        if (contact.pubkey == pubkey) {
+            return contact
+        }
+    }
+    return null;
+}
+
 export async function saveContactsToStorage(contactsList) {
   AsyncStorage.setItem("contactsList", JSON.stringify(contactsList));
 }
