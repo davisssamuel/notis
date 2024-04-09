@@ -1,194 +1,341 @@
-import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faMessage, faBellSlash, faFile } from '@fortawesome/free-regular-svg-icons';
-import { faBolt, faUsers, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from "react";
+import { View, ScrollView, Text, TextInput, Pressable, Image, StyleSheet, useColorScheme, Modal } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import getPrivateKeyHex, { getPublicKeyHex } from "../utils/keys";
+import queryMeta, { setAllMeta } from "../utils/meta";
+import * as Clipboard from 'expo-clipboard';
+import blank from "../data/blankProfile.json"
+import { deleteContact, editNickName } from "../utils/contacts";
 
-const ContactInfoScreen = ({ navigation, route }) => {
-  const { navigate }  = useNavigation();
-
-  const contact = route.params.contact
-  const { width, height } = useWindowDimensions();
-
-  const [dogApiPhoto, setDogApiPhoto] = useState(null);
-
-  useEffect(() => {
-    const fetchDogImage = async () => {
-      try {
-        const response = await fetch('https://dog.ceo/api/breeds/image/random');
-        const data = await response.json();
-        setDogApiPhoto(data.message);
-      } catch (error) {
-        console.error('Error fetching dog image:', error);
+export default function ContactInfoScreen({ navigation, route }) {
+    const contact = route.params.contact;
+    const currentTheme = useColorScheme();
+  
+    const [ispopupVisible, setPopupVisible] = useState(false);
+    const [popupMessage, setPopupMessage] = useState("");
+    const [popupSubMessage, setPopupSubMessage] = useState("");
+  
+    const [pk, setPK] = useState("")
+    const [privK, setPrivK] = useState("")
+    const [imageURL, setImageURL] = useState("")
+    const [name, setName] = useState("")
+    const [bio, setBio] = useState("")
+    const [bannerURL, setBannerURL] = useState("")
+  
+    const [editedImageURL, setEditedImageURL] = useState("")
+    const [editedNickname, setEditedNickname] = useState(contact.nickname)
+    const [editedBio, setEditedBio] = useState("")
+    const [editedBannerURL, setEditedBannerURL] = useState("")
+  
+    useEffect(() => {
+      const f = async () => {
+          
       }
-    };
-    fetchDogImage();
-  }, []);
+      f();
+    }, [])
+  
+    const setPopup = (message, subMessage, timeout) => {
+          setPopupVisible(true);
+          setPopupMessage(message);
+          setPopupSubMessage(subMessage);
+          setTimeout(() => {
+              setPopupVisible(false);
+          }, timeout);
+          setPopupVisible(true);
+    }
+    
+    return (
+  
+      <ScrollView style={styles.container}>
+           
+          <Image style={styles.bannerImage} source={{uri: contact.banner == "" ? blank.banner : contact.banner}}></Image>
+          <Image style={styles.profileImage} source={{uri: contact.image == "" ? blank.image + contact.pubkey : contact.image}} />
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-    },
-    dogImageContainer: {
-      flex: 1,
-      width: '100%',
-      alignSelf: 'flex-start',
-      position: 'relative',
-    },
-    dogImage: {
-      flex: 1,
-      width: '100%',
-    },
-    overlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'rgba(240, 240, 242, 1)',
-      top: 0.4 * height,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-    },
-    additionalContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    profileImage: {
-      top: height * -0.77,
-      right: width * 1.11,
-      width: 115,
-      height: 115,
-      borderRadius: 10000,
-    },
-    profileName: {
-      alignSelf: "center",
-    },
-    profileNameText: {
-      fontSize: 25,
-      fontWeight: 'bold',
-      textAlign: 'left',
-    },
-    profileStatusText: {
-      color: 'lightslategrey',
-    },
-    buttonContainer: {
-      position: 'absolute',
-      top: height * 0.50,
-      width: '100%',
-    },
-    buttonRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      marginLeft: 5,
-      marginRight: 5,
-      marginBottom: 2,
-    },
-    button: {
-      borderRadius: 5,
-      backgroundColor: 'white',
-      padding: 20,
-      width: '33%',
-    },
-    buttonText: {
-      color: 'lightslategrey',
-      fontSize: 12,
-      textAlign: 'center',
-    },
-    fullWidthButtonText: {
-      color: 'red',
-      fontSize: 16,
-      textAlign: 'center',
-    },
-    fullWidthButton: {
-      backgroundColor: 'white',
-      marginHorizontal: 'auto',
-      padding: 20,
-      width: '90%',
-      borderRadius: 10,
-      top: height * 0.11,
-      alignItems: 'center',
-      justifyContent: 'center',
-      alignSelf: 'center',
-    },
-    icon: {
-      fontSize: 45,
-      marginBottom: 10,
-      alignSelf: 'center'
-    },
-  });
+          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname}</Text>
+          <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameLight}>{ contact.about == "" ? blank.about : contact.about }</Text>
+  
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+              <Text style={styles.settingsTitle}>Customize Contact</Text>
+              <View style={styles.setting}>
+                  <View style={styles.settingLeft}>
+                      <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameLight}>Nickname: </Text>
+                  </View>
+                  <TextInput
+                      style={styles.settingsInputForm}
+                      value={editedNickname}
+                      placeholder="nickname"
+                      placeholderTextColor="gray"
+                      onChangeText={(value) => {
+                          setEditedNickname(value)
+                      }}
+                  />
+              </View>
+              <View style={styles.setting}>
+                  <Pressable style={styles.centerButton} onPress={() => {
+                      editNickName(contact.pubkey, editedNickname).then(() => {
+                          setPopup("Saved!", "Refresh the page to see changes", 2500)
+                      }).catch(() => {
+                          setPopup("Error Saving", "", 2500)
+                      })
+                      }}>
+                      <Text style={{color:"inherit"}}>Save</Text>
+                  </Pressable>
+              </View>
+          </View>
+  
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+              <Text style={styles.settingsTitle}>Keys</Text>
+              <View style={styles.setting}>
+                  <Pressable style={styles.keyButton} onPress={() => {
+                      Clipboard.setStringAsync(contact.pubkey).then(() => {
+                          setPopup("Copied!", "", 1500)
+                      }).catch(() => {
+                          setPopup("Error Copying", "", 2500)
+                      })
+                  }}>
+                      <Text style={{color:"inherit", fontWeight: "inherit"}}>Copy Public Key</Text>
+                  </Pressable>
+              </View>
+          </View>
 
-  const renderButtons = () => (
+        <View style={styles.qrCodeWrapper}>    
+            <Image style={styles.qrCode} source={{uri: contact.pubkey == "" ? "loading" : "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + contact.pubkey}}></Image>
+        </View>
 
-    <View style={styles.buttonContainer}>
-    {/* Rows 1 and 2 */}
-    <View style={styles.buttonRow}>
-      <TouchableOpacity style={styles.button} onPress={() => navigate("MessagingScreen")}>
-        <FontAwesomeIcon icon={faMessage} style={styles.icon} size={25} color='rgba(60, 219, 192, 1)'/>
-        <Text style={styles.buttonText}>Message</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <FontAwesomeIcon icon={faBolt} style={styles.icon} size={25} color='rgba(241, 190, 72, 1)'/>
-        <Text style={styles.buttonText}>Pay</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button /* nip 28 */}>
-        <FontAwesomeIcon icon={faBellSlash} style={styles.icon} size={30} color='rgba(224, 60, 49, 1)'/>
-        <Text style={styles.buttonText}>Silence</Text>
-      </TouchableOpacity>
-    </View>
-    <View style={styles.buttonRow}>
-      <TouchableOpacity style={styles.button}>
-      <FontAwesomeIcon icon={faUsers} style={styles.icon} size={25} color='rgba(34, 125, 118, 1)'/>
-        <Text style={styles.buttonText}>Groups</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <FontAwesomeIcon icon={faFile} style={styles.icon} size={25} color='rgba(21, 45, 81, 1)'/>
-        <Text style={styles.buttonText}>Files</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <FontAwesomeIcon icon={faShieldHalved} style={styles.icon} size={25} color ='rgba(224, 60, 49, 1)'/>
-        <Text style={styles.buttonText}>Block</Text>
-      </TouchableOpacity>
-    </View>
-
-    {/* Additional Button */}
-    <TouchableOpacity style={styles.fullWidthButton}>
-      <Text style={styles.fullWidthButtonText}>Delete Contact</Text>
-    </TouchableOpacity>
-  </View>
-);
-
-  return (
-    <View style={styles.container}>
-      {/* Dog image section */}
-      <View style={styles.dogImageContainer}>
-        {dogApiPhoto && (
-          <Image source={{ uri: dogApiPhoto }} style={styles.dogImage} resizeMode="cover" />
-        )}
-      </View>
-
-      {/* Overlay */}
-      <View style={styles.overlay}></View>
-      <View style={styles.profileName}>
-        <Text style={styles.profileNameText}>{contact.name}</Text>
-        <Text style={styles.profileStatusText}>{contact.nickname}</Text>
-      </View>
-
-      {/* Additional components section */}
-      <View style={styles.additionalContainer}>
-        <Image
-          style={styles.profileImage}
-          source={{
-            uri: contact.image,
-          }}
-        />
-      </View>
-
-      {/* Buttons on top of everything */}
-      {renderButtons()}
-    </View>
-  );
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+              <View style={styles.setting}>
+                  <Pressable style={styles.deleteContact} onPress={() => {
+                      deleteContact(contact.pubkey).then(() => {
+                          setPopup("Deleted Contact", contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname, 1500)
+                      }).catch(() => {
+                          setPopup("Error Copying", "", 2500)
+                      })
+                  }}>
+                      <Text style={{color:"inherit", fontWeight: "inherit"}}>Delete Contact</Text>
+                  </Pressable>
+              </View>
+          </View>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={ispopupVisible}
+            onRequestClose={() => setPopupVisible(false)}
+          >
+            <View style={styles.popup}>
+              <View style={styles.popupView}>
+                  <Text style={styles.popupText}>{popupMessage}</Text>
+                  <Text style={styles.popupSubText}>{popupSubMessage}</Text>
+              </View>
+            </View>
+          </Modal>
+      </ScrollView>
+      
+    );
 };
 
-export default ContactInfoScreen;
+const styles = StyleSheet.create({
+    container: {
+      //paddingHorizontal: 15,
+    },
+    profileImage: {
+      marginTop: -55,
+      width: 130,
+      height: 130,
+      borderRadius: 100,
+      alignSelf: "center",
+    },
+    profileNameLight: {
+      marginVertical: 10,
+      alignSelf: "center",
+      
+      // FONT
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#000",
+    },
+    profileNameDark: {
+      marginVertical: 10,
+      alignSelf: "center",
+      
+      // FONT
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#FFF",
+    },
+    profileInfo: {
+      flexDirection: "column",
+      width: "100%",
+      padding: 10,
+      marginVertical: 4,
+    },
+    settingsLight: {
+      width: "100%",
+      marginTop: 10,
+      padding: 10,
+      gap: 10,
+      borderRadius: 10,
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
+    },
+    settingsDark: {
+      width: "95%",
+      marginTop: 10,
+      marginHorizontal: "auto",
+      padding: 10,
+      gap: 10,
+      borderRadius: 10,
+      backgroundColor: "rgba(225, 225, 225, 0.12)",
+    },
+    setting: {
+      height: 33,
+      flexDirection: "row",
+      justifyContent: "left",
+      
+      // DEBUG BORDER
+      // borderWidth: 1,
+      // borderColor: "red",
+    },
+    settingLeft: {
+      flexDirection: "row",
+      justifyContent: "left",
+      alignItems: "center",
+      gap: 15,
+      width: 100,
+    },
+    settingNameLight: {
+      paddingLeft: 5,
+      fontSize: 16,
+      // fontWeight: "500",
+      color: "#000",
+    },
+    settingNameDark: {
+      paddingLeft: 5,
+      fontSize: 16,
+      // fontWeight: "500",
+      color: "#FFF",
+    },
+    settingImage: {
+      width: 40,
+      height: 40,
+      borderRadius: 10000,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    darkModeImage: {
+      backgroundColor: "black",
+    },
+    liveActivityImage: {
+      backgroundColor: "#E8C919",
+    },
+    keysImage: {
+      backgroundColor: "#E64968",
+    },
+    notificationsImage: {
+      backgroundColor: "#C461E0",
+    },
+    transactionHistoryImage: {
+      backgroundColor: "#00D200",
+    },
+  
+    nickNameDark: {
+      width: "90%",
+      marginVertical: 10,
+      alignSelf: "center",
+      textAlign: "center",
+      
+      // FONT
+      fontSize: 15,
+      color: "#999",
+    },
+    nickNameLight: {
+      marginTop:0,
+      marginBottom:5,
+      alignSelf: "center",
+      
+      // FONT
+      fontSize: 15,
+      color: "#000",
+    },
+    bannerImage: {
+      height: 150,
+    },
+    settingsInputForm: {
+      flex:1,
+      backgroundColor: "#444",
+      color: "#FFF",
+      borderRadius: 8,
+      paddingHorizontal: 5,
+    },
+    centerButton: {
+      color: "#FFF",
+      backgroundColor: "#666",
+      borderRadius: 8,
+      alignItems: "center",
+      justifyContent: "center",
+      width: 100,
+      marginLeft: "auto",
+    },
+    keyButton: {
+      color: "#FFF",
+      backgroundColor: "#666",
+      borderRadius: 8,
+      alignItems: "center",
+      justifyContent: "center",
+      width: "100%",
+      marginLeft: "auto",
+      fontWeight: "bold",
+    },
+    deleteContact: {
+        color: "#F99",
+        backgroundColor: "#733",
+        borderRadius: 8,
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        marginLeft: "auto",
+        fontWeight: "bold",
+    },
+    settingsTitle: {
+      color: "#FFF",
+      fontWeight: "bold",
+      fontSize: 20,
+      alignContent: "top",
+      justifyContent: "center",
+    },
+    popup: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    popupView: {
+      backgroundColor:"#777",
+      padding: 30,
+      borderRadius: 15,
+      alignContent: "center",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    popupText: {
+      color: 'white',
+      fontSize: 30,
+      fontWeight: "bold",
+    },
+    popupSubText: {
+      color: 'white',
+      fontSize: 20,
+    },
+    qrCodeWrapper: {
+        margin: 30,
+        padding: 15,
+        borderRadius: 15,
+        alignSelf: "center",
+        justifyContent: "center",
+        backgroundColor: "#FFF",
+        
+      },
+      qrCode: {
+        width: 200,
+        height: 200,
+        alignSelf: "center",
+      },
+  });

@@ -23,7 +23,6 @@ export default function ContactsScreen() {
   useEffect(() => {
         async function f() {
             queryContacts(async (c) => {
-                console.log(c.tags)
                 let allContacts = []
                 for(let contact of c.tags) {
                     let key = contact[1]
@@ -34,6 +33,7 @@ export default function ContactsScreen() {
                         pubkey: key,
                     })
                 }
+                allContacts.sort((a, b) => (a.nickname == "" ? (a.name == "" ? "" : a.name[0]) : a.nickname[0]) - (b.nickname == "" ? (b.name == "" ? "" : b.name[0]) : b.nickname[0]));
                 saveContactsToStorage(allContacts)
                 setContacts(allContacts)
             })

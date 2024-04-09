@@ -13,7 +13,6 @@ import LoginScreen from "./screens/LoginScreen";
 import ContactsScreen from "./screens/ContactsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import MesssagingScreen from "./screens/MessagingScreen";
-import TransactionHistoryScreen from "./screens/TransactionHistoryScreen";
 import ContactInfoScreen from "./screens/ContactInfoScreen";
 
 // COMPONENTS
@@ -140,11 +139,6 @@ function SettingsStackGroup() {
           ),
         }}
         component={SettingsScreen}
-      />
-      <ChatsStack.Screen
-        name="TransactionHistoryScreen"
-        options={{ headerTransparent: Platform.OS === "ios" ? true : false }}
-        component={TransactionHistoryScreen}
       />
     </SettingsStack.Navigator>
   );

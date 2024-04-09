@@ -71,6 +71,7 @@ export async function addContact(npub, nickname) {
     let inList = false;
     for(let i = 0; i < contacts.length; i++) {
       if(contacts[i].pubkey == npub) {
+        console.log("IN LIST :(")
         inList = true;
         break;
       }
@@ -84,9 +85,10 @@ export async function addContact(npub, nickname) {
 }
 
 export async function deleteContact(npub) {
-  let contacts = await getContactsFromStorage()
-  contacts = contacts.filter(contact => contact.pubkey !== npub);
-  await saveContactsToStorage(contacts);
+    let contacts = await getContactsFromStorage()
+    contacts = contacts.filter(contact => contact.pubkey !== npub);
+    await saveContactsToStorage(contacts);
+    saveContactsToRelays();
 }
 
 export async function wipeContacts() {
@@ -94,6 +96,13 @@ export async function wipeContacts() {
 }
 
 export async function editNickName(npub, nickname) {
-  deleteContact(npub)
-  addContact(npub, nickname)
+    let contacts = await getContactsFromStorage()
+    for (let contact of contacts) {
+        if (contact.pubkey == npub) {
+            contact.nickname = nickname
+            break;
+        }
+    }
+    await saveContactsToStorage(contacts);
+    await saveContactsToRelays();
 }

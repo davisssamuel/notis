@@ -12,59 +12,59 @@ import React, { useState, useEffect } from 'react';
 import { getContactFromKey } from "../utils/misc";
 
 const Contact = ({ contact }) => {
-  const { navigate } = useNavigation();
-  const currentTheme = useColorScheme();
-  return (
-    <Pressable
-      style={styles.contact}
-      onPress={() => {
-        navigate("ContactInfoScreen", { contact });
-      }}
-    >
-      <Image
-        style={styles.image}
-        source={{
-          uri:contact.image
+    const { navigate } = useNavigation();
+    const currentTheme = useColorScheme();
+    return (
+        <Pressable
+        style={styles.contact}
+        onPress={() => {
+            navigate("ContactInfoScreen", { contact });
         }}
-      />
-      <View style={styles.contactDetails}>
-        <View style={styles.contactFirstLine}>
-          <Text
-            style={
-              currentTheme === "dark"
-                ? styles.contactNameDark
-                : styles.contactNameLight
-            }
-          >
-          {contact.nickname != "" ? contact.nickname : contact.name}
-          </Text>
-          <View style={{ width: 100, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text
-            style={{
-              textAlign: 'right',
-              ...(currentTheme === "dark"
-                ? styles.timestampDark
-                : styles.timestampLight)
-                
-            }}
-          >           
-            {}  
-          </Text>
-          <Ionicons name="ios-chevron-forward" size={18} color="gainsboro" />
-        </View>
-        </View>
-        <Text
-          style={
-            currentTheme === "dark"
-              ? styles.statusDark
-              : styles.statusLight
-          }
         >
-          {contact.about}
-        </Text>
-      </View>
-    </Pressable>
-  );
+        <Image
+            style={styles.image}
+            source={{
+            uri:contact.image
+            }}
+        />
+        <View style={styles.contactDetails}>
+            <View style={styles.contactFirstLine}>
+            <Text
+                style={
+                currentTheme === "dark"
+                    ? styles.contactNameDark
+                    : styles.contactNameLight
+                }
+            >
+            {contact.nickname != "" ? contact.nickname : contact.name}
+            </Text>
+            <View style={{ width: 100, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Text
+                    style={{
+                    textAlign: 'right',
+                    ...(currentTheme === "dark"
+                        ? styles.timestampDark
+                        : styles.timestampLight)
+                        
+                    }}
+                >           
+                    {}  
+                </Text>
+                <Ionicons name="ios-chevron-forward" size={18} color="gainsboro" />
+            </View>
+            </View>
+            <Text
+            style={
+                currentTheme === "dark"
+                ? styles.statusDark
+                : styles.statusLight
+            }
+            >
+            {contact.about}
+            </Text>
+        </View>
+        </Pressable>
+    );
 };
 
 const styles = StyleSheet.create({

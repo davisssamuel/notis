@@ -34,7 +34,6 @@ export default function SettingsScreen() {
 
         let data = await queryMeta();
 
-        console.log(data)
         if (Object.keys(data).includes("image")) {
             if (data.image != "") {
                 setImageURL(data.image)

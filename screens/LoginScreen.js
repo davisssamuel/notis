@@ -29,11 +29,9 @@ const Login = () => {
     try {
       await Clipboard.setStringAsync(privateKey.hex);
       copyPopup('Copied!');
-      console.log('Copied!');
     }
     catch (error){
       copyPopup('Copy Error!');
-      console.error('Copy Error!')
     }
   }
   
@@ -52,27 +50,27 @@ const Login = () => {
     }
   };
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
-  // if we already have a key in storage, log in.
-  useEffect(() => {
-    const f = async () => {
-        if (await loggedIn()) {
-            if (await getPage() != "Logout") {
-                navigate(await getPage());
+    // if we already have a key in storage, log in.
+    useEffect(() => {
+        const f = async () => {
+            if (await loggedIn()) {
+                if (await getPage() != "Logout") {
+                    navigate(await getPage());
+                }
+                else {
+                    navigate("Chats")
+                }
             }
             else {
-                navigate("Chats")
+                setPage("Logout");
             }
         }
-        else {
-            setPage("Logout");
-        }
-    }
-    f()
-  }, [])
+        f()
+    }, [])
 
     return(
         <View style={styles.container}>
@@ -101,8 +99,8 @@ const Login = () => {
                     try {
                         uint8 = hexToBytes(hex);
                         AsyncStorage.setItem("privateKey", JSON.stringify({
-                        uint8: uint8,
-                        hex: hex,
+                            uint8: uint8,
+                            hex: hex,
                         }))
                         setPrivateKey("")
                         navigate('Chats')
@@ -121,12 +119,12 @@ const Login = () => {
                     <Text style={{fontWeight: "inherit", color:"inherit", fontWeight: "inherit"}}>generate a private key</Text>
                 </Pressable>
                 <Modal 
-                animationType = "none"
-                transparent = {true}
-                visible = {isModalVisible}
-                onRequestClose={() => {
-                    setModalVisible(false);
-                }}
+                    animationType = "none"
+                    transparent = {true}
+                    visible = {isModalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(false);
+                    }}
                 >
                 <View style={styles.popupContainer}>
                     <View style={styles.popup}>

@@ -25,7 +25,7 @@ export default function MessagingScreen(...props) {
   let theirPublicKey = "e0247921b4e62e780f6e30992a734e17de9c299c134f9e3912f0fffb8b5dea1b";*/
 
     useEffect(() => {
-        console.log(props)
+        //console.log(props)
     },[])
 
     const sendMessage = async (self) => {
