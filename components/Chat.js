@@ -7,21 +7,25 @@ import {
   StyleSheet,
   useColorScheme,
 } from "react-native";
+import blank from "../data/blankProfile.json"
+import { queryMetaFromKey } from "../utils/meta";
+import { useEffect } from "react";
 
 const Chat = ({ chat }) => {
+
   const { navigate } = useNavigation();
   const currentTheme = useColorScheme();
   return (
     <Pressable
       style={styles.chat}
       onPress={() => {
-        navigate("MessagingScreen", { chat });
+        navigate("MessagingScreen", { pubkey: chat.pubkey });
       }}
     >
       <Image
         style={styles.image}
         source={{
-          uri: chat.image
+          uri: chat.image == "" ? blank.image + chat.pubkey : chat.image
         }}
       />
       <View style={styles.chatDetails}>
@@ -33,7 +37,7 @@ const Chat = ({ chat }) => {
                 : styles.chatNameLight
             }
           >
-            {chat.name}
+            {chat.nickname == "" ? (chat.name == "" ? blank.name : chat.name) : chat.nickname}
           </Text>
           <Text
             style={
@@ -52,7 +56,7 @@ const Chat = ({ chat }) => {
               : styles.lastMessageLight
           }
         >
-          {chat.lastMessage}
+          {chat.whoSent + ": " + chat.content}
         </Text>
       </View>
     </Pressable>

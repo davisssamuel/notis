@@ -116,3 +116,35 @@ export async function editNickName(npub, nickname) {
     await saveContactsToStorage(contacts);
     await saveContactsToRelays();
 }
+
+export async function blockContact(pubkey) {
+    let blocked = JSON.parse(await AsyncStorage.getItem("blockedContacts"))
+    if (blocked == null) {
+        blocked = [];
+    }
+    if (!blocked.includes(pubkey)) {
+        blocked.push(pubkey);
+    }
+    AsyncStorage.setItem("blockedContacts", JSON.stringify(blocked))
+}
+
+export async function unblockContact(pubkey) {
+    let blocked = JSON.parse(await AsyncStorage.getItem("blockedContacts"))
+    if (blocked == null) {
+        blocked = [];
+    }
+    blocked = blocked.filter((c) => {c == pubkey});
+    AsyncStorage.setItem("blockedContacts", JSON.stringify(blocked))
+}
+
+export async function isBlocked(pubkey) {
+    let blocked = JSON.parse(await AsyncStorage.getItem("blockedContacts"))
+    if (blocked != null) {
+        return blocked.includes(pubkey)
+    }
+    return null;
+}
+
+export async function wipeBlocked() {
+    await AsyncStorage.setItem("blockedContacts", JSON.stringify([]))
+}

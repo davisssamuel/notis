@@ -26,7 +26,7 @@ const Message = ({ message }) => {
 
   return (
     <View style={message.pubkey == pk ? styles.messageWrapperSent : styles.messageWrapperRec}>
-      <Image source={{uri: message.user.image == "" ? blank.image + message.user.pubkey : message.user.image}} style={styles.messageImage}></Image>
+      <Image source={{uri: message.user.image == "" ? blank.image + message.pubkey : message.user.image}} style={styles.messageImage}></Image>
       <View style={{flex:1, gap:0}}>
         <View style={styles.messageHeader}>
           <Text style={styles.messageSender}>{message.user.nickname == "" ? (message.user.name == "" ? blank.name : message.user.name) : message.user.nickname}</Text>

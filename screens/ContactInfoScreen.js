@@ -5,10 +5,11 @@ import getPrivateKeyHex, { getPublicKeyHex } from "../utils/keys";
 import queryMeta, { setAllMeta } from "../utils/meta";
 import * as Clipboard from 'expo-clipboard';
 import blank from "../data/blankProfile.json"
-import { deleteContact, editNickName } from "../utils/contacts";
+import { blockContact, deleteContact, editNickName, isBlocked, unblockContact } from "../utils/contacts";
 
 export default function ContactInfoScreen({ navigation, route }) {
     const contact = route.params.contact;
+
     const currentTheme = useColorScheme();
   
     const [ispopupVisible, setPopupVisible] = useState(false);
@@ -16,10 +17,12 @@ export default function ContactInfoScreen({ navigation, route }) {
     const [popupSubMessage, setPopupSubMessage] = useState("");
 
     const [editedNickname, setEditedNickname] = useState(contact.nickname)
+
+    const [blocked, setBlocked] = useState()
   
     useEffect(() => {
       const f = async () => {
-          
+          setBlocked(await isBlocked(contact.pubkey))
       }
       f();
     }, [])
@@ -77,7 +80,7 @@ export default function ContactInfoScreen({ navigation, route }) {
               <View style={styles.setting}>
                   <Pressable style={styles.keyButton} onPress={() => {
                         navigation.goBack()
-                      navigation.navigate("Chats", {screen: "MessagingScreen", params: { pubkey: contact.pubkey }})
+                        navigation.navigate("Chats", {screen: "MessagingScreen", params: { pubkey: contact.pubkey }})
                   }}>
                       <Text style={{color:"inherit", fontWeight: "inherit"}}>Messages</Text>
                   </Pressable>
@@ -104,6 +107,26 @@ export default function ContactInfoScreen({ navigation, route }) {
         </View>
 
           <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+                <View style={styles.setting}>
+                  <Pressable style={styles.keyButton} onPress={() => {
+                    if (blocked) {
+                        unblockContact(contact.pubkey).then(() => {
+                            setPopup("Unblocked Contact", contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname, 1500)
+                        }).catch((e) => {
+                            setPopup("Error Unblocking", `${e}`, 2500)
+                        })
+                    }
+                    else {
+                        blockContact(contact.pubkey).then(() => {
+                            setPopup("Blocked Contact", contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname, 1500)
+                        }).catch(() => {
+                            setPopup("Error Blocking", "", 2500)
+                        })
+                    }
+                  }}>
+                      <Text style={{color:"inherit", fontWeight: "inherit"}}>{blocked ? "Unblock Contact" : "Block Contact"}</Text>
+                  </Pressable>
+              </View>
               <View style={styles.setting}>
                   <Pressable style={styles.deleteContact} onPress={() => {
                       deleteContact(contact.pubkey).then(() => {

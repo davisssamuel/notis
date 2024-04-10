@@ -2,6 +2,9 @@ import { finalizeEvent, nip44 } from "nostr-tools";
 import getPrivateKeyHex, { bechToHex, getPublicKeyHex } from "./keys";
 import NDK, { NDKEvent, NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
 import { getRelays, relayPool } from "./relays";
+import { SimplePool } from 'nostr-tools/pool'
+import { isBlocked } from "./contacts";
+
 
 export default async function encrypt(message, theirPublicKey) {
     let privKey = await getPrivateKeyHex()
@@ -41,21 +44,53 @@ export async function send(message, theirPublicKey) {
     await event.publish();
 }
 
-export async function queryMessages(pubkey, func) {
+export async function queryMessages(pubkey, func, eose) {
     const ndk = new NDK({
         explicitRelayUrls: getRelays()
     })
     await ndk.connect()
 
-    ndk.subscribe({
+    ndk.subscribe([{
         kinds: [4],
-        pubkey: pubkey,
-        tags: [['p', await getPublicKeyHex()]]
+        authors: [await getPublicKeyHex()],
+        search: [['p', pubkey]],
     },{
         kinds: [4],
+        authors: [pubkey],
+        search: [['p', await getPublicKeyHex()]],
+    }]).on("event", async (e) => { 
+        if (((e.pubkey == await getPublicKeyHex() && e.tags[0][1] == pubkey) || 
+            (e.pubkey == pubkey && e.tags[0][1] == await getPublicKeyHex())) &&
+            e.kind == 4)
+        {
+            func(e)
+        }
+    }).on("eose", (e) => {
+        eose(e)
+    })
+    
+}
+
+export async function queryAllMesssages(func, eose) {
+    const ndk = new NDK({
+        explicitRelayUrls: getRelays()
+    })
+    await ndk.connect()
+
+    ndk.subscribe([{
+        kinds: [4],
         pubkey: await getPublicKeyHex(),
-        tags: [['p', pubkey]]
-    }).on("event", (e) => { 
-        func(e)
+    },{
+        kinds: [4],
+        tags: [['p', await getPublicKeyHex()]]
+    }]).on("event", async (e) => {
+        if (((e.pubkey == await getPublicKeyHex() || e.tags[0][1] == await getPublicKeyHex()) && 
+            e.kind == 4) &&
+            (!(await isBlocked(e.pubkey)) && !(await isBlocked(e.tags[0][1]))))
+        {
+            func(e)
+        }
+    }).on("eose", (e) => {
+        eose(e)
     })
 }

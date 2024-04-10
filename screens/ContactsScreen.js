@@ -57,7 +57,7 @@ export default function ContactsScreen() {
 
       return (
         <SafeAreaView style={{ flex: 1 }}>
-            <Text style={styles.blankList}>{contacts === null ? "Nothing to see here..." : null}</Text>
+            <Text style={styles.blankList}>{contacts == null || contacts.length == 0 ? "Nothing to see here..." : null}</Text>
           <FlatList
             data={contacts}
             renderItem={({ item }) => {

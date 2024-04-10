@@ -8,6 +8,7 @@ import { loggedIn } from "../utils/keys";
 import getPage, { setPage } from "../utils/statePersistence";
 
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import { setAllMeta } from '../utils/meta';
 
 const Login = () => {
   const { navigate }  = useNavigation();
@@ -148,6 +149,7 @@ const Login = () => {
                         
                         <Pressable style = {styles.popupButtons} onPress = {async () => {
                             await AsyncStorage.setItem('privateKey', JSON.stringify(privateKey));
+                            setAllMeta("","","","")
                             toggleModal();
                             navigate('Chats');
                         }}>

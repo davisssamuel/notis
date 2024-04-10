@@ -6,7 +6,8 @@ import {
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
-  FlatList
+  FlatList,
+  Pressable
 } from "react-native";
 import { relayInit, finishEvent, nip19, nip04, nip44, nip10, Event} from "nostr-tools";
 import { insertEventIntoDescendingList, insertEventIntoAscendingList } from "../utils/sorting.js";
@@ -15,33 +16,43 @@ import Message from "../components/Message.js";
 import DecryptionQueue from "../utils/DecryptionQueue.js"
 import { decrypt, queryMessages, send } from "../utils/messages.js";
 import queryMeta, { queryMetaFromKey } from "../utils/meta.js";
-import { getContactFromStorage, getContactsFromStorage } from "../utils/contacts.js";
+import { addContact, blockContact, getContactFromStorage, getContactsFromStorage, isBlocked, unblockContact } from "../utils/contacts.js";
 import { getPublicKeyHex } from "../utils/keys.js";
+import { setPage } from "../utils/statePersistence.js";
 
-export default function MessagingScreen({ route }) {
+export default function MessagingScreen({navigation, route}) {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
+  const [contact, setContact] = useState();
+  const [metaContact, setMetaContact] = useState();
+  const [blocked, setBlocked] = useState();
 
   const pubkey = route.params.pubkey
 
     useEffect(() => {
         const f = async () => {
-            queryMessages(pubkey, async (message) => {
-                let user = await getContactFromStorage(message.pubkey);
-                decrypt(message.content, pubkey).then( async (decrypted) => {
-                    message.content = decrypted
-                    if (user == null) {
-                        user = await queryMeta();
-                        user.nickname = "You";
-                    }
+            setContact(await getContactFromStorage(pubkey));
+            setMetaContact({...(await queryMetaFromKey(pubkey)),nickname:""});
+            setBlocked(await isBlocked(pubkey))
 
-                    setMessages((messages) =>
-                        insertEventIntoDescendingList(messages, {
-                            ...message,
-                            user: user
-                        }
-                    ))
-                })
+            queryMessages(pubkey, async (message) => {
+                let storageUser = await getContactFromStorage(message.pubkey);
+                let relayUser = await queryMetaFromKey(message.pubkey)
+                relayUser.nickname = "";
+                let decrypted = await decrypt(message.content, pubkey)
+                message.content = decrypted
+                if (message.pubkey == await getPublicKeyHex()) {
+                    storageUser = await queryMeta();
+                    storageUser.nickname = "You";
+                }
+                setMessages((messages) =>
+                    insertEventIntoDescendingList(messages, {
+                        ...message,
+                        user: storageUser == null ? relayUser : storageUser
+                    }
+                ))
+            }, (e) => {
+                // eose
             })
         }
         f();
@@ -60,6 +71,31 @@ export default function MessagingScreen({ route }) {
   return (
     <SafeAreaView style={{flex:1}}>
       <KeyboardAvoidingView style={styles.keyboardAvoidingView}>
+        <View style={styles.chatOptionsBar}>
+            <Pressable style={styles.option} onPress={() => {
+                if (contact != null) {
+                    setPage("Contacts")
+                    navigation.navigate("Contacts", {screen: "ContactInfoScreen", params: { contact: {...contact, pubkey:pubkey} }})
+                }
+                else {
+                    setPage("Contacts")
+                    addContact(pubkey ,"")
+                    navigation.navigate("Contacts", {screen: "ContactInfoScreen", params: { contact: {...metaContact, pubkey:pubkey} }})
+                }
+            }}>
+                <Text style={{color: "inherit", fontWeight:"inherit", fontSize: "inherit"}}>Edit Contact</Text>
+            </Pressable>
+            <Pressable style={styles.option} onPress={() => {
+                if (blocked) {
+                    unblockContact(pubkey)
+                }
+                else {
+                    blockContact(pubkey)
+                }
+            }}>
+                <Text style={{color: "inherit", fontWeight:"inherit", fontSize: "inherit"}}>{blocked ? "Unhide Chat" : "Hide Chat"}</Text>
+            </Pressable>
+        </View>
         <FlatList
           data={messages}
           renderItem={({ item }) => {
@@ -108,5 +144,21 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex:1,
+  },
+  chatOptionsBar: {
+    alignContent: "center",
+    height: 35,
+    flexDirection: "row",
+    paddingHorizontal: 5,
+    gap: 5,
+  },
+  option: {
+    flex:1,
+    color: "#FFF",
+    backgroundColor: "#666",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 35,
   }
 });

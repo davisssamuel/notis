@@ -10,8 +10,10 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect } from 'react';
 import { getContactFromKey } from "../utils/misc";
+import blank from "../data/blankProfile.json"
 
 const Contact = ({ contact }) => {
+
     const { navigate } = useNavigation();
     const currentTheme = useColorScheme();
     return (
@@ -24,7 +26,7 @@ const Contact = ({ contact }) => {
         <Image
             style={styles.image}
             source={{
-            uri:contact.image
+                uri: contact.image == "" ? blank.image + contact.pubkey : contact.image
             }}
         />
         <View style={styles.contactDetails}>
@@ -36,7 +38,7 @@ const Contact = ({ contact }) => {
                     : styles.contactNameLight
                 }
             >
-            {contact.nickname != "" ? contact.nickname : contact.name}
+            {contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname}
             </Text>
             <View style={{ width: 100, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Text

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import queryMeta from "../utils/meta";
 import { getPublicKeyHex } from "../utils/keys";
 
+import blank from "../data/blankProfile.json"
+
 export default function NavImage() {
     const [imageURL, setImageURL] = useState("")
 
@@ -11,10 +13,15 @@ export default function NavImage() {
         const f = async () => {
             const data = await queryMeta()
             if (Object.keys(data).includes("image")) {
-                setImageURL(data.image)
+                if (data.image != "") {
+                    setImageURL(data.image)
+                }
+                else {
+                    setImageURL(blank.image + await getPublicKeyHex())
+                }
             }
             else {
-                setImageURL("https://api.dicebear.com/8.x/identicon/svg?seed=" + await getPublicKeyHex())
+                setImageURL(blank.image + await getPublicKeyHex())
             }
         }
         f();

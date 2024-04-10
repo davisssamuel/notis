@@ -4,7 +4,8 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { getPublicKeyHex, removeLogin } from "../utils/keys";
 import queryMeta from "../utils/meta";
 import { setPage } from "../utils/statePersistence";
-import { wipeContacts } from "../utils/contacts";
+import { wipeContacts, wipeBlocked } from "../utils/contacts";
+import blank from "../data/blankProfile.json"
 
 export default function CustomDrawer(props) {
 
@@ -15,16 +16,26 @@ export default function CustomDrawer(props) {
         const f = async () => {
             const data = await queryMeta()
             if (Object.keys(data).includes("image")) {
-                setImageURL(data.image)
+                if (data.image != "") {
+                    setImageURL(data.image)
+                }
+                else {
+                    setImageURL(blank.image + await getPublicKeyHex())
+                }
             }
             else {
-                setImageURL("https://api.dicebear.com/8.x/identicon/svg?seed=" + await getPublicKeyHex())
+                setImageURL(blank.image + await getPublicKeyHex())
             }
             if (Object.keys(data).includes("name")) {
-                setName(data.name)
+                if (data.name != "") {
+                    setName(data.name)
+                }
+                else {
+                    setName(blank.name)
+                }
             }
             else {
-                setName("notis profile")
+                setName(blank.name)
             }
         }
         f();
@@ -58,6 +69,7 @@ export default function CustomDrawer(props) {
             onPress={() => {
                 removeLogin();
                 wipeContacts();
+                wipeBlocked();
                 props.navigation.navigate("Logout")
             }}
             key={"Logout"}
