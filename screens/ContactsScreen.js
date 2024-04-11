@@ -56,7 +56,7 @@ export default function ContactsScreen() {
 
 
       return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.blankList}>{contacts == null || contacts.length == 0 ? "Nothing to see here..." : null}</Text>
           <FlatList
             data={contacts}
@@ -113,6 +113,12 @@ export default function ContactsScreen() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        margin:"auto",
+        maxWidth: 600,
+        width: "100%"
+    },
     blankList: {
         color: "gray",
         marginHorizontal: "auto",

@@ -184,6 +184,9 @@ const styles =  {
   container: {
     flex: 1,
     backgroundColor: '#FF',
+    margin:"auto",
+    maxWidth: 600,
+    width: "100%"
   },
   loginPage: {
     flex: 1,

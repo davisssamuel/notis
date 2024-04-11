@@ -144,6 +144,9 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex:1,
+    margin:"auto",
+    maxWidth: 600,
+    width: "100%"
   },
   chatOptionsBar: {
     alignContent: "center",

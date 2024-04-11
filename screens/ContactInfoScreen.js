@@ -159,7 +159,9 @@ export default function ContactInfoScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
     container: {
-      //paddingHorizontal: 15,
+        margin:"auto",
+        maxWidth: 600,
+        width: "100%"
     },
     profileImage: {
         marginTop: -55,

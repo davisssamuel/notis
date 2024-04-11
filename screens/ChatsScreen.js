@@ -77,7 +77,7 @@ export default function ChatsScreen() {
     }, [])
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.blankList}>{chats == null || chats.length == 0 ? "Add a contact to start chatting!" : null}</Text>
             <FlatList
                 data={chats}
@@ -93,6 +93,12 @@ export default function ChatsScreen() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        margin:"auto",
+        maxWidth: 600,
+        width: "100%"
+    },
     blankList: {
         color: "gray",
         marginTop: 5,
