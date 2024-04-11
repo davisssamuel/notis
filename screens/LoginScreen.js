@@ -253,6 +253,7 @@ const styles =  {
   },
   popup: {
     width: '75vw',
+    maxWidth: 500,
     backgroundColor: '#777',
     padding: 15,
     borderRadius: 10,
