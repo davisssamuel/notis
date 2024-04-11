@@ -144,7 +144,7 @@ const Login = () => {
                         </Pressable>
                         
                         <Pressable style = {styles.popupButtons} onPress = {async () => {
-                            await AsyncStorage.setItem('privateKey', JSON.stringify(privateKey));
+                            await AsyncStorage.setItem('privateKey', JSON.stringify({hex: privateKey, uint8: hexToBytes(privateKey)}));
                             setAllMeta("","","","")
                             toggleModal();
                             navigate('Chats');
