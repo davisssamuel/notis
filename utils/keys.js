@@ -12,21 +12,25 @@ const publicHex = bechToHex(publicBech)
 */
 
 export default async function getPrivateKeyHex() {
-  return JSON.parse(await AsyncStorage.getItem("privateKey")).hex;
+  let key = JSON.parse(await AsyncStorage.getItem("privateKey"));
+  return key == null ? null : key.hex;
 }
 export async function getPrivateKeyArray() {
-  return Uint8Array.from(
+    let key = JSON.parse(await AsyncStorage.getItem("privateKey"))
+  return key == null ? null : Uint8Array.from(
     Object.values(
-      JSON.parse(await AsyncStorage.getItem("privateKey")).uint8
+      key.uint8
     )
   );
 }
 
 export async function getPublicKeyHex() {
-  return getPublicKey(await getPrivateKeyHex());
+    let key = await getPrivateKeyHex()
+  return key == null ? null : getPublicKey(key);
 }
 export async function getPublicKeyArray() {
-  return hexToBytes(await getPublicKeyHex());
+    let key = await getPublicKeyHex()
+  return key == null ? null : hexToBytes(key);
 }
 
 export async function removeLogin() {

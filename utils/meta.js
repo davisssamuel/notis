@@ -4,7 +4,13 @@ import NDK, { NDKPrivateKeySigner, NDKEvent } from "@nostr-dev-kit/ndk";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default async function queryMeta() {
-    const sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
+    let pub = await getPublicKeyHex()
+    let sec = await getPrivateKeyHex()
+    if (sec == null || pub == null) {
+        return {};
+    }
+
+    const sig = new NDKPrivateKeySigner(sec)
     const ndk = new NDK({
         explicitRelayUrls: getRelays(),
         signer: sig,
@@ -12,7 +18,7 @@ export default async function queryMeta() {
     await ndk.connect();
 
     const usr = await ndk.getUser({
-        pubkey: await getPublicKeyHex()
+        pubkey: pub
     })
 
     await usr.fetchProfile();
@@ -36,7 +42,13 @@ export async function queryMetaFromKey(npub) {
 }
 
 export async function setMetaImage(url) {
-    const sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
+    let pub = await getPublicKeyHex()
+    let sec = await getPrivateKeyHex()
+    if (sec == null || pub == null) {
+        return;
+    }
+    
+    const sig = new NDKPrivateKeySigner(sec)
     const ndk = new NDK({
         explicitRelayUrls: getRelays(),
         signer: sig,
@@ -44,7 +56,7 @@ export async function setMetaImage(url) {
     await ndk.connect();
 
     const usr = await ndk.getUser({
-        pubkey: await getPublicKeyHex()
+        pubkey: pub
     })
 
     await usr.fetchProfile();
@@ -54,7 +66,13 @@ export async function setMetaImage(url) {
 }
 
 export async function setMetaName(name) {
-    const sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
+    let pub = await getPublicKeyHex()
+    let sec = await getPrivateKeyHex()
+    if (sec == null || pub == null) {
+        return;
+    }
+
+    const sig = new NDKPrivateKeySigner(sec)
     const ndk = new NDK({
         explicitRelayUrls: getRelays(),
         signer: sig,
@@ -62,7 +80,7 @@ export async function setMetaName(name) {
     await ndk.connect();
 
     const usr = await ndk.getUser({
-        pubkey: await getPublicKeyHex()
+        pubkey: pub
     })
 
     await usr.fetchProfile();
@@ -72,7 +90,13 @@ export async function setMetaName(name) {
 }
 
 export async function setMetaBio(bio) {
-    const sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
+    let pub = await getPublicKeyHex()
+    let sec = await getPrivateKeyHex()
+    if (sec == null || pub == null) {
+        return;
+    }
+
+    const sig = new NDKPrivateKeySigner(sec)
     const ndk = new NDK({
         explicitRelayUrls: getRelays(),
         signer: sig,
@@ -80,7 +104,7 @@ export async function setMetaBio(bio) {
     await ndk.connect();
 
     const usr = await ndk.getUser({
-        pubkey: await getPublicKeyHex()
+        pubkey: pub
     })
 
     await usr.fetchProfile();
@@ -90,7 +114,13 @@ export async function setMetaBio(bio) {
 }
 
 export async function setMetaBanner(url) {
-    const sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
+    let pub = await getPublicKeyHex()
+    let sec = await getPrivateKeyHex()
+    if (sec == null || pub == null) {
+        return;
+    }
+
+    const sig = new NDKPrivateKeySigner(sec)
     const ndk = new NDK({
         explicitRelayUrls: getRelays(),
         signer: sig,
@@ -98,7 +128,7 @@ export async function setMetaBanner(url) {
     await ndk.connect();
 
     const usr = await ndk.getUser({
-        pubkey: await getPublicKeyHex()
+        pubkey: pub
     })
 
     await usr.fetchProfile();
@@ -108,7 +138,13 @@ export async function setMetaBanner(url) {
 }
 
 export async function setAllMeta(name, bio, image, banner) {
-    const sig = new NDKPrivateKeySigner(await getPrivateKeyHex())
+    let pub = await getPublicKeyHex()
+    let sec = await getPrivateKeyHex()
+    if (sec == null || pub == null) {
+        return {};
+    }
+
+    const sig = new NDKPrivateKeySigner(sec)
     const ndk = new NDK({
         explicitRelayUrls: getRelays(),
         signer: sig,
@@ -116,7 +152,7 @@ export async function setAllMeta(name, bio, image, banner) {
     await ndk.connect();
 
     const usr = await ndk.getUser({
-        pubkey: await getPublicKeyHex()
+        pubkey: pub
     })
 
     await usr.fetchProfile();

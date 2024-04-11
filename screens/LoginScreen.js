@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TextInput, ScrollView, Pressable, Modal, Image} from 'react-native';
+import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
+import * as Clipboard from "expo-clipboard"
 import { generateSecretKey } from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
-import * as Clipboard from 'expo-clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loggedIn } from "../utils/keys";
 import getPage, { setPage } from "../utils/statePersistence";
@@ -13,41 +13,30 @@ import { setAllMeta } from '../utils/meta';
 const Login = () => {
   const { navigate }  = useNavigation();
   const [privateKey, setPrivateKey] = useState("");
-  const [publicKey, setPublicKey] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   const [ispopupVisible, setPopupVisible] = useState(false);
-  const [copyMessage, setCopyMessage] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupSubMessage, setPopupSubMessage] = useState("");
 
-  const copyPopup = (message) => {
+  const setPopup = (message, subMessage, timeout) => {
     setPopupVisible(true);
-    setCopyMessage(message);
-      setTimeout(() => {
+    setPopupMessage(message);
+    setPopupSubMessage(subMessage);
+    setTimeout(() => {
         setPopupVisible(false);
-      }, 1000);setPopupVisible(true);
-  }
-
-  const copyKey = async () => {
-    try {
-      await Clipboard.setStringAsync(privateKey.hex);
-      copyPopup('Copied!');
-    }
-    catch (error){
-      copyPopup('Copy Error!');
-    }
-  }
+    }, timeout);
+    setPopupVisible(true);
+}
   
   const generateKeys = async () => {
     try {
-      const sk = generateSecretKey();
-      const skHex = bytesToHex(sk);
-      setPrivateKey({
-        "uint8": sk,
-        "hex": skHex,
-      });
+      const sk = await generateSecretKey();
+      const skHex = await bytesToHex(sk);
+      setPrivateKey(skHex);
       toggleModal();
     }
     catch (error) {
-      console.error("Error generating keys:", error);
+      setPopup("Error Generating Keys", `${e}`, 2500)
     }
   };
 
@@ -91,7 +80,6 @@ const Login = () => {
             <Pressable style={styles.loginButton} onPress={async () => {
                 if (privateKey.length != 64) {
                     document.getElementById("input-status").style.color = "red";
-                    console.log("wrong length")
                 }
                 else {
                     document.getElementById("input-status").style.color = "transparent";
@@ -131,11 +119,19 @@ const Login = () => {
                     <View style={styles.popup}>
                     <View style={styles.popupBar}>
                         <ScrollView horizontal = {true} style={styles.popupKeys}>
-                            <Text style = {styles.popupKey}>{privateKey.hex}</Text>
+                            <Text style = {styles.popupKey}>{privateKey}</Text>
                         </ScrollView>
-                        <Pressable style={styles.popupCopy} onPress = {copyKey}>
+                        {/*
+                        <Pressable style={styles.popupCopy} onPress = {() => {
+                            Clipboard.setStringAsync(privateKey).then(() => {
+                                setPopup("Copied!", "", 1000)
+                            }).catch(() => {
+                                setPopup("Error Copying", "", 3000)
+                            })
+                        }}>
                             <Text style={{color:"inherit",fontWeight:"inherit"}}>Copy</Text>
                         </Pressable>
+                        */}
                     </View>
                     <View style={styles.popupBody}>
                         <Text style={{color:"inherit", fontSize:"inherit", fontSize:"inherit", textAlign:"center"}}>Treat Your <strong>private key</strong> like a password...</Text>
@@ -167,9 +163,12 @@ const Login = () => {
                 visible={ispopupVisible}
                 onRequestClose={() => setPopupVisible(false)}
             >
-            <View style={styles.copyModal}>
-                <Text style={styles.copyText}>{copyMessage}</Text>
-            </View>
+                <View style={styles.copyPopup}>
+                    <View style={styles.popupView}>
+                        <Text style={styles.popupText}>{popupMessage}</Text>
+                        <Text style={styles.popupSubText}>{popupSubMessage}</Text>
+                    </View>
+                </View>
             </Modal>
         </View>
     )
@@ -319,16 +318,29 @@ const styles =  {
     borderColor: "#000",
     marginTop: "auto",
   },
-  copyModal: {
+  copyPopup: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  copyText: {
+  popupView: {
+    backgroundColor:"#777",
+    padding: 30,
+    borderRadius: 15,
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  popupText: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  popupSubText: {
     color: 'white',
     fontSize: 20,
-  },
+  }
 }
 
 export default Login;
