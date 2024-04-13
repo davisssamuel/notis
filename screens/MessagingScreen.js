@@ -93,7 +93,7 @@ export default function MessagingScreen({navigation, route}) {
                     blockContact(pubkey)
                 }
             }}>
-                <Text style={{color: "inherit", fontWeight:"inherit", fontSize: "inherit"}}>{blocked ? "Unhide Chat" : "Hide Chat"}</Text>
+                <Text style={{color: "inherit", fontWeight:"inherit", fontSize: "inherit"}}>{blocked ? "Unblock Contact" : "Block Contact"}</Text>
             </Pressable>
         </View>
         <FlatList

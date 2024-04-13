@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { View, Text, TextInput, ScrollView, Pressable, Modal} from 'react-native';
-import * as Clipboard from "expo-clipboard"
 import { generateSecretKey } from 'nostr-tools';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loggedIn } from "../utils/keys";
 import getPage, { setPage } from "../utils/statePersistence";
+// import * as Clipboard from "expo-clipboard"
 
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import { setAllMeta } from '../utils/meta';
@@ -119,7 +119,7 @@ const Login = () => {
                     <View style={styles.popup}>
                     <View style={styles.popupBar}>
                         <ScrollView horizontal = {true} style={styles.popupKeys}>
-                            <Text style = {styles.popupKey}>{privateKey}</Text>
+                            <Text>{privateKey}</Text>
                         </ScrollView>
                         {/*
                         <Pressable style={styles.popupCopy} onPress = {() => {
@@ -267,8 +267,6 @@ const styles =  {
     borderWidth: 2,
     borderColor: "#F44",
     height: 30,
-  },
-  popupKey: {
     color: 'white',
   },
   popupCopy: {
