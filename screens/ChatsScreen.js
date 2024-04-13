@@ -78,7 +78,7 @@ export default function ChatsScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.blankList}>{chats == null || chats.length == 0 ? "Go to the contacts page and add a contact to start chatting!" : null}</Text>
+            <Text style={styles.blankList}>{chats == null || chats.length == 0 ? "Click the image in the top left and go to the contacts page to add a contact and start chatting!" : null}</Text>
             <FlatList
                 data={chats}
                 renderItem={({ item }) => {
@@ -106,5 +106,6 @@ const styles = StyleSheet.create({
         marginHorizontal: "auto",
         marginVertical: 10,
         fontSize: 17,
+        textAlign: "center",
     }
 });

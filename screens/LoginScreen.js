@@ -119,7 +119,7 @@ const Login = () => {
                     <View style={styles.popup}>
                     <View style={styles.popupBar}>
                         <ScrollView horizontal = {true} style={styles.popupKeys}>
-                            <Text>{privateKey}</Text>
+                            <Text style={{color:"white"}}>{privateKey}</Text>
                         </ScrollView>
                         {/*
                         <Pressable style={styles.popupCopy} onPress = {() => {
