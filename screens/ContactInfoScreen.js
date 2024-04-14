@@ -48,6 +48,17 @@ export default function ContactInfoScreen({ navigation, route }) {
           <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameLight}>{ contact.about == "" ? blank.about : contact.about }</Text>
   
           <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+            <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+                <View style={styles.setting}>
+                    <Pressable style={styles.keyButton} onPress={() => {
+                          navigation.goBack()
+                          navigation.navigate("Chats", {screen: "MessagingScreen", params: { pubkey: contact.pubkey }})
+                    }}>
+                        <Text style={{color:"inherit", fontWeight: "inherit"}}>Messages</Text>
+                    </Pressable>
+                </View>
+            </View>
+              
               <Text style={styles.settingsTitle}>Customize Contact</Text>
               <View style={styles.setting}>
                   <View style={styles.settingLeft}>
@@ -72,17 +83,6 @@ export default function ContactInfoScreen({ navigation, route }) {
                       })
                       }}>
                       <Text style={{color:"inherit"}}>Save</Text>
-                  </Pressable>
-              </View>
-          </View>
-
-          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
-              <View style={styles.setting}>
-                  <Pressable style={styles.keyButton} onPress={() => {
-                        navigation.goBack()
-                        navigation.navigate("Chats", {screen: "MessagingScreen", params: { pubkey: contact.pubkey }})
-                  }}>
-                      <Text style={{color:"inherit", fontWeight: "inherit"}}>Messages</Text>
                   </Pressable>
               </View>
           </View>

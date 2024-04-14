@@ -26,8 +26,10 @@ export default function MessagingScreen({navigation, route}) {
   const [contact, setContact] = useState();
   const [metaContact, setMetaContact] = useState();
   const [blocked, setBlocked] = useState();
+  const [isTextInputFocused, setIsTextInputFocused] = useState(true);
 
   const pubkey = route.params.pubkey
+
 
     useEffect(() => {
         const f = async () => {
@@ -61,7 +63,9 @@ export default function MessagingScreen({navigation, route}) {
     const sendMessage = async (self) => {
         send(messageInput, pubkey).then(() => {
             setMessageInput("");
-            self.target.value = ""
+            self.target.value = "";
+            
+            setIsTextInputFocused(true);
         }).catch((e) => {
             console.log("ERROR SENDING:", messageInput)
             console.error(e)
@@ -112,6 +116,10 @@ export default function MessagingScreen({navigation, route}) {
           onChangeText={setMessageInput}
           onSubmitEditing={sendMessage}
           placeholderTextColor="#888"
+          onFocus={() => setIsTextInputFocused(true)}
+          onEndEditing={() => setIsTextInputFocused(true)}
+          blurOnSubmit={false}
+          autoFocus={isTextInputFocused}
         />
       </KeyboardAvoidingView>
     </SafeAreaView>
