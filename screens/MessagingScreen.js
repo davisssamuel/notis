@@ -9,16 +9,16 @@ import {
   FlatList,
   Pressable
 } from "react-native";
-import { relayInit, finishEvent, nip19, nip04, nip44, nip10, Event} from "nostr-tools";
 import { insertEventIntoDescendingList, insertEventIntoAscendingList } from "../utils/sorting.js";
 import React, { useEffect, useState } from "react";
 import Message from "../components/Message.js";
-import DecryptionQueue from "../utils/DecryptionQueue.js"
 import { decrypt, queryMessages, send } from "../utils/messages.js";
 import queryMeta, { queryMetaFromKey } from "../utils/meta.js";
 import { addContact, blockContact, getContactFromStorage, getContactsFromStorage, isBlocked, unblockContact } from "../utils/contacts.js";
 import { getPublicKeyHex } from "../utils/keys.js";
 import { setPage } from "../utils/statePersistence.js";
+// import { relayInit, finishEvent, nip19, nip04, nip44, nip10, Event} from "nostr-tools";
+// import DecryptionQueue from "../utils/DecryptionQueue.js"
 
 export default function MessagingScreen({navigation, route}) {
   const [messages, setMessages] = useState([]);

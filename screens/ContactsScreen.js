@@ -1,14 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView, StyleSheet, FlatList, Pressable, View, Text, Modal, TextInput } from "react-native";
 import Contact from "../components/Contact"
 
 import { addContact, getContactsFromStorage, saveContactsToStorage } from "../utils/contacts";
-import { getPublicKeyHex } from "../utils/keys";
 import { useEffect, useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
-import { setPage } from "../utils/statePersistence";
 import queryContacts from "../utils/contacts";
 import { queryMetaFromKey } from "../utils/meta";
+// import { useNavigation } from "@react-navigation/native";
+// import { getPublicKeyHex } from "../utils/keys";
+// import { ScrollView } from "react-native-gesture-handler";
+// import { setPage } from "../utils/statePersistence";
 
 export default function ContactsScreen() {
   const [contacts, setContacts] = useState(null)
@@ -16,6 +16,9 @@ export default function ContactsScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [publicKey, setPublicKey ] = useState('');
   const [nickname, setNickname ] = useState('');
+
+  const [isErrorVisible, setErrorVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
         async function f() {
@@ -42,15 +45,29 @@ export default function ContactsScreen() {
         setModalVisible(!isModalVisible);
     };
 
+    const setError = (message, timeout) => {
+      setErrorVisible(true);
+      setErrorMessage(message);
+      setTimeout(() => {
+        setErrorVisible(false);
+      }, timeout);
+      setErrorVisible(true);
+    }
+
     const newContact = () => {
         if (publicKey.length === 64) {
             addContact(publicKey, nickname).then(() => {
-                setPublicKey("")
-                setNickname("")
+                setPublicKey("");
+                setNickname("");
+            })
+            .catch(() => {
+              setError("Error adding contact.", 2500);
             })
             toggleModal();
+            
         } else {
             console.log('Public key needs to be 64 characters');
+            setError("Public key needs to be 64 characters", 2500);
         }
       };
 
@@ -105,6 +122,18 @@ export default function ContactsScreen() {
                     <Text style = {{color: 'white'}}>Add</Text>
                   </Pressable>
                 </View>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+              animationType="none"
+              transparent={true}
+              visible={isErrorVisible}
+              onRequestClose={() => setErrorVisible(false)}
+            >
+            <View style={styles.errorPopup}>
+              <View style={styles.errorPopupView}>
+                <Text style={styles.errorPopupText}>{errorMessage}</Text>
               </View>
             </View>
           </Modal>
@@ -167,5 +196,24 @@ const styles = StyleSheet.create({
         margin: "auto", 
         marginBottom: 20, 
         fontWeight: "bold"
+    },
+    errorPopup: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    errorPopupView: {
+      backgroundColor:"#777",
+      padding: 30,
+      borderRadius: 15,
+      alignContent: "center",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    errorPopupText: {
+      color: 'white',
+      fontSize: 30,
+      fontWeight: "bold",
     },
   });

@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView, FlatList, Pressable, Image, Text, StyleSheet } from "react-native";
 import Chat from "../components/Chat";
 
@@ -8,9 +8,9 @@ import getPrivateKeyHex, { getPrivateKeyArray, getPublicKeyHex, getPublicKeyArra
 import getContactsListener, { addContact, deleteContact, getContactDataFromKey, getContactFromStorage, saveContactsToRelays } from "../utils/contacts";
 import { getAllRelaysFromAPI, getRelays } from "../utils/relays";
 import { decrypt, queryAllMesssages, receive, send } from "../utils/messages";
-import queryContacts from "../utils/contacts";
-import queryMeta, { setMetaDescription, setMetaName, setMetaImage, queryMetaFromKey } from "../utils/meta";
-import { setPage } from "../utils/statePersistence";
+// import queryContacts from "../utils/contacts";
+// import queryMeta, { setMetaDescription, setMetaName, setMetaImage, queryMetaFromKey } from "../utils/meta";
+// import { setPage } from "../utils/statePersistence";
 import blank from "../data/blankProfile.json"
 import { formatUnixTimestamp } from "../utils/misc";
 

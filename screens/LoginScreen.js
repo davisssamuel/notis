@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loggedIn } from "../utils/keys";
 import getPage, { setPage } from "../utils/statePersistence";
-// import * as Clipboard from "expo-clipboard"
+import * as Clipboard from "expo-clipboard"
 
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import { setAllMeta } from '../utils/meta';
@@ -121,7 +121,8 @@ const Login = () => {
                         <ScrollView horizontal = {true} style={styles.popupKeys}>
                             <Text style={{color:"white"}}>{privateKey}</Text>
                         </ScrollView>
-                        {/*
+
+                        
                         <Pressable style={styles.popupCopy} onPress = {() => {
                             Clipboard.setStringAsync(privateKey).then(() => {
                                 setPopup("Copied!", "", 1000)
@@ -131,7 +132,8 @@ const Login = () => {
                         }}>
                             <Text style={{color:"inherit",fontWeight:"inherit"}}>Copy</Text>
                         </Pressable>
-                        */}
+                        
+
                     </View>
                     <View style={styles.popupBody}>
                         <Text style={{color:"inherit", fontSize:"inherit", fontSize:"inherit", textAlign:"center"}}>Treat Your <strong>private key</strong> like a password...</Text>

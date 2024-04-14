@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { View, ScrollView, Text, TextInput, Pressable, Image, StyleSheet, useColorScheme, Modal } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import getPrivateKeyHex, { getPublicKeyHex } from "../utils/keys";
-import queryMeta, { setAllMeta } from "../utils/meta";
 import * as Clipboard from 'expo-clipboard';
 import blank from "../data/blankProfile.json"
 import { blockContact, deleteContact, editNickName, isBlocked, unblockContact } from "../utils/contacts";
+// import { useNavigation } from "@react-navigation/native";
+// import getPrivateKeyHex, { getPublicKeyHex } from "../utils/keys";
+// import queryMeta, { setAllMeta } from "../utils/meta";
 
 export default function ContactInfoScreen({ navigation, route }) {
     const contact = route.params.contact;
