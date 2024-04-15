@@ -46,9 +46,8 @@ export default function ContactInfoScreen({ navigation, route }) {
 
           <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname}</Text>
           <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameLight}>{ contact.about == "" ? blank.about : contact.about }</Text>
-  
+
           <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
-            <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
                 <View style={styles.setting}>
                     <Pressable style={styles.keyButton} onPress={() => {
                           navigation.goBack()
@@ -58,7 +57,8 @@ export default function ContactInfoScreen({ navigation, route }) {
                     </Pressable>
                 </View>
             </View>
-              
+  
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
               <Text style={styles.settingsTitle}>Customize Contact</Text>
               <View style={styles.setting}>
                   <View style={styles.settingLeft}>
