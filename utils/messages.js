@@ -44,7 +44,7 @@ export async function send(message, theirPublicKey) {
     await event.publish();
 }
 
-export async function queryMessages(pubkey, func, eose) {
+export async function queryMessages(pubkey, myPubKey, func, eose) {
     const ndk = new NDK({
         explicitRelayUrls: getRelays()
     })
@@ -52,15 +52,13 @@ export async function queryMessages(pubkey, func, eose) {
 
     ndk.subscribe([{
         kinds: [4],
-        authors: [await getPublicKeyHex()],
-        search: [['p', pubkey]],
+        authors: [myPubKey],
     },{
         kinds: [4],
         authors: [pubkey],
-        search: [['p', await getPublicKeyHex()]],
     }]).on("event", async (e) => { 
-        if (((e.pubkey == await getPublicKeyHex() && e.tags[0][1] == pubkey) || 
-            (e.pubkey == pubkey && e.tags[0][1] == await getPublicKeyHex())) &&
+        if (((e.pubkey == myPubKey && e.tags[0][1] == pubkey) || 
+            (e.pubkey == pubkey && e.tags[0][1] == myPubKey)) &&
             e.kind == 4)
         {
             func(e)

@@ -33,6 +33,7 @@ const Login = () => {
       const sk = await generateSecretKey();
       const skHex = await bytesToHex(sk);
       setPrivateKey(skHex);
+      
       toggleModal();
     }
     catch (error) {

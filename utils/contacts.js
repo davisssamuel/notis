@@ -71,17 +71,17 @@ export async function addContact(npub, nickname) {
     let data = await queryMetaFromKey(npub)
     let contactObj = {
       pubkey: npub,
-      name: data.name,
+      name: data == null ? "" : data.name,
       nickname: nickname,
-      description: data.about,
-      banner: data.banner,
-      image: data.image
+      description: data == null ? "" : data.about,
+      banner: data == null ? "" : data.banner,
+      image: data == null ? "" : data.image
     }
 
     let inList = false;
     for(let i = 0; i < contacts.length; i++) {
       if(contacts[i].pubkey == npub) {
-        console.log("IN LIST :(")
+        //console.log("IN LIST :(")
         inList = true;
         break;
       }

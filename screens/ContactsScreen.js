@@ -27,8 +27,12 @@ export default function ContactsScreen() {
                 for(let contact of c.tags) {
                     let key = contact[1]
                     let nickname = contact[3]
+                    let meta = await queryMetaFromKey(key)
                     allContacts.push({
-                        ...(await queryMetaFromKey(key)),
+                        name: Object.keys(meta).length == 0 ? "" : meta.name,
+                        image: Object.keys(meta).length == 0 ? "" : meta.image,
+                        banner: Object.keys(meta).length == 0 ? "" : meta.banner,
+                        about: Object.keys(meta).length == 0 ? "" : meta.about,
                         nickname: nickname,
                         pubkey: key,
                     })

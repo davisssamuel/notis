@@ -23,34 +23,31 @@ import { setPage } from "../utils/statePersistence.js";
 export default function MessagingScreen({navigation, route}) {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
-  const [contact, setContact] = useState();
-  const [metaContact, setMetaContact] = useState();
+  //const [contact, setContact] = useState();
+  //const [metaContact, setMetaContact] = useState();
   const [blocked, setBlocked] = useState();
   const [isTextInputFocused, setIsTextInputFocused] = useState(true);
+  const [myPubKey, setMyPubKey] = useState();
+  //const [myMeta, setMyMeta] = useState();
 
   const pubkey = route.params.pubkey
 
 
     useEffect(() => {
+        
         const f = async () => {
-            setContact(await getContactFromStorage(pubkey));
-            setMetaContact({...(await queryMetaFromKey(pubkey)),nickname:""});
+            let myMeta = await queryMeta()
+            let contact = await getContactFromStorage(pubkey)
+            let metaContact = {...(await queryMetaFromKey(pubkey)),nickname:""};
             setBlocked(await isBlocked(pubkey))
 
-            queryMessages(pubkey, async (message) => {
-                let storageUser = await getContactFromStorage(message.pubkey);
-                let relayUser = await queryMetaFromKey(message.pubkey)
-                relayUser.nickname = "";
-                let decrypted = await decrypt(message.content, pubkey)
-                message.content = decrypted
-                if (message.pubkey == await getPublicKeyHex()) {
-                    storageUser = await queryMeta();
-                    storageUser.nickname = "You";
-                }
+            queryMessages(pubkey, await getPublicKeyHex(), async (message) => {
+                message.content = await decrypt(message.content, pubkey)
+                let user = message.pubkey == await getPublicKeyHex() ? {...myMeta, nickname: "You"} : (contact == null ? metaContact : contact)
                 setMessages((messages) =>
                     insertEventIntoDescendingList(messages, {
                         ...message,
-                        user: storageUser == null ? relayUser : storageUser
+                        user: user
                     }
                 ))
             }, (e) => {
