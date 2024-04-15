@@ -86,7 +86,7 @@ export default function ContactsScreen() {
           />
           <View style = {{ alignItems: 'flex-end', margin:20,}}>
             <Pressable onPress= { toggleModal } style = {{ width: 50, height: 50, borderRadius: 100, backgroundColor: 'white', }}>
-              <Text style={{ color:'black', fontSize: 50, flex: 1, textAlign: "center", lineHeight: 43}}>+</Text>
+              <Text style={{ color:'black', fontSize: 50, flex: 1, textAlign: "center", marginTop: -2, lineHeight: 43}}>+</Text>
             </Pressable>
           </View>
           <Modal 
