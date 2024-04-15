@@ -23,31 +23,37 @@ import { setPage } from "../utils/statePersistence.js";
 export default function MessagingScreen({navigation, route}) {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
-  //const [contact, setContact] = useState();
-  //const [metaContact, setMetaContact] = useState();
+  const [contactData, setContactData] = useState();
+  const [metaContactData, setMetaContactData] = useState();
   const [blocked, setBlocked] = useState();
   const [isTextInputFocused, setIsTextInputFocused] = useState(true);
-  const [myPubKey, setMyPubKey] = useState();
-  //const [myMeta, setMyMeta] = useState();
+  let myMeta = null;
+  let contact = null;
+  let metaContact = null;
+  let myPK = null;
 
   const pubkey = route.params.pubkey
 
-
     useEffect(() => {
+        setMessages([])
         
         const f = async () => {
-            let myMeta = await queryMeta()
-            let contact = await getContactFromStorage(pubkey)
-            let metaContact = {...(await queryMetaFromKey(pubkey)),nickname:""};
+            myMeta = await queryMeta()
+            contact = await getContactFromStorage(pubkey)
+            setContactData(contact)
+            metaContact = {...(await queryMetaFromKey(pubkey)),nickname:""};
+            setMetaContactData(metaContact)
             setBlocked(await isBlocked(pubkey))
+            myPK = await getPublicKeyHex()
 
             queryMessages(pubkey, await getPublicKeyHex(), async (message) => {
                 message.content = await decrypt(message.content, pubkey)
-                let user = message.pubkey == await getPublicKeyHex() ? {...myMeta, nickname: "You"} : (contact == null ? metaContact : contact)
+                let user = message.pubkey == myPK ? {...myMeta, nickname: "You"} : (contact == null ? metaContact : contact)
                 setMessages((messages) =>
                     insertEventIntoDescendingList(messages, {
                         ...message,
-                        user: user
+                        user: user,
+                        myPubkey: myPK
                     }
                 ))
             }, (e) => {
@@ -55,7 +61,7 @@ export default function MessagingScreen({navigation, route}) {
             })
         }
         f();
-    },[])
+    },[route])
 
     const sendMessage = async (self) => {
         send(messageInput, pubkey).then(() => {
@@ -64,7 +70,6 @@ export default function MessagingScreen({navigation, route}) {
             
             setIsTextInputFocused(true);
         }).catch((e) => {
-            console.log("ERROR SENDING:", messageInput)
             console.error(e)
         })
     };
@@ -74,24 +79,30 @@ export default function MessagingScreen({navigation, route}) {
       <KeyboardAvoidingView style={styles.keyboardAvoidingView}>
         <View style={styles.chatOptionsBar}>
             <Pressable style={styles.option} onPress={() => {
-                if (contact != null) {
+                if (contactData != null) {
                     setPage("Contacts")
-                    navigation.navigate("Contacts", {screen: "ContactInfoScreen", params: { contact: {...contact, pubkey:pubkey} }})
+                    navigation.goBack()
+                    navigation.navigate("Contacts", {screen: "ContactInfoScreen", params: { contact: {...contactData, pubkey:pubkey} }})
                 }
                 else {
                     setPage("Contacts")
                     addContact(pubkey ,"")
-                    navigation.navigate("Contacts", {screen: "ContactInfoScreen", params: { contact: {...metaContact, pubkey:pubkey} }})
+                    navigation.goBack()
+                    navigation.navigate("Contacts", {screen: "ContactInfoScreen", params: { contact: {...metaContactData, pubkey:pubkey} }})
                 }
             }}>
                 <Text style={{color: "inherit", fontWeight:"inherit", fontSize: "inherit"}}>Edit Contact</Text>
             </Pressable>
             <Pressable style={styles.option} onPress={() => {
                 if (blocked) {
+                    setBlocked(false)
                     unblockContact(pubkey)
+                    //navigation.navigate("ChatsScreen")
                 }
                 else {
+                    setBlocked(true)
                     blockContact(pubkey)
+                    //navigation.navigate("ChatsScreen")
                 }
             }}>
                 <Text style={{color: "inherit", fontWeight:"inherit", fontSize: "inherit"}}>{blocked ? "Unblock" : "Block"}</Text>

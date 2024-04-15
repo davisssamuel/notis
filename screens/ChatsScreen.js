@@ -14,7 +14,7 @@ import { decrypt, queryAllMesssages, receive, send } from "../utils/messages";
 import blank from "../data/blankProfile.json"
 import { formatUnixTimestamp } from "../utils/misc";
 
-export default function ChatsScreen() {
+export default function ChatsScreen({navigation, route}) {
 
     const [chats, setChats] = useState(null);
     const [messages, setMessages] = useState([])
@@ -74,7 +74,7 @@ export default function ChatsScreen() {
             })
         }
         f();
-    }, [])
+    }, [route])
 
     return (
         <SafeAreaView style={styles.container}>

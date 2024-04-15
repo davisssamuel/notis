@@ -9,23 +9,13 @@ import { queryMetaFromKey } from "../utils/meta";
 import blank from "../data/blankProfile.json"
 
 const Message = ({ message }) => {
-
-    const [pk, setPK] = useState("")
-
-    useEffect(() => {
-        const f = async () => {
-            setPK(await getPublicKeyHex())
-        }
-        f();
-    }, [])
-
   let text = message.content
   let unix_time = message.created_at
   let formattedTime = formatUnixTimestamp(unix_time)
   
 
   return (
-    <View style={message.pubkey == pk ? styles.messageWrapperSent : styles.messageWrapperRec}>
+    <View style={message.pubkey == message.myPubkey ? styles.messageWrapperSent : styles.messageWrapperRec}>
       <Image source={{uri: message.user.image == "" ? blank.image + message.pubkey : message.user.image}} style={styles.messageImage}></Image>
       <View style={{flex:1, gap:0}}>
         <View style={styles.messageHeader}>
