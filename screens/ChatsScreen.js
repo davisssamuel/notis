@@ -9,7 +9,7 @@ import getContactsListener, { addContact, deleteContact, getContactDataFromKey, 
 import { getAllRelaysFromAPI, getRelays } from "../utils/relays";
 import { decrypt, queryAllMesssages, receive, send } from "../utils/messages";
 // import queryContacts from "../utils/contacts";
-// import queryMeta, { setMetaDescription, setMetaName, setMetaImage, queryMetaFromKey } from "../utils/meta";
+import { queryMetaFromKey } from "../utils/meta";
 // import { setPage } from "../utils/statePersistence";
 import blank from "../data/blankProfile.json"
 import { formatUnixTimestamp } from "../utils/misc";
