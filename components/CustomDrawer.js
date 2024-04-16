@@ -52,7 +52,7 @@ export default function CustomDrawer(props) {
       <DrawerContentScrollView>
         <View style={styles.profileWrapper}>
           <Image source={{uri:imageURL}} style={styles.profileImage}></Image>
-          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{name}</Text>
+          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameDark}>{name}</Text>
         </View>
         {newState.routes.map((route, index) => (
             <DrawerItem

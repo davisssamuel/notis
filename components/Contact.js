@@ -35,7 +35,7 @@ const Contact = ({ contact }) => {
                 style={
                 currentTheme === "dark"
                     ? styles.contactNameDark
-                    : styles.contactNameLight
+                    : styles.contactNameDark
                 }
             >
             {contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname}
@@ -46,7 +46,7 @@ const Contact = ({ contact }) => {
                     textAlign: 'right',
                     ...(currentTheme === "dark"
                         ? styles.timestampDark
-                        : styles.timestampLight)
+                        : styles.timestampDark)
                         
                     }}
                 >           
@@ -59,7 +59,7 @@ const Contact = ({ contact }) => {
             style={
                 currentTheme === "dark"
                 ? styles.statusDark
-                : styles.statusLight
+                : styles.statusDark
             }
             >
             {contact.about}

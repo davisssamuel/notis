@@ -34,7 +34,7 @@ const Chat = ({ chat }) => {
             style={
               currentTheme === "dark"
                 ? styles.chatNameDark
-                : styles.chatNameLight
+                : styles.chatNameDark
             }
           >
             {chat.nickname == "" ? (chat.name == "" ? blank.name : chat.name) : chat.nickname}
@@ -43,7 +43,7 @@ const Chat = ({ chat }) => {
             style={
               currentTheme === "dark"
                 ? styles.timestampDark
-                : styles.timestampLight
+                : styles.timestampDark
             }
           >
             {chat.timestamp}
@@ -53,7 +53,7 @@ const Chat = ({ chat }) => {
           style={
             currentTheme === "dark"
               ? styles.lastMessageDark
-              : styles.lastMessageLight
+              : styles.lastMessageDark
           }
         >
           {chat.whoSent + ": " + chat.content}
