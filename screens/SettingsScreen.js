@@ -98,14 +98,14 @@ export default function SettingsScreen() {
         <Image style={styles.bannerImage} source={{uri: bannerURL}}></Image>
         
         <Image style={styles.profileImage} source={{uri: imageURL}} />
-        <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{name}</Text>
-        <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameLight}>{bio}</Text>
+        <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameDark}>{name}</Text>
+        <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameDark}>{bio}</Text>
 
-        <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+        <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsDark}>
             <Text style={styles.settingsTitle}>Public Data</Text>
             <View style={styles.setting}>
                 <View style={styles.settingLeft}>
-                    <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameLight}>Name: </Text>
+                    <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameDark}>Name: </Text>
                 </View>
                 <TextInput
                     style={styles.settingsInputForm}
@@ -119,7 +119,7 @@ export default function SettingsScreen() {
             </View>
             <View style={styles.setting}>
                 <View style={styles.settingLeft}>
-                    <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameLight}>Bio: </Text>
+                    <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameDark}>Bio: </Text>
                 </View>
                 <TextInput
                     style={styles.settingsInputForm}
@@ -133,7 +133,7 @@ export default function SettingsScreen() {
             </View>
             <View style={styles.setting}>
                 <View style={styles.settingLeft}>
-                    <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameLight}>Image URL: </Text>
+                    <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameDark}>Image URL: </Text>
                 </View>
                 <TextInput
                     style={styles.settingsInputForm}
@@ -147,7 +147,7 @@ export default function SettingsScreen() {
             </View>
             <View style={styles.setting}>
                 <View style={styles.settingLeft}>
-                    <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameLight}>Banner URL: </Text>
+                    <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameDark}>Banner URL: </Text>
                 </View>
                 <TextInput
                     style={styles.settingsInputForm}
@@ -172,7 +172,7 @@ export default function SettingsScreen() {
             </View>
         </View>
 
-        <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+        <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsDark}>
             <Text style={styles.settingsTitle}>Keys</Text>
             <View style={styles.setting}>
                 <Pressable style={styles.keyButton} onPress={() => {

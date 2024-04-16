@@ -44,10 +44,10 @@ export default function ContactInfoScreen({ navigation, route }) {
           <Image style={styles.bannerImage} source={{uri: contact.banner == "" ? blank.banner : contact.banner}}></Image>
           <Image style={styles.profileImage} source={{uri: contact.image == "" ? blank.image + contact.pubkey : contact.image}} />
 
-          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameLight}>{contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname}</Text>
-          <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameLight}>{ contact.about == "" ? blank.about : contact.about }</Text>
+          <Text style={currentTheme === "dark" ? styles.profileNameDark : styles.profileNameDark}>{contact.nickname == "" ? (contact.name == "" ? blank.name : contact.name) : contact.nickname}</Text>
+          <Text style={currentTheme === "dark" ? styles.nickNameDark : styles.nickNameDark}>{ contact.about == "" ? blank.about : contact.about }</Text>
 
-          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsDark}>
                 <View style={styles.setting}>
                     <Pressable style={styles.keyButton} onPress={() => {
                           navigation.goBack()
@@ -58,11 +58,11 @@ export default function ContactInfoScreen({ navigation, route }) {
                 </View>
             </View>
   
-          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsDark}>
               <Text style={styles.settingsTitle}>Customize Contact</Text>
               <View style={styles.setting}>
                   <View style={styles.settingLeft}>
-                      <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameLight}>Nickname: </Text>
+                      <Text style={currentTheme === "dark" ? styles.settingNameDark : styles.settingNameDark}>Nickname: </Text>
                   </View>
                   <TextInput
                       style={styles.settingsInputForm}
@@ -87,7 +87,7 @@ export default function ContactInfoScreen({ navigation, route }) {
               </View>
           </View>
   
-          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsDark}>
               <Text style={styles.settingsTitle}>Keys</Text>
               <View style={styles.setting}>
                   <Pressable style={styles.keyButton} onPress={() => {
@@ -106,7 +106,7 @@ export default function ContactInfoScreen({ navigation, route }) {
             <Image style={styles.qrCode} source={{uri: contact.pubkey == "" ? "loading" : "https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=" + contact.pubkey}}></Image>
         </View>
 
-          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsLight}>
+          <View style={currentTheme === "dark" ? styles.settingsDark : styles.settingsDark}>
                 <View style={styles.setting}>
                   <Pressable style={styles.keyButton} onPress={() => {
                     if (blocked) {

@@ -207,9 +207,9 @@ export default function App() {
   //   };
   // }, []);
 
-  const currentTheme = useColorScheme();
+  // const currentTheme = useColorScheme();
   return (
-    <NavigationContainer linking={linking} theme={currentTheme === "dark" ? DarkTheme : DefaultTheme}>
+    <NavigationContainer linking={linking} theme={DarkTheme}>
       <StatusBar style="auto" />
       <DrawerGroup />
     </NavigationContainer>
