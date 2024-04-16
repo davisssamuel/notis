@@ -25,9 +25,11 @@ export async function getContactsFromStorage() {
 
 export async function getContactFromStorage(pubkey) {
     let contacts = JSON.parse(await AsyncStorage.getItem("contactsList"));
-    for (let contact of contacts) {
-        if (contact.pubkey == pubkey) {
-            return contact
+    if (contacts != null) {
+        for (let contact of contacts) {
+            if (contact.pubkey == pubkey) {
+                return contact
+            }
         }
     }
     return null;
@@ -40,7 +42,9 @@ export async function saveContactsToStorage(contactsList) {
 export async function saveContactsToRelays() {
 
   let relayContacts = []
-  for (let contact of await getContactsFromStorage()) {
+  let contacts = await getContactsFromStorage();
+  if (contacts == null) {return;}
+  for (let contact of contacts) {
     relayContacts.push(["p", contact.pubkey, "", contact.nickname])
   }
 
